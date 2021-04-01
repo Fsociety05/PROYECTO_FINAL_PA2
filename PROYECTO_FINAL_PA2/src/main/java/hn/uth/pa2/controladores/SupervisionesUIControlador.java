@@ -28,9 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SupervisionesUIControlador {
 
     private boolean banderin = true;
-    private Long idCoordinadorProfesional;
-    private Long idCoordinadorTecnico;
     private Long idProyecto;
+    TipoCoordinadores coordinador = new TipoCoordinadores();
 
     @Autowired
     private SupervisionesServicios servicio;
@@ -54,13 +53,14 @@ public class SupervisionesUIControlador {
     @GetMapping("/actualizarSupervision/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
         setParametro(modelo, "supervisiones", servicio.getValor(id));
+        setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
         this.banderin = false;
         return "paginas/supervision/form-supervisiones";
     }
 
     @GetMapping("/coordinadorProfesional/{id}")
     public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {
-        this.idCoordinadorProfesional = 1L;
+        this.coordinador.setIdTipoCoordinador(1L);
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -69,7 +69,7 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/coordinadorTecnico/{id}")
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo) {
-        this.idCoordinadorTecnico = 2L;
+        this.coordinador.setIdTipoCoordinador(2L);
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -78,30 +78,33 @@ public class SupervisionesUIControlador {
 
     @PostMapping("/guardarSupervision")
     public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) {
-        servicio.guardar(supervision);
-        
         ProyectoSupervisiones proyectoSup = new ProyectoSupervisiones();
         Proyectos proyecto = new Proyectos(this.idProyecto);
-        TipoCoordinadores coordinador = new TipoCoordinadores(this.idCoordinadorProfesional);
-        
         proyectoSup.setIdProyecto(proyecto);
-        System.out.println("PASO EL ID PROYECTO");
-        proyectoSup.setIdSupervision(supervision);
-        proyectoSup.setIdTipoCoordinador(coordinador);
-        System.out.println("PASO EL ID TIPO COORDINADOR");
+        proyectoSup.setIdTipoCoordinador(this.coordinador);
 
-        servicioProyectoSuperv.guardar(proyectoSup);
-
-        System.out.println("PASO EN GUARDAR LA TABLA DE MUCHOS A MUCHOS");
-
-        
-        System.out.println("NUNCA LLEGO AQUI");
-        if (banderin) {
-            atributo.addFlashAttribute("success", "Guardado Correctamente");
-        } else {
-            atributo.addFlashAttribute("success", "Actualizado Correctamente");
-            this.banderin = true;
+        int contador = 1;
+        for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
+            if (item.getIdProyecto().getIdProyecto() == this.idProyecto && item.getIdTipoCoordinador().getIdTipoCoordinador() == this.coordinador.getIdTipoCoordinador()) {
+                contador++;
+            }
         }
+
+        if (contador <= 3) {
+            servicio.guardar(supervision);
+            proyectoSup.setIdSupervision(supervision);
+            servicioProyectoSuperv.guardar(proyectoSup);
+
+            if (banderin) {
+                atributo.addFlashAttribute("success", "Guardado Correctamente");
+            } else {
+                atributo.addFlashAttribute("success", "Actualizado Correctamente");
+                this.banderin = true;
+            }
+        } else {
+           atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision"); 
+        }
+
         return "redirect:/registrarSupervision";
     }
 
