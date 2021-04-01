@@ -40,6 +40,10 @@ and open the template in the editor.
                 <label th:text="${success}" class="label_mensaje"></label>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+                <label th:text="${error}" class="label_mensaje"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
         <div class="container mt-5">
             <form th:action="@{/guardarSupervision}" action="#" th:object="${supervisiones}" method="POST">
