@@ -102,7 +102,7 @@ public class SupervisionesUIControlador {
                 this.banderin = true;
             }
         } else {
-           atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision"); 
+            atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision");
         }
 
         return "redirect:/registrarSupervision";
