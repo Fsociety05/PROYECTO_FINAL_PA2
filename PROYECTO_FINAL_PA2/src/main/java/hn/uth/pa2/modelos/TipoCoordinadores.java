@@ -30,5 +30,9 @@ public class TipoCoordinadores implements Serializable {
     private Long idTipoCoordinador;
     private String nombre;
     private String descripcion;   
+
+    public TipoCoordinadores(Long idTipoCoordinador) {
+        this.idTipoCoordinador = idTipoCoordinador;
+    }
     
 }

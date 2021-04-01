@@ -26,7 +26,7 @@ and open the template in the editor.
                             <a class="nav-link active" aria-current="page" href="/mantenimientoSupervision" >Mantenimiento Supervision</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/mantenimientoProyecto" >Mantenimiento Proyecto</a>
+                            <a class="nav-link active" aria-current="page" href="/registrarProyecto" >Registrar Proyecto</a>
                         </li>
                     </ul>
                 </div>
@@ -39,28 +39,33 @@ and open the template in the editor.
             </div>
         </div>
         <div class="container mt-5">
-            <form th:action="@{/guardarSupervision}" action="#" th:object="${supervisiones}" method="POST">
+            <form th:action="@{/guardarProyecto}" action="#" th:object="${proyecto}" method="POST">
                 <div class="mb-3">
-                    <label for="objetivo" class="form-label">Objetivo</label>
-                    <textarea class="form-control" id="objetivo" rows="3" cols="25" th:field="*{objetivo}" name="objetivo"></textarea>
+                    <label for="nombre_lider" class="form-label">Lider</label>
+                    <input type="text" class="form-control" id="nombreLider" th:field="*{nombreLider}" name="nombreLider">
                 </div>
-                <input type="hidden" th:field="*{idSupervision}" name="idSupervision" id="idSupervision">
-                <input th:field="*{id}" name="id" id="id">
+                <input type="hidden" th:field="*{idProyecto}" name="idProyecto" id="idProyecto">
                 <div class="mb-3">
-                    <label for="observasiones" class="form-label">Observaciones</label>
-                    <textarea class="form-control" id="observasiones" th:field="*{observasiones}" name="observasiones" rows="3"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="fecha" class="form-label">Fecha</label>
-                    <input type="date" class="form-control" id="fecha" th:field="*{fecha}" name="fecha">
+                    <label for="observasiones" class="form-label">Identidad</label>
+                    <input type="text" class="form-control" id="identidadLider" th:field="*{identidadLider}" name="identidadLider">
                 </div>
                 <div class="mb-3">
-                    <label for="horaInicio" class="form-label">Hora Inicio</label>
-                    <input type="time" class="form-control" id="horaInicio"  th:field="*{horaInicio}" name="horaInicio">
+                    <label for="titulo" class="form-label">Titulo Proyecto</label>
+                    <input type="text" class="form-control" id="titulo" th:field="*{titulo}" name="titulo">
                 </div>
                 <div class="mb-3">
-                    <label for="horaFin" class="form-label">Hora Fin</label>
-                    <input type="time" class="form-control" id="horaFin"  th:field="*{horaFin}" name="horaFin">
+                    <label for="idDepartamento" class="form-label">Departamento</label>
+                    <select class="form-select" aria-label="Default select example" th:field="*{idDepartamento}">
+                        <option th:if="${listaDepartamentos.isEmpty()}" th:value="0">No hay departamentos</option>
+                        <option th:!if="${listaDepartamentos.isEmpty()}" th:each="departamento : ${listaDepartamentos}" th:value="${departamento.idDepartamento}" th:text="${departamento.nombre}" name="idDepartamento"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" aria-label="Default select example" th:field="*{estado}">
+                        <option th:field="*{estado}" th:value="Activo" name="estado" id="estado">Activo</option>
+                        <option th:field="*{estado}" th:value="Finalizado" name="estado" id="estado">Finalizado</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

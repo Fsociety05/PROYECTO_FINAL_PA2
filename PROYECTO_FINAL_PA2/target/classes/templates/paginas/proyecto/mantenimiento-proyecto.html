@@ -28,6 +28,9 @@ and open the template in the editor.
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/mantenimientoProyecto" >Mantenimiento Proyecto</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/registrarProyecto" >Registrar Proyecto</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -47,6 +50,7 @@ and open the template in the editor.
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,9 +61,12 @@ and open the template in the editor.
                                 <td th:text="${proyecto.titulo}"></td>
                                 <td th:text="${proyecto.idDepartamento.nombre}"></td>
                                 <td th:text="${proyecto.estado}"></td>
-                                <!--<td><a class="btn btn-warning" th:href="@{/actualizarSupervision/{id} (id=${supervision.id_supervision})}">Actualizar</a></td>-->
-                                <td><a class="btn btn-outline-success" th:href="@{/registrarSupervision/{id}}">Supervision C. Profesional</a></td>
-                                <td><a class="btn btn-outline-info" th:href="@{/registrarSupervision/{id}}">Supervision C. Tecnico</a></td>
+
+                                <td><a class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto})}">Supervision C. Profesional</a></td>
+                                <td><a class="btn btn-outline-info" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto})}">Supervision C. Tecnico</a></td>
+                                <td>
+                                    <a class="btn btn-outline-warning" th:href="@{/actualizarProyecto/{id} (id=${proyecto.idProyecto})}">Actualizar</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

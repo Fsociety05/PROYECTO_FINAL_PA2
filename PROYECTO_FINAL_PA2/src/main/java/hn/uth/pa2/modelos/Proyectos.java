@@ -44,4 +44,8 @@ public class Proyectos implements Serializable {
     
     private String estado;
 
+    public Proyectos(Long idProyecto) {
+        this.idProyecto = idProyecto;
+    }
+
 }

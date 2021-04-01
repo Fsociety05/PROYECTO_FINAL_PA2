@@ -6,6 +6,7 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.Proyectos;
+import hn.uth.pa2.servicios.DepartamentoServicios;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,24 +27,29 @@ public class ProyectoUIControlador {
     
     @Autowired
     private ProyectoServicios servicio;
+    
+    @Autowired
+    private DepartamentoServicios servicioDepartamento;
 
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
         setParametro(model, "proyecto", new Proyectos());
-        return "paginas/form-proyecto";
+        setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
+        return "paginas/proyecto/form-proyecto";
     }
 
     @RequestMapping("/mantenimientoProyecto")
     public String irServicios(Model model) {
         setParametro(model, "listaProyecto", servicio.getTodos());
-        return "paginas/mantenimiento-proyecto";
+        return "paginas/proyecto/mantenimiento-proyecto";
     }
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
         setParametro(modelo, "proyecto", servicio.getValor(id));
+        setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
         this.banderin = false;
-        return "paginas/form-proyecto";
+        return "paginas/proyecto/form-proyecto";
     }
     
     @PostMapping("/guardarProyecto")
