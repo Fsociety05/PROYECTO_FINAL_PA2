@@ -25,9 +25,6 @@ and open the template in the editor.
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/mantenimientoSupervision" >Mantenimiento Supervision</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/mantenimientoProyecto" >Mantenimiento Proyecto</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -45,7 +42,6 @@ and open the template in the editor.
                     <textarea class="form-control" id="objetivo" rows="3" cols="25" th:field="*{objetivo}" name="objetivo"></textarea>
                 </div>
                 <input type="hidden" th:field="*{idSupervision}" name="idSupervision" id="idSupervision">
-                <input th:field="*{id}" name="id" id="id">
                 <div class="mb-3">
                     <label for="observasiones" class="form-label">Observaciones</label>
                     <textarea class="form-control" id="observasiones" th:field="*{observasiones}" name="observasiones" rows="3"></textarea>

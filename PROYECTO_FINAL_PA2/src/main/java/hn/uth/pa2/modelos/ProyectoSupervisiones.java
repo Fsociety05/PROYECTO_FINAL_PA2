@@ -7,10 +7,12 @@ package hn.uth.pa2.modelos;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,12 +33,15 @@ public class ProyectoSupervisiones implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_proyecto")
-    private Long idProyecto;
+    private Proyectos idProyecto;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_supervision")
-    private Long idSupervision;
+    private Supervisiones idSupervision;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_coordinador")
-    private Long idTipoCoordinador;
+    private TipoCoordinadores idTipoCoordinador;
 }

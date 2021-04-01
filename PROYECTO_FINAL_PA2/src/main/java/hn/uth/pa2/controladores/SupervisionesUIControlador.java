@@ -46,6 +46,13 @@ public class SupervisionesUIControlador {
         return "paginas/form-supervisiones";
     }
     
+    @GetMapping("/coordinadorProfesional/{id}")
+    public String irCoordinadorUno(@PathVariable("id") Long id, Model modelo) {
+        
+        setParametro(modelo, "supervisiones", id);
+        return "paginas/form-supervisiones";
+    }
+    
     @PostMapping("/guardarSupervision")
     public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) {
         servicio.guardar(supervision);
@@ -56,8 +63,7 @@ public class SupervisionesUIControlador {
             this.banderin = true;
         }
         return "redirect:/registrarSupervision";
-    }
-   
+    }   
 
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);

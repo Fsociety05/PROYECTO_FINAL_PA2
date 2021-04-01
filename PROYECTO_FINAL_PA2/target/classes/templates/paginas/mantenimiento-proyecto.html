@@ -25,35 +25,41 @@ and open the template in the editor.
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/mantenimientoSupervision" >Mantenimiento Supervision</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/mantenimientoProyecto" >Mantenimiento Proyecto</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container mt-5">
-            <h2 th:if="${listaServicio.isEmpty()}">Aun no se han registrado supervisiones</h2>
-            <div class="container" th:if="${!listaServicio.isEmpty()}">
+            <h2 th:if="${listaProyecto.isEmpty()}">Aun no se han registrado proyectos</h2>
+            <div class="container" th:if="${!listaProyecto.isEmpty()}">
                 <div class="table-responsive">
                     <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Objetivo</th>
-                                <th scope="col">Observasiones</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Hora Inicio</th>
-                                <th scope="col">Hora Fin</th>
+                                <th scope="col">Lider</th>
+                                <th scope="col">Identidad Lider</th>
+                                <th scope="col">Titulo Proyecto</th>
+                                <th scope="col">Departamento</th>
+                                <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="supervision : ${listaServicio}">
-                                <td th:text="${supervision.id_supervision}"></td>
-                                <td th:text="${supervision.objetivo}"></td>
-                                <td th:text="${supervision.observasiones}"></td>
-                                <td th:text="${supervision.fecha}"></td>
-                                <td th:text="${supervision.hora_inicio}"></td>
-                                <td th:text="${supervision.hora_fin}"></td>
-                                <td><a class="btn btn-warning" th:href="@{/actualizarSupervision/{id} (id=${supervision.id_supervision})}">Actualizar</a></td>
+                            <tr th:each="proyecto : ${listaProyecto}">
+                                <td th:text="${proyecto.idProyecto}"></td>
+                                <td th:text="${proyecto.nombreLider}"></td>
+                                <td th:text="${proyecto.identidadLider}"></td>
+                                <td th:text="${proyecto.titulo}"></td>
+                                <td th:text="${proyecto.idDepartamento.nombre}"></td>
+                                <td th:text="${proyecto.estado}"></td>
+                                <!--<td><a class="btn btn-warning" th:href="@{/actualizarSupervision/{id} (id=${supervision.id_supervision})}">Actualizar</a></td>-->
+                                <td><a class="btn btn-outline-success" th:href="@{/registrarSupervision/{id}}">Supervision C. Profesional</a></td>
+                                <td><a class="btn btn-outline-info" th:href="@{/registrarSupervision/{id}}">Supervision C. Tecnico</a></td>
                             </tr>
                         </tbody>
                     </table>

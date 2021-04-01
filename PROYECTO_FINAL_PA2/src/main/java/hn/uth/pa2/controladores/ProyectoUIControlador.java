@@ -5,8 +5,8 @@
  */
 package hn.uth.pa2.controladores;
 
-import hn.uth.pa2.modelos.Supervisiones;
-import hn.uth.pa2.servicios.SupervisionesServicios;
+import hn.uth.pa2.modelos.Proyectos;
+import hn.uth.pa2.servicios.ProyectoServicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,44 +21,43 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Buddys
  */
 @Controller
-public class SupervisionesUIControlador {
+public class ProyectoUIControlador {
     private boolean banderin = true;
     
     @Autowired
-    private SupervisionesServicios servicio;
+    private ProyectoServicios servicio;
 
-    @RequestMapping("/registrarSupervision")
+    @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
-        setParametro(model, "supervisiones", new Supervisiones());
-        return "paginas/form-supervisiones";
+        setParametro(model, "proyecto", new Proyectos());
+        return "paginas/form-proyecto";
     }
 
-    @RequestMapping("/mantenimientoSupervision")
+    @RequestMapping("/mantenimientoProyecto")
     public String irServicios(Model model) {
-        setParametro(model, "listaServicio", servicio.getTodos());
-        return "paginas/mantenimiento-servicio";
+        setParametro(model, "listaProyecto", servicio.getTodos());
+        return "paginas/mantenimiento-proyecto";
     }
 
-    @GetMapping("/actualizarSupervision/{id}")
+    @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-        setParametro(modelo, "supervisiones", servicio.getValor(id));
+        setParametro(modelo, "proyecto", servicio.getValor(id));
         this.banderin = false;
-        return "paginas/form-supervisiones";
+        return "paginas/form-proyecto";
     }
     
-    @PostMapping("/guardarSupervision")
-    public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) {
-        servicio.guardar(supervision);
+    @PostMapping("/guardarProyecto")
+    public String guardar(Proyectos proyecto, Model model, RedirectAttributes atributo) {
+        servicio.guardar(proyecto);
         if (banderin) {
             atributo.addFlashAttribute("success", "Guardado Correctamente");
         } else {
             atributo.addFlashAttribute("success", "Actualizado Correctamente");
             this.banderin = true;
         }
-        return "redirect:/registrarSupervision";
+        return "redirect:/registrarProyecto";
     }
    
-
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
     }
