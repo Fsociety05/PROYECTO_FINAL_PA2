@@ -39,7 +39,8 @@ public class UsuarioUIControlador {
 
     @RequestMapping("/mantenimientoUsuario")
     public String mantenimientoUsuario(Model model) {
-
+        
+        
         setParametro(model, "lista_usuarios", servicioUsuario.getTodos());
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
@@ -73,14 +74,14 @@ public class UsuarioUIControlador {
                     estado_editando = false;
                     return "redirect:/mantenimientoUsuario";
                 }
-                
-                if (entidad.getName_usuario().equals(todo.getName_usuario())&& !todo.getId_usuario().equals(entidad.getId_usuario())) {
+
+                if (entidad.getName_usuario().equals(todo.getName_usuario()) && !todo.getId_usuario().equals(entidad.getId_usuario())) {
                     attribute.addFlashAttribute("error", "Nombre de usuario ya existente");
                     estado_editando = false;
                     return "redirect:/mantenimientoUsuario";
                 }
 
-                if (entidad.getCorreo().equals(todo.getCorreo())&& !todo.getId_usuario().equals(entidad.getId_usuario())) {
+                if (entidad.getCorreo().equals(todo.getCorreo()) && !todo.getId_usuario().equals(entidad.getId_usuario())) {
                     attribute.addFlashAttribute("error", "Correo ya existente");
                     estado_editando = false;
                     return "redirect:/mantenimientoUsuario";
@@ -115,7 +116,14 @@ public class UsuarioUIControlador {
     }
 
     @GetMapping("/actualizar_usuario/{id}")
-    public String irActualizar(@PathVariable("id") Long id, Model model) {
+    public String irActualizar(@PathVariable("id") Long id, Model model, RedirectAttributes attribute) {
+        
+        if (servicioUsuario.getValor(id).get().getName_usuario().equals("ADMIN")) {
+            attribute.addFlashAttribute("error", "No se puede Editado este usuario");
+            return "redirect:/mantenimientoUsuario";
+        }
+        
+        
         setParametro(model, "usuario", servicioUsuario.getValor(id));
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
@@ -126,7 +134,13 @@ public class UsuarioUIControlador {
     }
 
     @GetMapping("eliminar_usuario/{id}")
-    public String eliminar(@PathVariable("id") Long id, Model modelo) {
+    public String eliminar(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
+
+        if (servicioUsuario.getValor(id).get().getName_usuario().equals("ADMIN")) {
+            attribute.addFlashAttribute("error", "No se puede Eliminar este usuario");
+            return "redirect:/mantenimientoUsuario";
+        }
+
         servicioUsuario.eliminar(id);
         return "redirect:/mantenimientoUsuario";
     }
