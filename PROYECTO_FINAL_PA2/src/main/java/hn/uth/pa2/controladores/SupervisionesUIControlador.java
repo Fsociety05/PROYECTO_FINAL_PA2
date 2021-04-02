@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SupervisionesUIControlador {
 
     private boolean banderin = true;
-    private Long idProyecto;
+    private Long idProyecto = null;
     TipoCoordinadores coordinador = new TipoCoordinadores();
 
     @Autowired
@@ -54,7 +54,6 @@ public class SupervisionesUIControlador {
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
         setParametro(modelo, "supervisiones", servicio.getValor(id));
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
-        this.banderin = false;
         return "paginas/supervision/form-supervisiones";
     }
 
@@ -78,33 +77,37 @@ public class SupervisionesUIControlador {
 
     @PostMapping("/guardarSupervision")
     public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) {
-        ProyectoSupervisiones proyectoSup = new ProyectoSupervisiones();
-        Proyectos proyecto = new Proyectos(this.idProyecto);
-        proyectoSup.setIdProyecto(proyecto);
-        proyectoSup.setIdTipoCoordinador(this.coordinador);
+        if (this.idProyecto != null) {
+            ProyectoSupervisiones proyectoSup = new ProyectoSupervisiones();
+            Proyectos proyecto = new Proyectos(this.idProyecto);
+            proyectoSup.setIdProyecto(proyecto);
+            proyectoSup.setIdTipoCoordinador(this.coordinador);
 
-        int contador = 1;
-        for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
-            if (item.getIdProyecto().getIdProyecto() == this.idProyecto && item.getIdTipoCoordinador().getIdTipoCoordinador() == this.coordinador.getIdTipoCoordinador()) {
-                contador++;
+            int contador = 1;
+            for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
+                if (item.getIdProyecto().getIdProyecto() == this.idProyecto && item.getIdTipoCoordinador().getIdTipoCoordinador() == this.coordinador.getIdTipoCoordinador()) {
+                    contador++;
+                }
             }
-        }
-
-        if (contador <= 3) {
-            servicio.guardar(supervision);
-            proyectoSup.setIdSupervision(supervision);
-            servicioProyectoSuperv.guardar(proyectoSup);
-
-            if (banderin) {
-                atributo.addFlashAttribute("success", "Guardado Correctamente");
+            if (contador <= 3) {
+                servicio.guardar(supervision);
+                proyectoSup.setIdSupervision(supervision);
+                servicioProyectoSuperv.guardar(proyectoSup);
+                if (banderin) {
+                    atributo.addFlashAttribute("success", "Guardado Correctamente");
+                }
             } else {
+                atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision");
+            }
+            this.idProyecto = null;
+        } else {
+            this.banderin = false;
+            servicio.guardar(supervision);
+            if (banderin == false) {
                 atributo.addFlashAttribute("success", "Actualizado Correctamente");
                 this.banderin = true;
             }
-        } else {
-            atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision");
         }
-
         return "redirect:/registrarSupervision";
     }
 
