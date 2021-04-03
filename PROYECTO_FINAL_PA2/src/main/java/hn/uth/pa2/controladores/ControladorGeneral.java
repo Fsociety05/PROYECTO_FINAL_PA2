@@ -5,8 +5,10 @@
  */
 package hn.uth.pa2.controladores;
 
+import hn.uth.pa2.modelos.Departamento;
 import hn.uth.pa2.modelos.Rol;
 import hn.uth.pa2.modelos.Usuario;
+import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.RolServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ControladorGeneral {
 
     private boolean logiado_por_primera_vez = true;
+    
+    public static Long id_usuario;
 
     /**
      * **************************************************************
@@ -33,6 +37,9 @@ public class ControladorGeneral {
 
     @Autowired
     private UsuarioServicio servicioUsuario;
+    
+    @Autowired
+    private DepartamentoServicio servicioDepartamento;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -54,7 +61,7 @@ public class ControladorGeneral {
             if (object.getName_usuario().equals(userLogin.getName_usuario())) {
                 encontrado = true;
                 if (object.getContrasenia().equals(userLogin.getContrasenia())) {
-                    
+                    id_usuario = object.getId_usuario();
                     setParametro(model, "usuarioLogiado", object);
                     return "Paginas/menu_principal";
                 }
@@ -66,7 +73,6 @@ public class ControladorGeneral {
         }else{
             attribute.addFlashAttribute("error", "Contraseña incorrecta");
         }
-
         
         return "redirect:/";
 
@@ -94,7 +100,14 @@ public class ControladorGeneral {
         usuarioTemp.setContrasenia("ADMIN");
         usuarioTemp.setRol(rolTemp);
         servicioUsuario.guardar(usuarioTemp);
+        
+        Departamento dep = new Departamento();
+        dep.setNombre("Dep1");
+        dep.setDescripcion("...");
+        servicioDepartamento.guardar(dep);
     }
+    
+    
 
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
