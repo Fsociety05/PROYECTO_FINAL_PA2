@@ -46,7 +46,7 @@ public class UsuarioUIControlador {
         setParametro(model, "lista_usuarios", servicioUsuario.getTodos());
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
-        return "Paginas/Usuario/mantenimiento_usuario";
+        return "paginas/Usuario/mantenimiento_usuario";
 
     }
 
@@ -56,7 +56,7 @@ public class UsuarioUIControlador {
         setParametro(model, "usuario", new Usuario());
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
-        return "Paginas/Usuario/form_usuario";
+        return "paginas/Usuario/form_usuario";
     }
 
     @PostMapping("/guardar_usuario")
@@ -132,7 +132,7 @@ public class UsuarioUIControlador {
 
         estado_editando = true;
 
-        return "Paginas/Usuario/form_usuario";
+        return "paginas/Usuario/form_usuario";
     }
 
     @GetMapping("eliminar_usuario/{id}")

@@ -10,8 +10,8 @@ import org.springframework.data.repository.CrudRepository;
 
 /**
  *
- * @author Licona
+ * @author Buddys
  */
-public interface DepartamentoRepositorio extends CrudRepository<Departamento, Long>{
+public interface DepartamentoRepositorio extends CrudRepository<Departamento, Long> {    
     
 }

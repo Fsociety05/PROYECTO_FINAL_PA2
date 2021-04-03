@@ -46,5 +46,9 @@ public class Usuario {
     @JoinColumn(name = "id_departamento", unique = false)
     //@OneToOne(cascade = CascadeType.ALL)
      @OneToOne(fetch = FetchType.LAZY)
-    private Departamento departamento;
+    private Departamento  departamento;
+
+    public Usuario(Long id_usuario) {
+        this.id_usuario = id_usuario;
+    }
 }

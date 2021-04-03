@@ -1,0 +1,70 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hn.uth.pa2.modelos;
+
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ *
+ * @author Buddys
+ */
+@Data
+@NoArgsConstructor
+@Entity
+public class Proyectos implements Serializable {
+    private static final long serialVersionUID = -6833167247955613395L;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JoinColumn(name = "id_proyecto")
+    private Long idProyecto;
+    
+    @JoinColumn(name = "nombre_lider")
+    private String nombreLider;
+    
+    @JoinColumn(name = "identidad_lider")
+    private String identidadLider;
+    
+    private String titulo;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_departamento")
+    private Departamento idDepartamento;
+    
+    private String estado;
+    
+    @Transient
+    private Long idUsuario1; 
+    
+    @Transient
+    private Long idUsuario2; 
+    
+    @Transient
+    private Long idUsuario3; 
+    
+    @Transient
+    private Long idCoordinadorProfesional; 
+    @Transient
+    private Long idCoordinadorTecnico; 
+    
+    @Transient
+    private Long idCoordinadorGeneral; 
+    
+
+    public Proyectos(Long idProyecto) {
+        this.idProyecto = idProyecto;
+    }
+
+}
