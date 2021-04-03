@@ -37,4 +37,8 @@ public class UsuarioServicio {
     public List<Usuario> getTodos() {
         return (List<Usuario>) repositorio.findAll();
     }
+    
+    public List<Usuario> getUsuariosConsulta(String nombreRol) {
+        return (List<Usuario>)repositorio.listarUsuarioConsulta(nombreRol);
+    }
 }

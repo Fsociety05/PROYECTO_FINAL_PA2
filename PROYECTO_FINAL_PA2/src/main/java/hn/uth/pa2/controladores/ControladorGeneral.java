@@ -5,9 +5,13 @@
  */
 package hn.uth.pa2.controladores;
 
+import hn.uth.pa2.modelos.Departamento;
 import hn.uth.pa2.modelos.Rol;
+import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.Usuario;
+import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.RolServicio;
+import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,12 +38,18 @@ public class ControladorGeneral {
     @Autowired
     private UsuarioServicio servicioUsuario;
 
+    @Autowired
+    private TipoCoordinadoresServicio servicioCoordinador;
+
+    @Autowired
+    private DepartamentoServicio servicioDepartamento;
+
     @RequestMapping("/")
     public String index(Model model) {
         setParametro(model, "usuario", new Usuario());
 
         if (logiado_por_primera_vez) {
-            llenandoTablas();
+            //llenandoTablas();
             logiado_por_primera_vez = false;
         }
 
@@ -48,26 +58,25 @@ public class ControladorGeneral {
 
     @PostMapping("/menu_inicio")
     public String menu(Usuario userLogin, Model model, RedirectAttributes attribute) {
-        
+
         boolean encontrado = false;
         for (Usuario object : servicioUsuario.getTodos()) {
             if (object.getName_usuario().equals(userLogin.getName_usuario())) {
                 encontrado = true;
                 if (object.getContrasenia().equals(userLogin.getContrasenia())) {
-                    
+
                     setParametro(model, "usuarioLogiado", object);
                     return "paginas/menu_principal";
                 }
             }
         }
-        
-        if(!encontrado){
+
+        if (!encontrado) {
             attribute.addFlashAttribute("error", "Usuario no encontrado");
-        }else{
+        } else {
             attribute.addFlashAttribute("error", "Contraseña incorrecta");
         }
 
-        
         return "redirect:/";
 
     }
@@ -94,6 +103,42 @@ public class ControladorGeneral {
         usuarioTemp.setContrasenia("ADMIN");
         usuarioTemp.setRol(rolTemp);
         servicioUsuario.guardar(usuarioTemp);
+        
+        Usuario usuarioTemp2 = new Usuario();
+        usuarioTemp2.setName_usuario("ADMIN");
+        usuarioTemp2.setContrasenia("ADMIN");
+        usuarioTemp2.setRol(rolTemp);
+        servicioUsuario.guardar(usuarioTemp);
+
+        TipoCoordinadores coordinador = new TipoCoordinadores();
+        coordinador.setNombre("Coordinador Profesional");
+        coordinador.setDescripcion("AAA");
+        servicioCoordinador.guardar(coordinador);
+
+        TipoCoordinadores coordinador2 = new TipoCoordinadores();
+        coordinador2.setNombre("Coordinador Tecnico");
+        coordinador2.setDescripcion("AAA");
+        servicioCoordinador.guardar(coordinador2);
+
+        TipoCoordinadores coordinador3 = new TipoCoordinadores();
+        coordinador3.setNombre("Coordinador General");
+        coordinador3.setDescripcion("AAA");
+        servicioCoordinador.guardar(coordinador3);
+
+        Departamento departamento = new Departamento();
+        departamento.setNombre("Marketing");
+        departamento.setDescripcion("AAA");
+        servicioDepartamento.guardar(departamento);
+        
+        Departamento departamento2 = new Departamento();
+        departamento2.setNombre("Contabilidad");
+        departamento2.setDescripcion("AAA");
+        servicioDepartamento.guardar(departamento2);
+        
+        Departamento departamento3 = new Departamento();
+        departamento3.setNombre("Recursos Humanos");
+        departamento3.setDescripcion("AAA");
+        servicioDepartamento.guardar(departamento3);
     }
 
     public void setParametro(Model model, String atributo, Object valor) {
