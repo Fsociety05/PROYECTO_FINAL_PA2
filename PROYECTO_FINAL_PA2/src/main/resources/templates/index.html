@@ -4,13 +4,61 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
+        <title>Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/estiloMensaje.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/estilo_login.css}" rel="stylesheet" type="text/css"/>
+
     </head>
     <body>
-        <div>TODO write content</div>
+
+
+
+
+        <div class="container" id="contenedor_principal">
+            <div class="container">
+                <h1>LOGIN</h1>
+            </div>
+
+            <div class="container" id="container_mensages">
+                
+                <div class="alert alert-success alert-dismissable fade show" th:if="${success != null}">
+                    <label th:text="${success}" class="label_mensaje"></label>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+                    <label th:text="${error}" class="label_mensaje"></label>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+            </div>
+            
+            <form action="#" th:action="@{/menu_inicio}" th:object="${usuario}" method="post" class="form-control">
+
+                <div class="form-group">
+                    <label for="nombres">Usuario</label>
+                    <input type="text" id="nombres" th:field="*{name_usuario}"  name="nombres" class="form-control" required="true">
+                </div>
+
+                <div class="form-group mb-3">
+                    <div><label for="apellidos">Contrase&ntilde;a</label></div>
+                    <input type="password" id="camp_password" th:field="*{contrasenia}" name="apellidos" class="form-control" required="true">
+                </div>
+
+
+
+
+                <button type="submit" class="btn btn-success">Entrar</button>
+
+            </form>
+
+        </div>
+
+
+        <script th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
     </body>
 </html>
