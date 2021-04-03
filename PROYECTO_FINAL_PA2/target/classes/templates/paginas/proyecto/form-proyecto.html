@@ -24,28 +24,28 @@ and open the template in the editor.
         <div class="container mt-5">
             <form th:action="@{/guardarProyecto}" action="#" th:object="${proyecto}" method="POST">
                 <div class="mb-3">
-                    <label for="nombre_lider" class="form-label">Lider</label>
-                    <input type="text" class="form-control" id="nombreLider" th:field="*{nombreLider}" name="nombreLider">
+                    <label for="nombreLider validationDefault01" class="form-label">Lider</label>
+                    <input type="text" class="form-control" id="nombreLider validationDefault01" th:field="*{nombreLider}" name="nombreLider"required>
                 </div>
                 <input type="hidden" th:field="*{idProyecto}" name="idProyecto" id="idProyecto">
                 <div class="mb-3">
-                    <label for="observasiones" class="form-label">Identidad</label>
-                    <input type="text" class="form-control" id="identidadLider" th:field="*{identidadLider}" name="identidadLider">
+                    <label for="observasiones validationDefault02" class="form-label">Identidad</label>
+                    <input type="text" class="form-control" id="identidadLider validationDefault02" th:field="*{identidadLider}" name="identidadLider" required>
                 </div>
                 <div class="mb-3">
-                    <label for="titulo" class="form-label">Titulo Proyecto</label>
-                    <input type="text" class="form-control" id="titulo" th:field="*{titulo}" name="titulo">
+                    <label for="titulo validationDefault03" class="form-label">Titulo Proyecto</label>
+                    <input type="text" class="form-control" id="titulo validationDefault03" th:field="*{titulo}" name="titulo" required>
                 </div>
                 <div class="mb-3">
                     <label for="idDepartamento" class="form-label">Departamento</label>
-                    <select class="form-select" aria-label="Default select example" th:field="*{idDepartamento}">
+                    <select class="form-select" id="validationCustom04" required aria-label="Default select example" th:field="*{idDepartamento}">
                         <option th:if="${listaDepartamentos.isEmpty()}" th:value="0">No hay departamentos</option>
                         <option th:!if="${listaDepartamentos.isEmpty()}" th:each="departamento : ${listaDepartamentos}" th:value="${departamento.idDepartamento}" th:text="${departamento.nombre}" name="idDepartamento"></option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="estado" class="form-label">Estado</label>
-                    <select class="form-select" aria-label="Default select example" th:field="*{estado}">
+                    <select class="form-select" id="validationCustom04" required aria-label="Default select example" th:field="*{estado}">
                         <option th:field="*{estado}" th:value="Activo" name="estado" id="estado">Activo</option>
                         <option th:field="*{estado}" th:value="Finalizado" name="estado" id="estado">Finalizado</option>
                     </select>
