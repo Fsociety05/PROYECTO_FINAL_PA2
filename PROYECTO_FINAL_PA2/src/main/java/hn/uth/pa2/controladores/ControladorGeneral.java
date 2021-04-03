@@ -56,7 +56,7 @@ public class ControladorGeneral {
                 if (object.getContrasenia().equals(userLogin.getContrasenia())) {
                     
                     setParametro(model, "usuarioLogiado", object);
-                    return "Paginas/menu_principal";
+                    return "paginas/menu_principal";
                 }
             }
         }
