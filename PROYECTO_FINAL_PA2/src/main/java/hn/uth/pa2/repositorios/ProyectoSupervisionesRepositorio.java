@@ -5,13 +5,14 @@
  */
 package hn.uth.pa2.repositorios;
 
-import hn.uth.pa2.modelos.Departamentos;
+import hn.uth.pa2.modelos.ProyectoCoordinadores;
+import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author Buddys
  */
-public interface DepartamentoRepositorio extends CrudRepository<Departamentos, Long> {    
+public interface ProyectoSupervisionesRepositorio extends CrudRepository<ProyectoSupervisiones, Long> {
     
 }

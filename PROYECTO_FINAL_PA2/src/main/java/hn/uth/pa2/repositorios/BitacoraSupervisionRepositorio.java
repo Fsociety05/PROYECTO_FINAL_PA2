@@ -5,13 +5,13 @@
  */
 package hn.uth.pa2.repositorios;
 
-import hn.uth.pa2.modelos.Departamentos;
+import hn.uth.pa2.modelos.BitacoraSupervision;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author Buddys
  */
-public interface DepartamentoRepositorio extends CrudRepository<Departamentos, Long> {    
+public interface BitacoraSupervisionRepositorio extends CrudRepository<BitacoraSupervision, Long> {    
     
 }
