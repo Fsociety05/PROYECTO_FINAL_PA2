@@ -49,7 +49,7 @@ public class ControladorGeneral {
         setParametro(model, "usuario", new Usuario());
 
         if (logiado_por_primera_vez) {
-            llenandoTablas();
+            //llenandoTablas();
             logiado_por_primera_vez = false;
         }
 
