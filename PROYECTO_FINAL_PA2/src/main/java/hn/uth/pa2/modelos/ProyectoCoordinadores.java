@@ -42,6 +42,6 @@ public class ProyectoCoordinadores implements Serializable {
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
-    private Usuarios idUsuario;
+    private Usuario idUsuario;
     
 }

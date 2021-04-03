@@ -40,7 +40,7 @@ public class Proyectos implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "id_departamento")
-    private Departamentos idDepartamento;
+    private Departamento idDepartamento;
     
     private String estado;
 
