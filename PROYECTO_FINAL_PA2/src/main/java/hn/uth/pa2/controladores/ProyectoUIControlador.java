@@ -6,7 +6,7 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.Proyectos;
-import hn.uth.pa2.servicios.DepartamentoServicios;
+import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class ProyectoUIControlador {
     private ProyectoServicios servicio;
     
     @Autowired
-    private DepartamentoServicios servicioDepartamento;
+    private DepartamentoServicio servicioDepartamento;
 
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
