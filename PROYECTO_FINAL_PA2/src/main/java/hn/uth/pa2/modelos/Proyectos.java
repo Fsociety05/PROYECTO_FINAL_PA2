@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -43,6 +44,24 @@ public class Proyectos implements Serializable {
     private Departamento idDepartamento;
     
     private String estado;
+    
+    @Transient
+    private Long idUsuario1; 
+    
+    @Transient
+    private Long idUsuario2; 
+    
+    @Transient
+    private Long idUsuario3; 
+    
+    @Transient
+    private Long idCoordinadorProfesional; 
+    @Transient
+    private Long idCoordinadorTecnico; 
+    
+    @Transient
+    private Long idCoordinadorGeneral; 
+    
 
     public Proyectos(Long idProyecto) {
         this.idProyecto = idProyecto;
