@@ -55,39 +55,8 @@ and open the template in the editor.
                         <option th:field="*{estado}" th:value="Finalizado" name="estado" id="estado">Finalizado</option>
                     </select>
                 </div>
-                <div class="col-md-4 position-relative">
-                    <label for="idUsuario1" class="form-label">Coordinador Profesional</label>
-                    <select class="form-select" id="validationCustom04" required aria-label="Default select example" th:field="*{idUsuario1}">
-                        <option th:if="${listaUsuario.isEmpty()}" th:value="0">No hay usuarios</option>
-                        <option th:!if="${listaUsuario.isEmpty()}" th:each="usuario : ${listaUsuario}" th:value="${usuario.id_usuario}" th:text="${usuario.nombres+' '+usuario.apellidos}" name="idUsuario1"></option>
-                    </select>
-                    <select class="form-select" style="visibility:hidden" id="validationCustom04" required aria-label="Default select example" th:field="*{idCoordinadorProfesional}">
-                        <option type="hidden" th:each="coordinador : ${listaCoordinadorP}" th:value="${coordinador.idTipoCoordinador}" th:text="${coordinador.idTipoCoordinador}" name="idCoordinadorProfesional"></option>
-                    </select>
-                </div>
-                <div class="col-md-4 position-relative">
-                    <label for="idUsuario2" class="form-label">Coordinador Tecnico</label>
-                    <select class="form-select" id="validationCustom04" required aria-label="Default select example" th:field="*{idUsuario2}">
-                        <option th:if="${listaUsuario.isEmpty()}" th:value="0">No hay usuarios</option>
-                        <option th:!if="${listaUsuario.isEmpty()}" th:each="usuario : ${listaUsuario}" th:value="${usuario.id_usuario}" th:text="${usuario.nombres+' '+usuario.apellidos}" name="idUsuario2"></option>
-                    </select>
-                    <select class="form-select" style="visibility:hidden" id="validationCustom04" required aria-label="Default select example" th:field="*{idCoordinadorTecnico}">
-                        <option type="hidden" th:each="coordinador2 : ${listaCoordinadorT}" th:value="${coordinador2.idTipoCoordinador}" th:text="${coordinador2.idTipoCoordinador}" name="idCoordinadorTecnico"></option>
-                    </select>
-                </div>
-                <div class="col-md-4 position-relative">
-                    <label for="idUsuario3" class="form-label">Coordinador General</label>
-                    <select class="form-select" id="validationCustom04" required aria-label="Default select example" th:field="*{idUsuario3}">
-                        <option th:if="${listaUsuario.isEmpty()}" th:value="0">No hay usuarios</option>
-                        <option th:!if="${listaUsuario.isEmpty()}" th:each="usuario : ${listaUsuario}" th:value="${usuario.id_usuario}" th:text="${usuario.nombres+' '+usuario.apellidos}" name="idUsuario3"></option>
-                    </select>
-                    <select class="form-select" style="visibility:hidden" id="validationCustom04" required aria-label="Default select example" th:field="*{idCoordinadorGeneral}">
-                        <option type="hidden" th:each="coordinador3 : ${listaCoordinadorG}" th:value="${coordinador3.idTipoCoordinador}" th:text="${coordinador3.idTipoCoordinador}" name="idCoordinadorGeneral"></option>
-                    </select>
-                </div>
-
                 <div class="col-md-2 mb-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
         </div>

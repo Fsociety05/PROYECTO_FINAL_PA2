@@ -5,10 +5,12 @@
  */
 package hn.uth.pa2.controladores;
 
+import hn.uth.pa2.modelos.BitacoraCoordinadores;
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.Usuario;
+import hn.uth.pa2.servicios.BitacoraCoordinadoresServicio;
 import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoServicios;
@@ -31,6 +33,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProyectoUIControlador {
 
     private boolean banderin = true;
+    private boolean banderinProyectoCoord = true;
+    private Long idProyecto;
 
     @Autowired
     private ProyectoServicios servicio;
@@ -46,6 +50,9 @@ public class ProyectoUIControlador {
 
     @Autowired
     private ProyectoCoordinadoresServicios servicioProyectoCoord;
+
+    @Autowired
+    private BitacoraCoordinadoresServicio servicioBitacoraCoordinador;
 
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
@@ -75,45 +82,96 @@ public class ProyectoUIControlador {
         return "paginas/proyecto/mantenimiento-proyecto";
     }
 
+    @RequestMapping("/mantenimientoProyectoCoord")
+    public String irCoordinadoresProyecto(Model model) {
+        setParametro(model, "listaProyecto", servicio.getTodos());
+        return "paginas/proyecto/mant-proyecto-coordinadores";
+    }
+
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
         setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
+        this.banderin = false;
+        return "paginas/proyecto/form-proyecto";
+    }
+
+    @GetMapping("/agregarCordinadores/{id}")
+    public String agregarCoordinadores(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo, Proyectos entidad) {
+        for (ProyectoCoordinadores item : servicioProyectoCoord.getTodos()) {
+            if (item.getIdProyecto().getIdProyecto().equals(id)) {
+                atributo.addFlashAttribute("error", "El proyecto ya tiene agregado sus 3 coordinadores");
+                return "redirect:/mantenimientoProyectoCoord";
+            }
+        }
+        this.idProyecto = id;
+        this.banderinProyectoCoord = true;
+        setParametro(modelo, "proyecto", new Proyectos());
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
         setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
         setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
         setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
-        this.banderin = false;
-        return "paginas/proyecto/form-proyecto";
+        return "paginas/proyecto/form-proyecto-coordinadores";
     }
 
     @PostMapping("/guardarProyecto")
     public String guardar(Proyectos proyecto, Model model, RedirectAttributes atributo) {
         try {
-            System.out.println(proyecto.getIdUsuario1());
             if (proyecto.getIdDepartamento() == null) {
                 atributo.addFlashAttribute("error", "Error el departamento esta vacio");
                 return "redirect:/registrarProyecto";
             }
+            servicio.guardar(proyecto);
+            if (banderin) {
+                atributo.addFlashAttribute("success", "Guardado Correctamente");
+            } else {
+                atributo.addFlashAttribute("success", "Actualizado Correctamente");
+            }
+            this.banderin = true;
+        } catch (Exception e) {
+            System.out.println("ERROR AQUI: " + e.getMessage());
+        }
+        return "redirect:/registrarProyecto";
+    }
+
+    @PostMapping("/guardarCoordinadores")
+    public String guardarCoordinadores(Proyectos proyecto, Model model, RedirectAttributes atributo) {
+        try {
+            proyecto.setIdProyecto(this.idProyecto);
+            if (proyecto.getIdProyecto() == null) {
+                atributo.addFlashAttribute("error", "Selecciona un proyecto antes de guardar");
+                return "redirect:/formProyectoCoordinadores";
+            }
             if (proyecto.getIdUsuario1() == 0 || proyecto.getIdUsuario2() == 0 || proyecto.getIdUsuario3() == 0) {
                 atributo.addFlashAttribute("error", "Error la opcion del coordinador esta vacia");
-                return "redirect:/registrarProyecto";
+                return "redirect:/formProyectoCoordinadores";
             }
             //----------------------------------Validando y despues guardando
             if (proyecto.getIdUsuario1().equals(proyecto.getIdUsuario2())) {
                 atributo.addFlashAttribute("error", "El coordinador profesional debe ser diferente del coordinador tenico");
-                return "redirect:/registrarProyecto";
+                if (this.banderinProyectoCoord) {
+                    return "redirect:/formProyectoCoordinadores";
+                } else {
+                    return "redirect:/formCoordinadoresActualizar";
+                }
             } else {
                 if (proyecto.getIdUsuario1().equals(proyecto.getIdUsuario3())) {
                     atributo.addFlashAttribute("error", "El coordinador profesional debe ser diferente del coordinador general");
-                    return "redirect:/registrarProyecto";
+                    if (this.banderinProyectoCoord) {
+                        return "redirect:/formProyectoCoordinadores";
+                    } else {
+                        return "redirect:/formCoordinadoresActualizar";
+                    }
                 }
                 if (proyecto.getIdUsuario3().equals(proyecto.getIdUsuario2())) {
                     atributo.addFlashAttribute("error", "El coordinador general debe ser diferente del coordinador tecnico");
-                    return "redirect:/registrarProyecto";
+                    if (this.banderinProyectoCoord) {
+                        return "redirect:/formProyectoCoordinadores";
+                    } else {
+                        return "redirect:/formCoordinadoresActualizar";
+                    }
                 }
-                servicio.guardar(proyecto);
-                if (!banderin) {
+                if (!banderinProyectoCoord) {
                     servicioProyectoCoord.eliminarProyectoCoordinadores(proyecto.getIdProyecto());
                     this.banderin = false;
                 }
@@ -145,18 +203,58 @@ public class ProyectoUIControlador {
                 servicioProyectoCoord.guardar(proyectoSup);
                 servicioProyectoCoord.guardar(proyectoSup2);
                 servicioProyectoCoord.guardar(proyectoSup3);
-                if (banderin) {
+                if (banderinProyectoCoord) {
                     atributo.addFlashAttribute("success", "Guardado Correctamente");
                 } else {
+                    java.util.Date d = new java.util.Date();
+                    java.sql.Date date2 = new java.sql.Date(d.getTime());
+                    servicioBitacoraCoordinador.guardar(new BitacoraCoordinadores(date2, proyecto.getJustificacion()));
                     atributo.addFlashAttribute("success", "Actualizado Correctamente");
                 }
             }
 
             this.banderin = true;
+            this.idProyecto = null;
         } catch (Exception e) {
             System.out.println("ERROR AQUI: " + e.getMessage());
         }
-        return "redirect:/registrarProyecto";
+        return "redirect:/formProyectoCoordinadores";
+    }
+
+    @RequestMapping("/formProyectoCoordinadores")
+    public String irFormularioProyectoCoord(Model modelo) {
+        this.banderinProyectoCoord = true;
+        setParametro(modelo, "proyecto", new Proyectos());
+        setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
+        setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
+        setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
+        setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+        return "paginas/proyecto/form-proyecto-coordinadores";
+    }
+
+    @RequestMapping("/formCoordinadoresActualizar")
+    public String irFormularioCoordActualizar(Model modelo) {
+        setParametro(modelo, "proyecto", new Proyectos());
+        modelo.addAttribute("editMode", "true");
+        this.banderinProyectoCoord = false;
+        setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
+        setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
+        setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
+        setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+        return "paginas/proyecto/form-proyecto-coordinadores";
+    }
+
+    @GetMapping("/actualizarCordinadores/{id}")
+    public String actualizarCoordinadores(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
+        this.idProyecto = id;
+        this.banderinProyectoCoord = false;
+        modelo.addAttribute("editMode", "true");
+        setParametro(modelo, "proyecto", new Proyectos());
+        setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
+        setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
+        setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
+        setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+        return "paginas/proyecto/form-proyecto-coordinadores";
     }
 
     public void setParametro(Model model, String atributo, Object valor) {
