@@ -62,6 +62,9 @@ public class Proyectos implements Serializable {
     @Transient
     private Long idCoordinadorGeneral; 
     
+    @Transient
+    private String justificacion;
+    
 
     public Proyectos(Long idProyecto) {
         this.idProyecto = idProyecto;
