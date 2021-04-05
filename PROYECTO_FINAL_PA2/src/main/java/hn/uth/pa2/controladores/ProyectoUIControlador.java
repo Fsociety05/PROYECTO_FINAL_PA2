@@ -82,6 +82,14 @@ public class ProyectoUIControlador {
         return "paginas/proyecto/mantenimiento-proyecto";
     }
 
+    @RequestMapping("/misProyectos")
+    public String irMisProyectos(Model model) {
+
+        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(ControladorGeneral.id_usuario));
+
+        return "paginas/proyecto/proyectos_usuario";
+    }
+
     @RequestMapping("/mantenimientoProyectoCoord")
     public String irCoordinadoresProyecto(Model model) {
         setParametro(model, "listaProyecto", servicio.getTodos());

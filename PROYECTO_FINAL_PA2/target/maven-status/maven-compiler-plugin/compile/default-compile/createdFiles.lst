@@ -3,6 +3,7 @@ hn\uth\pa2\servicios\TipoCoordinadoresServicio.class
 hn\uth\pa2\ProyectoFinalPa2Application.class
 hn\uth\pa2\repositorios\SupervisionRepositorio.class
 hn\uth\pa2\servicios\ProyectoSupervisionesServ.class
+hn\uth\pa2\controladores\BtcCoordinadorUIControlador.class
 hn\uth\pa2\modelos\Proyectos.class
 hn\uth\pa2\repositorios\TipoCoordinadoresRepositorio.class
 hn\uth\pa2\repositorios\DepartamentoRepositorio.class
@@ -22,7 +23,9 @@ hn\uth\pa2\modelos\ProyectoSupervisiones.class
 hn\uth\pa2\servicios\SupervisionesServicios.class
 hn\uth\pa2\controladores\SupervisionesUIControlador.class
 hn\uth\pa2\servicios\RolServicio.class
+hn\uth\pa2\repositorios\BitacoraCoordinadoresRepositorio.class
 hn\uth\pa2\modelos\ProyectoCoordinadores.class
+hn\uth\pa2\modelos\BitacoraCoordinadores.class
 hn\uth\pa2\repositorios\UsuarioRepositorio.class
 hn\uth\pa2\repositorios\ProyectoSupervisionesRepositorio.class
 hn\uth\pa2\controladores\UsuarioUIControlador.class
@@ -30,4 +33,5 @@ hn\uth\pa2\controladores\BtcSupervisionUIControlador.class
 hn\uth\pa2\modelos\Departamento.class
 hn\uth\pa2\modelos\Rol.class
 hn\uth\pa2\repositorios\ProyectoRepositorio.class
+hn\uth\pa2\servicios\BitacoraCoordinadoresServicio.class
 hn\uth\pa2\modelos\TipoCoordinadores.class

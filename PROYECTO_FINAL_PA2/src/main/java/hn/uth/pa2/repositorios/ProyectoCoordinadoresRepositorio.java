@@ -6,6 +6,7 @@
 package hn.uth.pa2.repositorios;
 
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,11 @@ public interface ProyectoCoordinadoresRepositorio extends CrudRepository<Proyect
     @Transactional
     @Query(value = "delete from PROYECTOS_COORDINADORES where ID_PROYECTO =  ?1", nativeQuery = true)
     public void eliminarProyectoCoordinador(Long idProyecto);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "SELECT * from PROYECTOS_COORDINADORES where ID_USUARIO =  ?1", nativeQuery = true)
+    public List<ProyectoCoordinadores> selectProyectoCoordinador(Long idUsuario);
 
     @Modifying
     @Transactional

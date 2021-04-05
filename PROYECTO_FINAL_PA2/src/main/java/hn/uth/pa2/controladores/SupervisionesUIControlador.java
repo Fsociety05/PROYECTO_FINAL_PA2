@@ -77,6 +77,7 @@ public class SupervisionesUIControlador {
 
     @PostMapping("/guardarSupervision")
     public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) {
+        
         if (this.idProyecto != null) {
             ProyectoSupervisiones proyectoSup = new ProyectoSupervisiones();
             Proyectos proyecto = new Proyectos(this.idProyecto);

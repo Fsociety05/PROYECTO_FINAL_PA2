@@ -28,9 +28,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ControladorGeneral {
 
     private boolean logiado_por_primera_vez = true;
-    
+
     public static Long id_usuario;
 
+    private Usuario usuarioLogin;
     /**
      * **************************************************************
      */
@@ -39,15 +40,12 @@ public class ControladorGeneral {
 
     @Autowired
     private UsuarioServicio servicioUsuario;
-    
+
     @Autowired
     private DepartamentoServicio servicioDepartamento;
 
     @Autowired
     private TipoCoordinadoresServicio servicioCoordinador;
-
-    @Autowired
-    private DepartamentoServicio servicioDepartamento;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -70,6 +68,7 @@ public class ControladorGeneral {
                 encontrado = true;
                 if (object.getContrasenia().equals(userLogin.getContrasenia())) {
                     id_usuario = object.getId_usuario();
+                    usuarioLogin = object;
                     setParametro(model, "usuarioLogiado", object);
                     return "paginas/menu_principal";
                 }
@@ -81,11 +80,12 @@ public class ControladorGeneral {
         } else {
             attribute.addFlashAttribute("error", "Contraseña incorrecta");
         }
-        
+
         return "redirect:/";
 
     }
 
+    
     /*Llenando las tablas por primera ves*/
     private void llenandoTablas() {
 
@@ -108,12 +108,12 @@ public class ControladorGeneral {
         usuarioTemp.setContrasenia("ADMIN");
         usuarioTemp.setRol(rolTemp);
         servicioUsuario.guardar(usuarioTemp);
-        
+
         Departamento dep = new Departamento();
         dep.setNombre("Dep1");
         dep.setDescripcion("...");
         servicioDepartamento.guardar(dep);
-        
+
         Usuario usuarioTemp2 = new Usuario();
         usuarioTemp2.setName_usuario("ADMIN");
         usuarioTemp2.setContrasenia("ADMIN");
@@ -139,19 +139,17 @@ public class ControladorGeneral {
         departamento.setNombre("Marketing");
         departamento.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento);
-        
+
         Departamento departamento2 = new Departamento();
         departamento2.setNombre("Contabilidad");
         departamento2.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento2);
-        
+
         Departamento departamento3 = new Departamento();
         departamento3.setNombre("Recursos Humanos");
         departamento3.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento3);
     }
-    
-    
 
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
