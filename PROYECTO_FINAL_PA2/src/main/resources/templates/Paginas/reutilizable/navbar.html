@@ -36,8 +36,12 @@
                     Usuario
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item" href="/crear_usuario" >Agregar Usuario</a></li>
                     <li><a class="dropdown-item" href="/mantenimientoUsuario" >Mantenimiento Usuario</a></li>
                 </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" style="color: white;" th:href="@{/logout}"><span th:text="${#authentication.getPrincipal().getUsername()}"></span> - <span>Cerrar Session  </span><span class="float-right"><i class="fas fa-sign-out-alt"></i></span></a>				   	
             </li>
         </ul>
     </div>

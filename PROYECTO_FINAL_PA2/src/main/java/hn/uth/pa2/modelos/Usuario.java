@@ -5,6 +5,7 @@
  */
 package hn.uth.pa2.modelos;
 
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,20 +35,25 @@ public class Usuario {
     private String apellidos;
     private String identidad;
     private String correo;
-    private String name_usuario;
+    private String username;
     private String contrasenia;
 
     //Rol
-    // @OneToOne(cascade = CascadeType.ALL) // para que los cambios que se hagan afenten a este
-    @JoinColumn(name = "id_rol", unique = false)
-    @OneToOne(fetch = FetchType.LAZY)
-    private Rol rol;
+//     @OneToOne(cascade = CascadeType.ALL) // para que los cambios que se hagan afenten a este
+//    @JoinColumn(name = "id_rol", unique = false)
+//    @OneToOne(fetch = FetchType.LAZY)
+//    private Set<Rol> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_rol"))
+    private Set<Rol> roles;
 
     //Departamento
     @JoinColumn(name = "id_departamento", unique = false)
     //@OneToOne(cascade = CascadeType.ALL)
-     @OneToOne(fetch = FetchType.LAZY)
-    private Departamento  departamento;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Departamento departamento;
 
     public Usuario(Long id_usuario) {
         this.id_usuario = id_usuario;

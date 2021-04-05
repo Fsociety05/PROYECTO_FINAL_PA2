@@ -6,6 +6,7 @@
 package hn.uth.pa2.repositorios;
 
 import hn.uth.pa2.modelos.Usuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,6 +15,8 @@ import org.springframework.data.repository.CrudRepository;
  * @author Licona
  */
 public interface UsuarioRepositorio extends CrudRepository<Usuario, Long>{
-    @Query(value = "SELECT * FROM USUARIO U ,ROL R WHERE U.ID_ROL = R.ID_ROL AND UPPER(R.NOMBRE) = UPPER(?1)", nativeQuery = true)
+    @Query(value = "SELECT * FROM USUARIO U, USER_ROLES UR, ROL R WHERE u.id_usuario = ur.id_usuario AND r.id_rol = ur.id_rol AND UPPER(R.NOMBRE) = UPPER(?1)", nativeQuery = true)
     Iterable<Usuario> listarUsuarioConsulta(String nombreRol);
+    
+    public Optional<Usuario> findByUsername(String username);
 }
