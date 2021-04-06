@@ -82,6 +82,14 @@ public class ProyectoUIControlador {
         return "paginas/proyecto/mantenimiento-proyecto";
     }
 
+    @RequestMapping("/misProyectos")
+    public String irMisProyectos(Model model) {
+
+        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(ControladorGeneral.id_usuario));
+
+        return "paginas/proyecto/proyectos_usuario";
+    }
+
     @RequestMapping("/mantenimientoProyectoCoord")
     public String irCoordinadoresProyecto(Model model) {
         setParametro(model, "listaProyecto", servicio.getTodos());
@@ -249,7 +257,7 @@ public class ProyectoUIControlador {
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
         modelo.addAttribute("editMode", "true");
-        setParametro(modelo, "proyecto", new Proyectos());
+        setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
         setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
         setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));

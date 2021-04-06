@@ -29,6 +29,9 @@ public class ControladorGeneral {
 
     private boolean logiado_por_primera_vez = true;
 
+    public static Long id_usuario;
+
+    private Usuario usuarioLogueado;
     /**
      * **************************************************************
      */
@@ -39,10 +42,10 @@ public class ControladorGeneral {
     private UsuarioServicio servicioUsuario;
 
     @Autowired
-    private TipoCoordinadoresServicio servicioCoordinador;
+    private DepartamentoServicio servicioDepartamento;
 
     @Autowired
-    private DepartamentoServicio servicioDepartamento;
+    private TipoCoordinadoresServicio servicioCoordinador;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -64,7 +67,8 @@ public class ControladorGeneral {
             if (object.getName_usuario().equals(userLogin.getName_usuario())) {
                 encontrado = true;
                 if (object.getContrasenia().equals(userLogin.getContrasenia())) {
-
+                    id_usuario = object.getId_usuario();
+                    usuarioLogueado = object;
                     setParametro(model, "usuarioLogiado", object);
                     return "paginas/menu_principal";
                 }
@@ -78,6 +82,14 @@ public class ControladorGeneral {
         }
 
         return "redirect:/";
+
+    }
+
+    @RequestMapping("/menu_inicial")
+    public String menuInicio(Usuario userLogin, Model model) {
+
+        setParametro(model, "usuarioLogiado", usuarioLogueado);
+        return "paginas/menu_principal";
 
     }
 
@@ -103,7 +115,12 @@ public class ControladorGeneral {
         usuarioTemp.setContrasenia("ADMIN");
         usuarioTemp.setRol(rolTemp);
         servicioUsuario.guardar(usuarioTemp);
-        
+
+        Departamento dep = new Departamento();
+        dep.setNombre("Dep1");
+        dep.setDescripcion("...");
+        servicioDepartamento.guardar(dep);
+
         Usuario usuarioTemp2 = new Usuario();
         usuarioTemp2.setName_usuario("ADMIN");
         usuarioTemp2.setContrasenia("ADMIN");
@@ -129,12 +146,12 @@ public class ControladorGeneral {
         departamento.setNombre("Marketing");
         departamento.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento);
-        
+
         Departamento departamento2 = new Departamento();
         departamento2.setNombre("Contabilidad");
         departamento2.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento2);
-        
+
         Departamento departamento3 = new Departamento();
         departamento3.setNombre("Recursos Humanos");
         departamento3.setDescripcion("AAA");
