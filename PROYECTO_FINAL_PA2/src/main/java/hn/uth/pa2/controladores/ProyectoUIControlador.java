@@ -257,7 +257,7 @@ public class ProyectoUIControlador {
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
         modelo.addAttribute("editMode", "true");
-        setParametro(modelo, "proyecto", new Proyectos());
+        setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
         setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
         setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));

@@ -76,9 +76,9 @@ and open the template in the editor.
                                 <td th:text="${proyecto.idProyecto.estado}"></td>
 
                                 <td>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar(PRO)</a>
                                     
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-outline-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-outline-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
                                 </td>
                                 
                                 <td>  

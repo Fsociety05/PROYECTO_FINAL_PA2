@@ -11,6 +11,7 @@ import hn.uth.pa2.modelos.Supervisiones;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.SupervisionesServicios;
+import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,9 @@ public class SupervisionesUIControlador {
 
     @Autowired
     private SupervisionesServicios servicio;
+    
+    @Autowired
+    private TipoCoordinadoresServicio servicioTipoCoordinadores;
 
     @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperv;
@@ -58,8 +62,16 @@ public class SupervisionesUIControlador {
     }
 
     @GetMapping("/coordinadorProfesional/{id}")
-    public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {
-        this.coordinador.setIdTipoCoordinador(1L);
+    public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {     
+        
+        
+        for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
+            if(object.getNombre().equalsIgnoreCase("Coordinador Profesional")){
+                this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
+            }
+        }
+        
+        
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -68,7 +80,13 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/coordinadorTecnico/{id}")
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo) {
-        this.coordinador.setIdTipoCoordinador(2L);
+        
+        for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
+            if(object.getNombre().equalsIgnoreCase("Coordinador Tecnico")){
+                this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
+            }
+        }
+        
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -99,6 +117,7 @@ public class SupervisionesUIControlador {
                 }
             } else {
                 atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision");
+                //llnar aqui
             }
             this.idProyecto = null;
         } else {

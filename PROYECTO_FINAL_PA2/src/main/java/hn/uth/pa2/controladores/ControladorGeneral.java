@@ -31,7 +31,7 @@ public class ControladorGeneral {
 
     public static Long id_usuario;
 
-    private Usuario usuarioLogin;
+    private Usuario usuarioLogueado;
     /**
      * **************************************************************
      */
@@ -68,7 +68,7 @@ public class ControladorGeneral {
                 encontrado = true;
                 if (object.getContrasenia().equals(userLogin.getContrasenia())) {
                     id_usuario = object.getId_usuario();
-                    usuarioLogin = object;
+                    usuarioLogueado = object;
                     setParametro(model, "usuarioLogiado", object);
                     return "paginas/menu_principal";
                 }
@@ -85,7 +85,14 @@ public class ControladorGeneral {
 
     }
 
-    
+    @RequestMapping("/menu_inicial")
+    public String menuInicio(Usuario userLogin, Model model) {
+
+        setParametro(model, "usuarioLogiado", usuarioLogueado);
+        return "paginas/menu_principal";
+
+    }
+
     /*Llenando las tablas por primera ves*/
     private void llenandoTablas() {
 
