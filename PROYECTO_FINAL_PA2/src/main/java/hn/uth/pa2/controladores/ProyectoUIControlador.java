@@ -105,7 +105,6 @@ public class ProyectoUIControlador {
             }
         }
         if (servicioCoordinador.getTodos().size() == 0) {
-            System.out.println(servicioCoordinador.getTodos().toString());
             atributo.addFlashAttribute("error", "Error el sistema aun no tiene coordinadores");
             return "redirect:/mantenimientoProyectoCoord";
         }
@@ -113,7 +112,6 @@ public class ProyectoUIControlador {
         this.banderinProyectoCoord = true;
         setParametro(modelo, "proyecto", new Proyectos());
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-        System.out.println(servicioUsuario.getUsuariosConsulta("consulta").toString());
         setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
         setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
         setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
@@ -255,7 +253,6 @@ public class ProyectoUIControlador {
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
         if (servicioCoordinador.getTodos().size() == 0) {
-            System.out.println(servicioCoordinador.getTodos().toString());
             atributo.addFlashAttribute("error", "Error el sistema aun no tiene coordinadores");
             return "redirect:/mantenimientoProyectoCoord";
         }

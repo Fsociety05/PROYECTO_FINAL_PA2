@@ -11,10 +11,12 @@ import hn.uth.pa2.modelos.Supervisiones;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.SupervisionesServicios;
+import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,9 @@ public class SupervisionesUIControlador {
     private SupervisionesServicios servicio;
 
     @Autowired
+    private TipoCoordinadoresServicio servicioTipoCoordinadores;
+
+    @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperv;
 
     @RequestMapping("/registrarSupervision")
@@ -42,12 +47,6 @@ public class SupervisionesUIControlador {
         setParametro(model, "supervisiones", new Supervisiones());
         setParametro(model, "proyectoSupervisiones", new ProyectoSupervisiones());
         return "paginas/supervision/form-supervisiones";
-    }
-
-    @RequestMapping("/mantenimientoSupervision")
-    public String irServicios(Model model) {
-        setParametro(model, "listaServicio", servicio.getTodos());
-        return "paginas/supervision/mantenimiento-servicio";
     }
 
     @GetMapping("/actualizarSupervision/{id}")
@@ -59,7 +58,11 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/coordinadorProfesional/{id}")
     public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {
-        this.coordinador.setIdTipoCoordinador(1L);
+        for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
+            if (object.getNombre().equalsIgnoreCase("Coordinador Profesional")) {
+                this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
+            }
+        }
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -68,7 +71,11 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/coordinadorTecnico/{id}")
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo) {
-        this.coordinador.setIdTipoCoordinador(2L);
+        for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
+            if (object.getNombre().equalsIgnoreCase("Coordinador Tecnico")) {
+                this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
+            }
+        }
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -109,6 +116,23 @@ public class SupervisionesUIControlador {
             }
         }
         return "redirect:/registrarSupervision";
+    }
+
+    @GetMapping("/tituloProyecto")
+    public String getValorBusqueda(Model model) {
+        model.addAttribute("valorTitulo", new ProyectoSupervisiones());
+        model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
+        return "paginas/supervision/mantenimiento-servicio";
+    }
+
+    @GetMapping("/busqueda")
+    public String getBuscarTitulo(Model model, @ModelAttribute("valorTitulo") ProyectoSupervisiones entidad) {
+        if (entidad.getIdProyecto().getTitulo().equals("")) {
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
+        } else {
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(entidad.getIdProyecto().getTitulo()));
+        }
+        return "paginas/supervision/mantenimiento-servicio";
     }
 
     public void setParametro(Model model, String atributo, Object valor) {
