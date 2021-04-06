@@ -53,8 +53,8 @@ public class UsuarioUIControlador {
     }
 
     @GetMapping("/crear_usuario")
-    public String irCrear(Model model) {
-
+    public String irCrear(Model model) throws Exception {
+        System.out.println("ID "+servicioUsuario.getLoggedUser().getId_usuario());
         setParametro(model, "usuario", new Usuario());
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
@@ -149,6 +149,10 @@ public class UsuarioUIControlador {
 
         servicioUsuario.eliminar(id);
         return "redirect:/mantenimientoUsuario";
+    }
+    
+    public void usuarioLogeado() throws Exception{
+        System.out.println(servicioUsuario.getLoggedUser().getId_usuario()); 
     }
 
     public void setParametro(Model model, String atributo, Object valor) {

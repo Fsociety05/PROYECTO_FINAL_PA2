@@ -49,9 +49,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //Contendra el usuario que se cargara en sesion
         UserDetails user = (UserDetails) new User(appUser.getUsername(), appUser.getContrasenia(), grantList);
         
-        System.out.println("Username: "+appUser.getUsername());
-        System.out.println("Username: "+appUser.getId_usuario());
-        this.idUsuario = appUser.getId_usuario();
+//        System.out.println("Username: "+appUser.getUsername());
+//        System.out.println("Username: "+appUser.getId_usuario());
+//        this.idUsuario = appUser.getId_usuario();
         return user;
     }
 

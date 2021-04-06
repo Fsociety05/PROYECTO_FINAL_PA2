@@ -45,7 +45,7 @@ public class UsuarioServicio {
         return (List<Usuario>) repositorio.listarUsuarioConsulta(nombreRol);
     }
 
-    private Usuario getLoggedUser() throws Exception {
+    public Usuario getLoggedUser() throws Exception {
         //Obtener el usuario logeado
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
