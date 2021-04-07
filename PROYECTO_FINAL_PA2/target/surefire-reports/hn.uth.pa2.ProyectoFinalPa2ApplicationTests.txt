@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: hn.uth.pa2.ProyectoFinalPa2ApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.693 s - in hn.uth.pa2.ProyectoFinalPa2ApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 45.672 s - in hn.uth.pa2.ProyectoFinalPa2ApplicationTests

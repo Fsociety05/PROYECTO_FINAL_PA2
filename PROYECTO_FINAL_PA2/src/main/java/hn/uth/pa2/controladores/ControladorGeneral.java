@@ -29,6 +29,7 @@ public class ControladorGeneral {
 
     private boolean logiado_por_primera_vez = true;
 
+    private Usuario usuarioLogueado;
     /**
      * **************************************************************
      */
@@ -39,10 +40,10 @@ public class ControladorGeneral {
     private UsuarioServicio servicioUsuario;
 
     @Autowired
-    private TipoCoordinadoresServicio servicioCoordinador;
+    private DepartamentoServicio servicioDepartamento;
 
     @Autowired
-    private DepartamentoServicio servicioDepartamento;
+    private TipoCoordinadoresServicio servicioCoordinador;
 
     @RequestMapping({"/","/login"})
     public String index(Model model) {
@@ -104,12 +105,12 @@ public class ControladorGeneral {
         departamento.setNombre("Marketing");
         departamento.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento);
-        
+
         Departamento departamento2 = new Departamento();
         departamento2.setNombre("Contabilidad");
         departamento2.setDescripcion("AAA");
         servicioDepartamento.guardar(departamento2);
-        
+
         Departamento departamento3 = new Departamento();
         departamento3.setNombre("Recursos Humanos");
         departamento3.setDescripcion("AAA");

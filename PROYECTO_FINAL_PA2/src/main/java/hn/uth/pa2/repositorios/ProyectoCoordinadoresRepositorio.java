@@ -25,4 +25,14 @@ public interface ProyectoCoordinadoresRepositorio extends CrudRepository<Proyect
     
     @Query(value = "SELECT * FROM PROYECTOS_COORDINADORES WHERE id_proyecto = ?1", nativeQuery = true)
     List<ProyectoCoordinadores> getIdProyecto(Long idProyecto);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "SELECT * from PROYECTOS_COORDINADORES where ID_USUARIO =  ?1", nativeQuery = true)
+    public List<ProyectoCoordinadores> selectProyectoCoordinador(Long idUsuario);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE PROYECTOS_COORDINADORES SET ID_PROYECTO = ?3, ID_TIPO_COORDINADOR = ?1, ID_USUARIO = ?2 WHERE ID_PROYECTO = ?3", nativeQuery = true)
+    public void actualizarProyectoCoordinador(Long idCoordinador, Long idUsuario, Long idProyecto);
 }

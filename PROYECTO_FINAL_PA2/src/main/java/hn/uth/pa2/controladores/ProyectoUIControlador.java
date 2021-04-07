@@ -19,6 +19,7 @@ import hn.uth.pa2.servicios.UsuarioServicio;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +83,14 @@ public class ProyectoUIControlador {
             System.out.println(e.getMessage());
         }
         return "paginas/proyecto/mantenimiento-proyecto";
+    }
+
+    @RequestMapping("/misProyectos")
+    public String irMisProyectos(Model model) throws Exception {
+        Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
+        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
+
+        return "paginas/proyecto/proyectos_usuario";
     }
 
     @RequestMapping("/mantenimientoProyectoCoord")
@@ -270,8 +279,8 @@ public class ProyectoUIControlador {
 //        }
 
         modelo.addAttribute("editMode", "true");
-        setParametro(modelo, "proyecto", new Proyectos());
-        setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosCoordinadores(idProyecto));
+        setParametro(modelo, "proyecto", servicio.getValor(id));
+        setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
         setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
         setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
         setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));

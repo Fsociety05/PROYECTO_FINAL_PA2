@@ -45,4 +45,14 @@ public class ProyectoCoordinadoresServicios {
     public void eliminarProyectoCoordinadores(Long idProyecto){
         repositorio.eliminarProyectoCoordinador(idProyecto);
     }
+    
+    public List<ProyectoCoordinadores> seleccionarProyectoCoordinador(Long idUsuario){
+        return repositorio.selectProyectoCoordinador(idUsuario);
+    }
+    
+    public void actualizarProyectoCoordinadores(Long idCoordinador, Long idUsuario ,Long idProyecto){
+        repositorio.actualizarProyectoCoordinador(idCoordinador, idUsuario, idProyecto);
+    }
+    
+    
 }
