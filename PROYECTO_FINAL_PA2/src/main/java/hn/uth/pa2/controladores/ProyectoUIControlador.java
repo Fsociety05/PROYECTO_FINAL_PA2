@@ -19,6 +19,7 @@ import hn.uth.pa2.servicios.UsuarioServicio;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,9 +86,9 @@ public class ProyectoUIControlador {
     }
 
     @RequestMapping("/misProyectos")
-    public String irMisProyectos(Model model) {
-
-        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(ControladorGeneral.id_usuario));
+    public String irMisProyectos(Model model) throws Exception {
+        Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
+        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
 
         return "paginas/proyecto/proyectos_usuario";
     }

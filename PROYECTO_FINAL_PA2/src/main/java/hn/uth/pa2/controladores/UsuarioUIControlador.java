@@ -44,7 +44,7 @@ public class UsuarioUIControlador {
     @RequestMapping("/mantenimientoUsuario")
     public String mantenimientoUsuario(Model model) {
         
-        System.out.println("Este es el id del user logiado " + ControladorGeneral.id_usuario);
+//        System.out.println("Este es el id del user logiado " + ControladorGeneral.id_usuario);
         
         
         setParametro(model, "lista_usuarios", servicioUsuario.getTodos());

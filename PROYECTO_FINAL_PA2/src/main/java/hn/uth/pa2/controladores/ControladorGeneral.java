@@ -29,8 +29,6 @@ public class ControladorGeneral {
 
     private boolean logiado_por_primera_vez = true;
 
-    public static Long id_usuario;
-
     private Usuario usuarioLogueado;
     /**
      * **************************************************************
