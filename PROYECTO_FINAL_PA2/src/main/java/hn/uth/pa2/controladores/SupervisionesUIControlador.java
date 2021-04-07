@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,9 @@ public class SupervisionesUIControlador {
     private TipoCoordinadoresServicio servicioTipoCoordinadores;
 
     @Autowired
+    private TipoCoordinadoresServicio servicioTipoCoordinadores;
+
+    @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperv;
 
     @RequestMapping("/registrarSupervision")
@@ -46,12 +50,6 @@ public class SupervisionesUIControlador {
         setParametro(model, "supervisiones", new Supervisiones());
         setParametro(model, "proyectoSupervisiones", new ProyectoSupervisiones());
         return "paginas/supervision/form-supervisiones";
-    }
-
-    @RequestMapping("/mantenimientoSupervision")
-    public String irServicios(Model model) {
-        setParametro(model, "listaServicio", servicio.getTodos());
-        return "paginas/supervision/mantenimiento-servicio";
     }
 
     @GetMapping("/actualizarSupervision/{id}")
@@ -129,6 +127,24 @@ public class SupervisionesUIControlador {
             }
         }
         return "redirect:/registrarSupervision";
+    }
+
+    @GetMapping("/tituloProyecto")
+    public String getValorBusqueda(Model model) {
+        model.addAttribute("valorTitulo", new ProyectoSupervisiones());
+        model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
+        return "paginas/supervision/mantenimiento-servicio";
+    }
+
+    @GetMapping("/busqueda")
+    public String getBuscarTitulo(Model model, @ModelAttribute("valorTitulo") ProyectoSupervisiones entidad) {
+        String busqueda = entidad.getIdProyecto().getTitulo().replaceAll("^\\s*","");
+        if (busqueda.equals("")) {
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
+        } else {
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(entidad.getIdProyecto().getTitulo()));
+        }
+        return "paginas/supervision/mantenimiento-servicio";
     }
 
     public void setParametro(Model model, String atributo, Object valor) {

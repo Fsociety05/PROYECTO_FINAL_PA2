@@ -10,6 +10,7 @@ import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.RolServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,9 @@ public class UsuarioUIControlador {
 
     @Autowired
     private DepartamentoServicio servicioDepartamento;
+    
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping("/mantenimientoUsuario")
     public String mantenimientoUsuario(Model model) {
@@ -51,8 +55,8 @@ public class UsuarioUIControlador {
     }
 
     @GetMapping("/crear_usuario")
-    public String irCrear(Model model) {
-
+    public String irCrear(Model model) throws Exception {
+        System.out.println("ID "+servicioUsuario.getLoggedUser().getId_usuario());
         setParametro(model, "usuario", new Usuario());
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
@@ -62,7 +66,7 @@ public class UsuarioUIControlador {
     @PostMapping("/guardar_usuario")
     public String guardar(Usuario entidad, Model model, RedirectAttributes attribute) {
 
-        if (entidad.getDepartamento() == null || entidad.getRol() == null) {
+        if (entidad.getDepartamento() == null || entidad.getRoles() == null) { //CAMBIO HECHO AQUI
             attribute.addFlashAttribute("error", "No se puede guardar debido a falta de datos");
             estado_editando = false;
             return "redirect:/crear_usuario";
@@ -77,7 +81,7 @@ public class UsuarioUIControlador {
                     return "redirect:/mantenimientoUsuario";
                 }
 
-                if (entidad.getName_usuario().equals(todo.getName_usuario()) && !todo.getId_usuario().equals(entidad.getId_usuario())) {
+                if (entidad.getUsername().equals(todo.getUsername()) && !todo.getId_usuario().equals(entidad.getId_usuario())) {
                     attribute.addFlashAttribute("error", "Nombre de usuario ya existente");
                     estado_editando = false;
                     return "redirect:/mantenimientoUsuario";
@@ -96,7 +100,7 @@ public class UsuarioUIControlador {
 
                 }
 
-                if (entidad.getName_usuario().equals(todo.getName_usuario())) {
+                if (entidad.getUsername().equals(todo.getUsername())) {
                     attribute.addFlashAttribute("error", "Nombre de usuario ya existente");
                     estado_editando = false;
                     return "redirect:/crear_usuario";
@@ -110,7 +114,9 @@ public class UsuarioUIControlador {
             }
 
         }
-
+        
+        String passwordEncriptado = bCryptPasswordEncoder.encode(entidad.getContrasenia());
+        entidad.setContrasenia(passwordEncriptado);
         servicioUsuario.guardar(entidad);
         estado_editando = false;
         attribute.addFlashAttribute("success", "Guardado correctamente");
@@ -120,7 +126,7 @@ public class UsuarioUIControlador {
     @GetMapping("/actualizar_usuario/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model model, RedirectAttributes attribute) {
         
-        if (servicioUsuario.getValor(id).get().getName_usuario().equals("ADMIN")) {
+        if (servicioUsuario.getValor(id).get().getUsername().equals("ADMIN")) {
             attribute.addFlashAttribute("error", "No se puede Editado este usuario");
             return "redirect:/mantenimientoUsuario";
         }
@@ -138,13 +144,17 @@ public class UsuarioUIControlador {
     @GetMapping("eliminar_usuario/{id}")
     public String eliminar(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
 
-        if (servicioUsuario.getValor(id).get().getName_usuario().equals("ADMIN")) {
+        if (servicioUsuario.getValor(id).get().getUsername().equals("ADMIN")) {
             attribute.addFlashAttribute("error", "No se puede Eliminar este usuario");
             return "redirect:/mantenimientoUsuario";
         }
 
         servicioUsuario.eliminar(id);
         return "redirect:/mantenimientoUsuario";
+    }
+    
+    public void usuarioLogeado() throws Exception{
+        System.out.println(servicioUsuario.getLoggedUser().getId_usuario()); 
     }
 
     public void setParametro(Model model, String atributo, Object valor) {
