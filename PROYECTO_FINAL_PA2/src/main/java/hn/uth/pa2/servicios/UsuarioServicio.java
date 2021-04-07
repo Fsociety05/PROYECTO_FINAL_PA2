@@ -44,6 +44,10 @@ public class UsuarioServicio {
     public List<Usuario> getUsuariosConsulta(String nombreRol) {
         return (List<Usuario>) repositorio.listarUsuarioConsulta(nombreRol);
     }
+    
+    public List<Usuario> getUsuariosCoordinadores(Long idProyecto) {
+        return (List<Usuario>) repositorio.listarUsuarioCoordinadores(idProyecto);
+    }
 
     public Usuario getLoggedUser() throws Exception {
         //Obtener el usuario logeado

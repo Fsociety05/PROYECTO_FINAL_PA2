@@ -26,8 +26,7 @@ and open the template in the editor.
         </div>
 
         <div class="container mt-5">
-            <h2 th:if="${listaServicio.isEmpty()}">Aun no se han registrado supervisiones</h2>
-            <div class="container mt-4" th:if="${!listaServicio.isEmpty()}">
+            <div class="container mt-4">
                 <form th:action="@{/busqueda}" th:object="${valorTitulo}" method="get" >
                     <h5>Buscar supervision por titulo de proyecto</h5>
                     <div class="col-md-4 my-3">

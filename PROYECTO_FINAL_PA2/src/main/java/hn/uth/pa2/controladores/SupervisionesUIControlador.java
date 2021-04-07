@@ -127,7 +127,8 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/busqueda")
     public String getBuscarTitulo(Model model, @ModelAttribute("valorTitulo") ProyectoSupervisiones entidad) {
-        if (entidad.getIdProyecto().getTitulo().equals("")) {
+        String busqueda = entidad.getIdProyecto().getTitulo().replaceAll("^\\s*","");
+        if (busqueda.equals("")) {
             model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
         } else {
             model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(entidad.getIdProyecto().getTitulo()));

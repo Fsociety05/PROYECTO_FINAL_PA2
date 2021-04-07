@@ -46,12 +46,6 @@ public class ControladorGeneral {
 
     @RequestMapping({"/","/login"})
     public String index(Model model) {
-//        setParametro(model, "usuario", new Usuario());
-//
-//        if (logiado_por_primera_vez) {
-//            //llenandoTablas();
-//            logiado_por_primera_vez = false;
-//        }
         return "index";
     }
     
@@ -60,30 +54,7 @@ public class ControladorGeneral {
         return "paginas/menu_principal";
     }
 
-//    @PostMapping("/menu_inicio")
-//    public String menu(Usuario userLogin, Model model, RedirectAttributes attribute) {
-//
-//        boolean encontrado = false;
-//        for (Usuario object : servicioUsuario.getTodos()) {
-//            if (object.getName_usuario().equals(userLogin.getName_usuario())) {
-//                encontrado = true;
-//                if (object.getContrasenia().equals(userLogin.getContrasenia())) {
-//
-//                    setParametro(model, "usuarioLogiado", object);
-//                    return "paginas/menu_principal";
-//                }
-//            }
-//        }
-//
-//        if (!encontrado) {
-//            attribute.addFlashAttribute("error", "Usuario no encontrado");
-//        } else {
-//            attribute.addFlashAttribute("error", "Contraseña incorrecta");
-//        }
-//
-//        return "redirect:/";
-//
-//    }
+
 
     /*Llenando las tablas por primera ves*/
     private void llenandoTablas() {

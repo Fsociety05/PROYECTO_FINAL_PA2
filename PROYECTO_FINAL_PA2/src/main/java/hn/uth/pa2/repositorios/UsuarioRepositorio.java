@@ -18,5 +18,8 @@ public interface UsuarioRepositorio extends CrudRepository<Usuario, Long>{
     @Query(value = "SELECT * FROM USUARIO U, USER_ROLES UR, ROL R WHERE u.id_usuario = ur.id_usuario AND r.id_rol = ur.id_rol AND UPPER(R.NOMBRE) = UPPER(?1)", nativeQuery = true)
     Iterable<Usuario> listarUsuarioConsulta(String nombreRol);
     
+    @Query(value = "SELECT * FROM USUARIO U, proyectos_coordinadores PC WHERE U.ID_USUARIO = pc.id_usuario AND PC.id_proyecto = ?1", nativeQuery = true)
+    Iterable<Usuario> listarUsuarioCoordinadores(Long idProyecto);
+    
     public Optional<Usuario> findByUsername(String username);
 }

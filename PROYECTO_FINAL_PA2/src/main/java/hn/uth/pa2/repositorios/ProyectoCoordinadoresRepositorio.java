@@ -23,5 +23,6 @@ public interface ProyectoCoordinadoresRepositorio extends CrudRepository<Proyect
     @Query(value = "delete from PROYECTOS_COORDINADORES where ID_PROYECTO =  ?1", nativeQuery = true)
     public void eliminarProyectoCoordinador(Long idProyecto);
     
-    List<ProyectoCoordinadores> findByIdProyecto(Long idProyecto);
+    @Query(value = "SELECT * FROM PROYECTOS_COORDINADORES WHERE id_proyecto = ?1", nativeQuery = true)
+    List<ProyectoCoordinadores> getIdProyecto(Long idProyecto);
 }
