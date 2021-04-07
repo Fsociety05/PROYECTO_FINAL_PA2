@@ -29,8 +29,6 @@ and open the template in the editor.
                                 <th scope="col">Departamento</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,9 +39,6 @@ and open the template in the editor.
                                 <td th:text="${proyecto.titulo}"></td>
                                 <td th:text="${proyecto.idDepartamento.nombre}"></td>
                                 <td th:text="${proyecto.estado}"></td>
-
-                                <td><a class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto})}">Supervision C. Profesional</a></td>
-                                <td><a class="btn btn-outline-info" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto})}">Supervision C. Tecnico</a></td>
                                 <td>
                                     <a class="btn btn-outline-warning" th:href="@{/actualizarProyecto/{id} (id=${proyecto.idProyecto})}">Actualizar</a>
                                 </td>

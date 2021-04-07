@@ -23,4 +23,8 @@ public class BitacoraSupervisionServicios {
     public List<BitacoraSupervision> getTodos() {
         return (List<BitacoraSupervision>) repositorio.findAll();
     }
+    
+    public BitacoraSupervision guardar(BitacoraSupervision entidad) {
+        return repositorio.save(entidad);
+    }
 }
