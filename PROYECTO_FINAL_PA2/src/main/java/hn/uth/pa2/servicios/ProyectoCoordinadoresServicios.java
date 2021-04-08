@@ -38,6 +38,10 @@ public class ProyectoCoordinadoresServicios {
         return (List<ProyectoCoordinadores>) repositorio.findAll();
     }
     
+    public List<ProyectoCoordinadores> getObtenerPorId(Long id) {
+        return  repositorio.getIdProyecto(id);
+    }
+    
     public void eliminarProyectoCoordinadores(Long idProyecto){
         repositorio.eliminarProyectoCoordinador(idProyecto);
     }

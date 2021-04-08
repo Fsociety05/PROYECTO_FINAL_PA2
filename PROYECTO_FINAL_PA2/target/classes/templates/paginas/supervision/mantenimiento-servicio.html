@@ -10,21 +10,39 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/estiloMensaje.css}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
+
+
+        <div class="container" id="container_mensages">
+            <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+                <label th:text="${error}" class="label_mensaje"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
         <div class="container mt-5">
-            <h2 th:if="${listaServicio.isEmpty()}">Aun no se han registrado supervisiones</h2>
-            <div class="container" th:if="${!listaServicio.isEmpty()}">
-                <div class="table-responsive">
+            <div class="container mt-4">
+                <form th:action="@{/busqueda}" th:object="${valorTitulo}" method="get" >
+                    <h5>Buscar supervision por titulo de proyecto</h5>
+                    <div class="col-md-4 my-3">
+                        <input type="text" th:field="*{idProyecto.titulo}" name="idProyecto.titulo" class="form-control col-md-4">
+                    </div>
+                    <button type="submit" class="btn btn-success">Buscar</button>
+                </form>
+                <div class="table-responsive mt-4">
                     <table class="table table-light table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
+                                <th scope="col">Proyecto Supervisado</th>
                                 <th scope="col">Objetivo</th>
                                 <th scope="col">Observasiones</th>
+                                <th scope="col">Coordinador</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Hora Inicio</th>
                                 <th scope="col">Hora Fin</th>
@@ -33,13 +51,15 @@ and open the template in the editor.
                         </thead>
                         <tbody>
                             <tr th:each="supervision : ${listaServicio}">
-                                <td th:text="${supervision.idSupervision}"></td>
-                                <td th:text="${supervision.objetivo}"></td>
-                                <td th:text="${supervision.observasiones}"></td>
-                                <td th:text="${supervision.fecha}"></td>
-                                <td th:text="${supervision.horaInicio}"></td>
-                                <td th:text="${supervision.horaFin}"></td>
-                                <td><a class="btn btn-warning" th:href="@{/actualizarSupervision/{id} (id=${supervision.idSupervision})}">Actualizar</a></td>
+                                <td th:text="${supervision.idSupervision.idSupervision}"></td>
+                                <td th:text="${supervision.idProyecto.titulo}"></td>
+                                <td th:text="${supervision.idSupervision.objetivo}"></td>
+                                <td th:text="${supervision.idSupervision.observasiones}"></td>
+                                <td th:text="${supervision.idTipoCoordinador.nombre}"></td>
+                                <td th:text="${supervision.idSupervision.fecha}"></td>
+                                <td th:text="${supervision.idSupervision.horaInicio}"></td>
+                                <td th:text="${supervision.idSupervision.horaFin}"></td>
+                                <td><a class="btn btn-warning" th:href="@{/actualizarSupervision/{id} (id=${supervision.idSupervision.idSupervision})}">Actualizar</a></td>
                             </tr>
                         </tbody>
                     </table>

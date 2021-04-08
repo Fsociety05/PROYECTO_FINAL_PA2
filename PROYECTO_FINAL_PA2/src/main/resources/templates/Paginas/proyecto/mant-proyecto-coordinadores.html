@@ -48,10 +48,12 @@ and open the template in the editor.
                                 <td th:text="${proyecto.titulo}"></td>
                                 <td th:text="${proyecto.idDepartamento.nombre}"></td>
                                 <td th:text="${proyecto.estado}"></td>
+                        <span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                            <td><a class="btn btn-outline-success" th:href="@{/agregarCordinadores/{id} (id=${proyecto.idProyecto})}">Agregar Coordinadores</a></td>
+                            <td><a class="btn btn-outline-warning" th:href="@{/actualizarCordinadores/{id} (id=${proyecto.idProyecto})}">Actualizar Coordinadores</a></td>
+                        </span>
 
-                                <td><a class="btn btn-outline-success" th:href="@{/agregarCordinadores/{id} (id=${proyecto.idProyecto})}">Agregar Coordinadores</a></td>
-                                <td><a class="btn btn-outline-warning" th:href="@{/actualizarCordinadores/{id} (id=${proyecto.idProyecto})}">Actualizar Coordinadores</a></td>
-                            </tr>
+                        </tr>
                         </tbody>
                     </table>
                 </div> 

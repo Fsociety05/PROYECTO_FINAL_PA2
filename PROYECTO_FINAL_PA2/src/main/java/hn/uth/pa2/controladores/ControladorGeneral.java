@@ -47,51 +47,17 @@ public class ControladorGeneral {
     @Autowired
     private TipoCoordinadoresServicio servicioCoordinador;
 
-    @RequestMapping("/")
+    @RequestMapping({"/","/login"})
     public String index(Model model) {
-        setParametro(model, "usuario", new Usuario());
-
-        if (logiado_por_primera_vez) {
-            //llenandoTablas();
-            logiado_por_primera_vez = false;
-        }
-
         return "index";
     }
-
-    @PostMapping("/menu_inicio")
-    public String menu(Usuario userLogin, Model model, RedirectAttributes attribute) {
-
-        boolean encontrado = false;
-        for (Usuario object : servicioUsuario.getTodos()) {
-            if (object.getName_usuario().equals(userLogin.getName_usuario())) {
-                encontrado = true;
-                if (object.getContrasenia().equals(userLogin.getContrasenia())) {
-                    id_usuario = object.getId_usuario();
-                    usuarioLogueado = object;
-                    setParametro(model, "usuarioLogiado", object);
-                    return "paginas/menu_principal";
-                }
-            }
-        }
-
-        if (!encontrado) {
-            attribute.addFlashAttribute("error", "Usuario no encontrado");
-        } else {
-            attribute.addFlashAttribute("error", "Contraseña incorrecta");
-        }
-
-        return "redirect:/";
-
-    }
-
-    @RequestMapping("/menu_inicial")
-    public String menuInicio(Usuario userLogin, Model model) {
-
-        setParametro(model, "usuarioLogiado", usuarioLogueado);
+    
+    @RequestMapping("/menuInicio")
+    public String menuPrincipal() {
         return "paginas/menu_principal";
-
     }
+
+
 
     /*Llenando las tablas por primera ves*/
     private void llenandoTablas() {
@@ -99,33 +65,28 @@ public class ControladorGeneral {
         /**
          * **********ROLES********************
          */
-        Rol rolTemp = new Rol();
-        rolTemp.setNombre("ADMINISTRADOR");
-        rolTemp.setDescripcion("...");
-        servicioRol.guardar(rolTemp);
-
-        Rol rolTemp2 = new Rol();
-        rolTemp2.setNombre("CONSULTA");
-        rolTemp2.setDescripcion("...");
-        servicioRol.guardar(rolTemp2);
-
-        /*Usuario Admin*/
-        Usuario usuarioTemp = new Usuario();
-        usuarioTemp.setName_usuario("ADMIN");
-        usuarioTemp.setContrasenia("ADMIN");
-        usuarioTemp.setRol(rolTemp);
-        servicioUsuario.guardar(usuarioTemp);
-
-        Departamento dep = new Departamento();
-        dep.setNombre("Dep1");
-        dep.setDescripcion("...");
-        servicioDepartamento.guardar(dep);
-
-        Usuario usuarioTemp2 = new Usuario();
-        usuarioTemp2.setName_usuario("ADMIN");
-        usuarioTemp2.setContrasenia("ADMIN");
-        usuarioTemp2.setRol(rolTemp);
-        servicioUsuario.guardar(usuarioTemp);
+//        Rol rolTemp = new Rol();
+//        rolTemp.setNombre("ADMINISTRADOR");
+//        rolTemp.setDescripcion("...");
+//        servicioRol.guardar(rolTemp);
+//
+//        Rol rolTemp2 = new Rol();
+//        rolTemp2.setNombre("CONSULTA");
+//        rolTemp2.setDescripcion("...");
+//        servicioRol.guardar(rolTemp2);
+//
+//        /*Usuario Admin*/
+//        Usuario usuarioTemp = new Usuario();
+//        usuarioTemp.setName_usuario("ADMIN");
+//        usuarioTemp.setContrasenia("ADMIN");
+//        usuarioTemp.setRol(rolTemp);
+//        servicioUsuario.guardar(usuarioTemp);
+//        
+//        Usuario usuarioTemp2 = new Usuario();
+//        usuarioTemp2.setName_usuario("ADMIN");
+//        usuarioTemp2.setContrasenia("ADMIN");
+//        usuarioTemp2.setRol(rolTemp);
+//        servicioUsuario.guardar(usuarioTemp);
 
         TipoCoordinadores coordinador = new TipoCoordinadores();
         coordinador.setNombre("Coordinador Profesional");

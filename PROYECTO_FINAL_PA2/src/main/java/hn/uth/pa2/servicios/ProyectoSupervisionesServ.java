@@ -37,4 +37,8 @@ public class ProyectoSupervisionesServ {
     public List<ProyectoSupervisiones> getTodos() {
         return (List<ProyectoSupervisiones>) repositorio.findAll();
     }
+    
+    public List<ProyectoSupervisiones> getResultadoBusqueda(String titulo) {
+        return repositorio.findByIdProyectoTitulo(titulo);
+    }
 }

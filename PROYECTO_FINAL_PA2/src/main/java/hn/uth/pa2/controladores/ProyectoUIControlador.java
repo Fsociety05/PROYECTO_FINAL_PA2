@@ -16,6 +16,8 @@ import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -111,6 +113,10 @@ public class ProyectoUIControlador {
                 atributo.addFlashAttribute("error", "El proyecto ya tiene agregado sus 3 coordinadores");
                 return "redirect:/mantenimientoProyectoCoord";
             }
+        }
+        if (servicioCoordinador.getTodos().size() == 0) {
+            atributo.addFlashAttribute("error", "Error el sistema aun no tiene coordinadores");
+            return "redirect:/mantenimientoProyectoCoord";
         }
         this.idProyecto = id;
         this.banderinProyectoCoord = true;
@@ -254,14 +260,30 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarCordinadores/{id}")
     public String actualizarCoordinadores(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
+//        List<Usuario> listaUsuario = new ArrayList<>();
+//        Usuario usuario = new Usuario();
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
+        if (servicioCoordinador.getTodos().size() == 0) {
+            atributo.addFlashAttribute("error", "Error el sistema aun no tiene coordinadores");
+            return "redirect:/mantenimientoProyectoCoord";
+        }
+        if (servicioProyectoCoord.getObtenerPorId(id).isEmpty()) {
+            atributo.addFlashAttribute("error", "Error el proyecto no tiene agregado coordinadores, no se puede actualizar");
+            return "redirect:/mantenimientoProyectoCoord";
+        }
+//        for (Usuario object : servicioUsuario.getUsuariosCoordinadores(idProyecto)) {
+//            usuario.setNombres(object.getNombres());
+//            listaUsuario.add(usuario);
+//        }
+
         modelo.addAttribute("editMode", "true");
         setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
         setParametro(modelo, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
         setParametro(modelo, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
         setParametro(modelo, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+
         return "paginas/proyecto/form-proyecto-coordinadores";
     }
 
