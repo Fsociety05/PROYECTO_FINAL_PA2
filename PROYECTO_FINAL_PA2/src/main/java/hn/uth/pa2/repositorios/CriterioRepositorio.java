@@ -6,6 +6,8 @@
 package hn.uth.pa2.repositorios;
 
 import hn.uth.pa2.modelos.Criterio;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,4 +16,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface CriterioRepositorio extends CrudRepository<Criterio, Long>{
     
+    @Query(value = "SELECT * FROM criterio WHERE id_evaluacion = ?1", nativeQuery = true)
+    List<Criterio> getCriteriosPorTipo(Long idEvaluacion);
 }

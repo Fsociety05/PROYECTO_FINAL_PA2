@@ -7,10 +7,12 @@ C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\modelo
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\util\PassGenerator.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\modelos\Proyectos.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\modelos\TipoEvaluacion.java
+C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\repositorios\PlantillaRepositorio.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\controladores\ControladorGeneral.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\MethodSecurityConfig.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\modelos\TipoPlantilla.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\repositorios\BitacoraSupervisionRepositorio.java
+C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\controladores\PlantillaUIControlador.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\modelos\Plantilla.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\servicios\ProyectoServicios.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\repositorios\ProyectoSupervisionesRepositorio.java
@@ -35,6 +37,7 @@ C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\servic
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\controladores\UsuarioUIControlador.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\servicios\SupervisionesServicios.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\repositorios\BitacoraCoordinadoresRepositorio.java
+C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\servicios\PlantillaServicio.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\repositorios\TipoEvaluacionRepositorio.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\repositorios\DepartamentoRepositorio.java
 C:\RepoGit\PROYECTO_FINAL_PA2\PROYECTO_FINAL_PA2\src\main\java\hn\uth\pa2\modelos\Rol.java

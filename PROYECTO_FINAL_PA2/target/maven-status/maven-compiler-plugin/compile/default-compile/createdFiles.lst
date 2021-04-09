@@ -1,4 +1,5 @@
 hn\uth\pa2\repositorios\ProyectoCoordinadoresRepositorio.class
+hn\uth\pa2\servicios\PlantillaServicio.class
 hn\uth\pa2\servicios\TipoCoordinadoresServicio.class
 hn\uth\pa2\ProyectoFinalPa2Application.class
 hn\uth\pa2\repositorios\SupervisionRepositorio.class
@@ -6,10 +7,12 @@ hn\uth\pa2\servicios\ProyectoSupervisionesServ.class
 hn\uth\pa2\controladores\BtcCoordinadorUIControlador.class
 hn\uth\pa2\modelos\Proyectos.class
 hn\uth\pa2\MethodSecurityConfig.class
+hn\uth\pa2\repositorios\PlantillaRepositorio.class
 hn\uth\pa2\repositorios\TipoCoordinadoresRepositorio.class
 hn\uth\pa2\repositorios\DepartamentoRepositorio.class
 hn\uth\pa2\servicios\UsuarioServicio.class
 hn\uth\pa2\servicios\ProyectoServicios.class
+hn\uth\pa2\controladores\PlantillaUIControlador.class
 hn\uth\pa2\modelos\Supervisiones.class
 hn\uth\pa2\WebSecurityConfig.class
 hn\uth\pa2\servicios\ProyectoCoordinadoresServicios.class

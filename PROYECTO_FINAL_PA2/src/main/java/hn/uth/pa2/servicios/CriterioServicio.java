@@ -38,4 +38,8 @@ public class CriterioServicio {
     public List<Criterio> getTodos() {
         return (List<Criterio>) repositorio.findAll();
     }
+    
+    public List<Criterio> getCriteriosPorTipo(Long id) {
+        return (List<Criterio>) repositorio.getCriteriosPorTipo(id);
+    }
 }

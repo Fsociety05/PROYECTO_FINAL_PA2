@@ -7,6 +7,7 @@ package hn.uth.pa2.modelos;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,10 +44,10 @@ public class Plantilla implements Serializable {
     private TipoPlantilla tipoPlantilla;
     
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name="plantilla_criterios",
-                joinColumns = @JoinColumn(name = "id_plantilla"),
-                inverseJoinColumns = @JoinColumn(name="id_criterio")
+                joinColumns = {@JoinColumn(name = "id_plantilla")},
+                inverseJoinColumns = {@JoinColumn(name="id_criterio")}
     )
     private Set<Criterio> criterios;
     

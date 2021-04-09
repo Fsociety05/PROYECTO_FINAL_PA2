@@ -36,32 +36,31 @@ and open the template in the editor.
         
 
         <div class="container mt-5 border">
-            <form class="row g-3" method="post">
+            <form class="row g-3" th:action="@{/guardar_plantilla}" th:object="${plantilla}" method="post">
                 
-                   <input type="hidden" name="id" id="id">
+                   <input type="hidden" name="id" id="id" th:field="*{idPlantilla}">
                    
                 <div class="col-md-12 mt-4">
                     <label for="titulo" class="form-label">Titulo</label>
-                    <input type="text" id="punt_maximo" name="titulo" class="form-control" required>
+                    <input type="text" id="punt_maximo" name="titulo" th:field="*{titulo}" class="form-control" required>
                 </div>   
                 
                 <div class="col-md-12">
                     <label class="form-label" for="descripcion">Descripcion</label>
-                    <textarea class="form-control"  name="descripcion" id="descripcion" rows="3" cols="25" required></textarea>
+                    <textarea class="form-control" th:field="*{descripcion}" name="descripcion" id="descripcion" rows="3" cols="25" required></textarea>
                 </div>
 
                 <div class="col-md-12">
                     <label for="tipoPlantilla" class="form-label">Tipo de Plantilla</label>
-                    <select  class="form-select" required aria-label="Default select example">
+                    <select  class="form-select" th:field="*{tipoPlantilla}" required aria-label="Default select example">
                         <option th:if="${listaTipoPlantilla.isEmpty()}" th:value="0">No hay tipos de plantilla</option>
                         <option th:!if="${listaTipoPlantilla.isEmpty()}" th:each="tipoPlantilla : ${listaTipoPlantilla}" th:value="${tipoPlantilla.idTipoPlantilla}" th:text="${tipoPlantilla.nombre}" name="tipoPlantilla"></option>
-                    -->
                     </select>
                 </div>
 
                 <div class=" mb-3">
                     <button type="submit" class="btn btn-primary">Guardar</button>
-                    <a href="/mantenimiento_criterio" class="btn btn-warning">Ir a mantenimiento</a>
+                    <a href="/mantenimientoPlantilla" class="btn btn-warning">Ir a mantenimiento</a>
                 </div>
             </form>
         </div>
