@@ -38,7 +38,7 @@ public class SupervisionesUIControlador {
 
     @Autowired
     private SupervisionesServicios servicio;
-
+    
     @Autowired
     private TipoCoordinadoresServicio servicioTipoCoordinadores;
 
