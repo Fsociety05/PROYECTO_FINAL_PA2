@@ -22,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -61,7 +59,7 @@ public class ControladorGeneral {
     public String index(Model model) {
 
         if (logiado_por_primera_vez) {
-            //llenandoTablas();
+//            llenandoTablas();
             //crearUsuario();
             logiado_por_primera_vez = false;
         }
@@ -81,7 +79,7 @@ public class ControladorGeneral {
         /*Usuario Admin*/
         Usuario usuarioTemp = new Usuario();
         usuarioTemp.setUsername("admin");
-        usuarioTemp.setContrasenia("123");
+        usuarioTemp.setContrasenia("admin");
         usuarioTemp.setRoles(rolUser);
         servicioUsuario.guardar(usuarioTemp);
     }
