@@ -86,7 +86,6 @@ public class ProyectoUIControlador {
     public String irMisProyectos(Model model) throws Exception {
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
         setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
-
         return "paginas/proyecto/proyectos_usuario";
     }
 

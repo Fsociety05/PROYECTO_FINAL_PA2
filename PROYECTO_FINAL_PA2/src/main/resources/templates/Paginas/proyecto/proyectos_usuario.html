@@ -62,6 +62,7 @@ and open the template in the editor.
                                 <th scope="col">Departamento</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Estado</th>
+                                <th scope="col"></th>
                                 <th scope="col">Acciones</th>
                                 <th scope="col"></th>
                             </tr>
@@ -76,13 +77,15 @@ and open the template in the editor.
                                 <td th:text="${proyecto.idProyecto.estado}"></td>
 
                                 <td>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar(PRO)</a>
-                                    
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-outline-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar(PRO)</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
                                 </td>
-                                
                                 <td>  
-                                    <a class="btn btn-outline-success" >Calificar</a>
+                                    <a class="btn btn-info">Calificar</a>
+                                </td>
+                                <td>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-warning" th:href="@{/reporteCoordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Reporte de Supervision</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-warning" th:href="@{/reporteCoordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Reporte de Supervision</a>
                                 </td>
                             </tr>
                         </tbody>
