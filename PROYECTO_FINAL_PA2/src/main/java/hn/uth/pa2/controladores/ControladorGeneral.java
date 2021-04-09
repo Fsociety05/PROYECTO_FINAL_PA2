@@ -109,7 +109,7 @@ public class ControladorGeneral {
         /*Usuario Admin*/
         Usuario usuarioTemp = new Usuario();
         usuarioTemp.setUsername("admin");
-        usuarioTemp.setContrasenia(bCryptPasswordEncoder.encode("123"));
+        usuarioTemp.setContrasenia(bCryptPasswordEncoder.encode("admin"));
         usuarioTemp.setRoles(rolUser);
         servicioUsuario.guardar(usuarioTemp);
         

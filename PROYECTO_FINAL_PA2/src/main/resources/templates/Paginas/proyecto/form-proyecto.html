@@ -48,6 +48,32 @@ and open the template in the editor.
                         <option th:!if="${listaDepartamentos.isEmpty()}" th:each="departamento : ${listaDepartamentos}" th:value="${departamento.idDepartamento}" th:text="${departamento.nombre}" name="idDepartamento"></option>
                     </select>
                 </div>
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <label for="plantilla" class="form-label">Plantilla Coordinador Profesional</label>
+                        <input class="form-control" id="plantilla validationDefault03" th:field="*{plantilla}" name="plantilla" required list="plantillaProfesional">
+                        <datalist id="plantillaProfesional">
+                            <option th:if="${listaPlantillaProfesional.isEmpty()}" th:value="0">No hay plantillas</option>
+                            <option th:!if="${listaPlantillaProfesional.isEmpty()}" th:each="profesional : ${listaPlantillaProfesional}" th:value="${profesional.idPlantilla}" th:text="${profesional.titulo}" name="plantilla"></option>
+                        </datalist>
+                    </div>
+                    <div class="col-4">
+                        <label for="plantilla" class="form-label">Plantilla Coordinador Tecnico</label>
+                        <input class="form-control" id="plantilla validationDefault03" th:field="*{plantilla}" name="plantilla" required list="plantillaTecnico">
+                        <datalist id="plantillaTecnico">
+                            <option th:if="${listaPlantillaTecnico.isEmpty()}" th:value="0">No hay plantillas</option>
+                            <option th:!if="${listaPlantillaTecnico.isEmpty()}" th:each="tecnico : ${listaPlantillaTecnico}" th:value="${tecnico.idPlantilla}" th:text="${tecnico.titulo}" name="plantilla"></option>
+                        </datalist>
+                    </div>
+                    <div class="col-4">
+                        <label for="plantilla" class="form-label">Plantilla Coordinador General</label>
+                        <input class="form-control" id="plantilla validationDefault03" th:field="*{plantilla}" name="plantilla" required list="plantillaGeneral">
+                        <datalist id="plantillaGeneral">
+                            <option th:if="${listaPlantillaGeneral.isEmpty()}" th:value="0">No hay plantillas</option>
+                            <option th:!if="${listaPlantillaGeneral.isEmpty()}" th:each="general : ${listaPlantillaGeneral}" th:value="${general.idPlantilla}" th:text="${general.titulo}" name="plantilla"></option>
+                        </datalist>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <label for="estado" class="form-label">Estado</label>
                     <select class="form-select" id="validationCustom04" required aria-label="Default select example" th:field="*{estado}">

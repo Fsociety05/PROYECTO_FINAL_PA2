@@ -12,6 +12,7 @@ import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.BitacoraCoordinadoresServicio;
 import hn.uth.pa2.servicios.DepartamentoServicio;
+import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
@@ -53,15 +54,19 @@ public class ProyectoUIControlador {
 
     @Autowired
     private BitacoraCoordinadoresServicio servicioBitacoraCoordinador;
+    
+    @Autowired
+    private PlantillaServicio servicioPlantilla;
 
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
         setParametro(model, "proyecto", new Proyectos());
         setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
-        setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-        setParametro(model, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
-        setParametro(model, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
-        setParametro(model, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+        setParametro(model, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
+        setParametro(model, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
+        System.out.println(servicioPlantilla.getTipoPlantilla("TECNICO").toString());
+        setParametro(model, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
+        System.out.println(servicioPlantilla.getTipoPlantilla("GENERAL").toString());
         this.banderin = true;
         return "paginas/proyecto/form-proyecto";
     }
