@@ -34,6 +34,4 @@ public class BitacoraSupervision implements Serializable {
     private Date fechaEjecucion;
     
     private String usuario;
-    
-    private String descripcion;
 }

@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional //La utilizamos porque nosotros traemos los roles de modo LAZY es decir solo cuando los voy a necesitar
 //LAZY lo encuentro en la entity User
 public class UserDetailsServiceImpl implements UserDetailsService {
-    public static Long idUsuario;
+    public static Long ID_USUARIO;
     
     @Autowired
     UsuarioRepositorio userRepository;
@@ -48,6 +48,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         
         //Contendra el usuario que se cargara en sesion
         UserDetails user = (UserDetails) new User(appUser.getUsername(), appUser.getContrasenia(), grantList);
+        ID_USUARIO = appUser.getId_usuario();
+        
         
 //        System.out.println("Username: "+appUser.getUsername());
 //        System.out.println("Username: "+appUser.getId_usuario());
