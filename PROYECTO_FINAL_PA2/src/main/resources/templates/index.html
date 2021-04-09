@@ -25,7 +25,6 @@ and open the template in the editor.
             </div>
 
             <div class="container" id="container_mensages">
-                
                 <div class="alert alert-success alert-dismissable fade show" th:if="${success != null}">
                     <label th:text="${success}" class="label_mensaje"></label>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -36,26 +35,29 @@ and open the template in the editor.
                 </div>
 
             </div>
-            
-            <form action="#" th:action="@{/menu_inicio}" th:object="${usuario}" method="post" class="form-control">
 
-                <div class="form-group">
-                    <label for="nombres">Usuario</label>
-                    <input type="text" id="nombres" th:field="*{name_usuario}"  name="nombres" class="form-control" required="true">
+            <form class="col-12" th:action="@{/login}" method="post">
+                <div class="form-group" id="user-group">
+                    <label>Nombre Usuario</label>
+                    <input type="text" class="form-control" placeholder="Nombre de usuario" name="username"/>
                 </div>
-
-                <div class="form-group mb-3">
-                    <div><label for="apellidos">Contrase&ntilde;a</label></div>
-                    <input type="password" id="camp_password" th:field="*{contrasenia}" name="apellidos" class="form-control" required="true">
+                <div class="form-group mt-2" id="contrasena-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" placeholder="Contrasena" name="contrasenia"/>
                 </div>
-
-
-
-
-                <button type="submit" class="btn btn-success">Entrar</button>
-
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>
+                </div>
             </form>
-
+            <div class="mt-2">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                You have been logged out.
+            </div>    
+            </div>
+            
         </div>
 
 

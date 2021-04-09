@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +31,16 @@ public class TipoCoordinadores implements Serializable {
     private Long idTipoCoordinador;
     private String nombre;
     private String descripcion;   
+    
+    @Transient
+    private Long idCoordinadorProfesional;
+    
+    @Transient
+    private Long idCoordinadorTecnico;
+    
+    @Transient
+    private Long idCoordinadorGeneral;
+
 
     public TipoCoordinadores(Long idTipoCoordinador) {
         this.idTipoCoordinador = idTipoCoordinador;
