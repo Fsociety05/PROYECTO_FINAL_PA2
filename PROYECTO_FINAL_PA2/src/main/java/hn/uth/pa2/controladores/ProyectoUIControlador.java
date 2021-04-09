@@ -64,9 +64,7 @@ public class ProyectoUIControlador {
         setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
         setParametro(model, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
         setParametro(model, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
-        System.out.println(servicioPlantilla.getTipoPlantilla("TECNICO").toString());
         setParametro(model, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
-        System.out.println(servicioPlantilla.getTipoPlantilla("GENERAL").toString());
         this.banderin = true;
         return "paginas/proyecto/form-proyecto";
     }
@@ -77,9 +75,6 @@ public class ProyectoUIControlador {
             setParametro(model, "listaProyecto", servicio.getTodos());
             setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
             setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-            setParametro(model, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
-            setParametro(model, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
-            setParametro(model, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
             this.banderin = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -102,8 +97,13 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-        setParametro(modelo, "proyecto", servicio.getValor(id));
+        
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
+        setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
+        setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
+        setParametro(modelo, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
+        setParametro(modelo, "proyecto", servicio.getValor(id));
+        System.out.println(servicio.getValor(id));
         this.banderin = false;
         return "paginas/proyecto/form-proyecto";
     }

@@ -60,7 +60,6 @@ public class ControladorGeneral {
 
         if (logiado_por_primera_vez) {
 //            llenandoTablas();
-            //crearUsuario();
             logiado_por_primera_vez = false;
         }
         //llenandoTablas();

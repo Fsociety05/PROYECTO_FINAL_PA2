@@ -6,16 +6,11 @@
 package hn.uth.pa2.modelos;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import lombok.Data;
@@ -48,11 +43,17 @@ public class Proyectos implements Serializable {
     @JoinColumn(name = "id_departamento")
     private Departamento idDepartamento;
     
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) 
-    @JoinTable(name = "proyectos_plantillas",
-            joinColumns = @JoinColumn(name = "id_proyecto"),
-            inverseJoinColumns = @JoinColumn(name = "id_plantilla")) 
-    private List<Plantilla> plantilla;
+    @ManyToOne
+    @JoinColumn(name = "id_plantilla_profesional")
+    private Plantilla idPlantillaProfesional;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_plantilla_tecnico")
+    private Plantilla idPlantillaTecnico;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_plantilla_general")
+    private Plantilla idPlantillaGeneral;
     
     private String estado;
     
