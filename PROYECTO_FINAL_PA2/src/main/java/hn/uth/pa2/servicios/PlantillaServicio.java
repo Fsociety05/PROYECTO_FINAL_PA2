@@ -38,4 +38,8 @@ public class PlantillaServicio {
     public List<Plantilla> getTodos() {
         return (List<Plantilla>) repositorio.findAll();
     }
+    
+    public List<Plantilla> getTipoPlantilla(String tipo) {
+        return repositorio.listarTipoPlantilla(tipo);
+    }
 }

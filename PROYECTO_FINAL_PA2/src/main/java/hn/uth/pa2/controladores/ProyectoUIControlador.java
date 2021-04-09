@@ -12,6 +12,7 @@ import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.BitacoraCoordinadoresServicio;
 import hn.uth.pa2.servicios.DepartamentoServicio;
+import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
@@ -53,15 +54,17 @@ public class ProyectoUIControlador {
 
     @Autowired
     private BitacoraCoordinadoresServicio servicioBitacoraCoordinador;
+    
+    @Autowired
+    private PlantillaServicio servicioPlantilla;
 
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
         setParametro(model, "proyecto", new Proyectos());
         setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
-        setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-        setParametro(model, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
-        setParametro(model, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
-        setParametro(model, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+        setParametro(model, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
+        setParametro(model, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
+        setParametro(model, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
         this.banderin = true;
         return "paginas/proyecto/form-proyecto";
     }
@@ -72,9 +75,6 @@ public class ProyectoUIControlador {
             setParametro(model, "listaProyecto", servicio.getTodos());
             setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
             setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-            setParametro(model, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
-            setParametro(model, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
-            setParametro(model, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
             this.banderin = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -97,8 +97,13 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-        setParametro(modelo, "proyecto", servicio.getValor(id));
+        
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
+        setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
+        setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
+        setParametro(modelo, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
+        setParametro(modelo, "proyecto", servicio.getValor(id));
+        System.out.println(servicio.getValor(id));
         this.banderin = false;
         return "paginas/proyecto/form-proyecto";
     }

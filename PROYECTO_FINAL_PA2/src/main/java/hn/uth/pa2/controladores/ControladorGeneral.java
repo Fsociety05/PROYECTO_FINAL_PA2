@@ -60,7 +60,6 @@ public class ControladorGeneral {
 
         if (logiado_por_primera_vez) {
 //            llenandoTablas();
-            //crearUsuario();
             logiado_por_primera_vez = false;
         }
         //llenandoTablas();
@@ -109,7 +108,7 @@ public class ControladorGeneral {
         /*Usuario Admin*/
         Usuario usuarioTemp = new Usuario();
         usuarioTemp.setUsername("admin");
-        usuarioTemp.setContrasenia(bCryptPasswordEncoder.encode("123"));
+        usuarioTemp.setContrasenia(bCryptPasswordEncoder.encode("admin"));
         usuarioTemp.setRoles(rolUser);
         servicioUsuario.guardar(usuarioTemp);
         
