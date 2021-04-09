@@ -6,7 +6,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             
             <li class="nav-item">
-                 <a class="nav-link active" aria-current="page" href="/menu_inicial">Inicio</a>
+                 <a class="nav-link active" aria-current="page" href="/menuInicio">Inicio</a>
             </li>
             
             <li class="nav-item dropdown">
@@ -28,6 +28,17 @@
                     <li><a class="dropdown-item" aria-current="page" href="/misProyectos" >Mis proyectos</a></li>
                 </ul>
             </li>
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Criterios
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" aria-current="page" href="/crear_criterio" >Registrar Criterio</a></li>
+                    <li><a class="dropdown-item" aria-current="page" href="/mantenimiento_criterio" >Mantenimiento Criterios</a></li>
+                </ul>
+            </li>
+            
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Bitacoras
@@ -44,7 +55,7 @@
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item" href="/crear_usuario" >Agregar Usuario</a></li>
                     <li><a class="dropdown-item" href="/mantenimientoUsuario" >Mantenimiento Usuario</a></li>
-                    <li><a class="dropdown-item" href="/crear_usuario" >Agregar Usuario</a></li>
+                    <!--<li><a class="dropdown-item" href="/crear_usuario" >Agregar Usuario</a></li>-->
                 </ul>
             </li>
             <li class="nav-item">

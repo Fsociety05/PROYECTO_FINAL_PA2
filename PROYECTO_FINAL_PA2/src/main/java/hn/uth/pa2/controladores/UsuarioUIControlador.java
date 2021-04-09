@@ -126,10 +126,12 @@ public class UsuarioUIControlador {
     @GetMapping("/actualizar_usuario/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model model, RedirectAttributes attribute) {
         
-        if (servicioUsuario.getValor(id).get().getUsername().equals("ADMIN")) {
-            attribute.addFlashAttribute("error", "No se puede Editado este usuario");
+        if (servicioUsuario.getValor(id).get().getUsername().equalsIgnoreCase("ADMIN")) {
+            attribute.addFlashAttribute("error", "No se puede Editar este usuario");
             return "redirect:/mantenimientoUsuario";
         }
+        
+       
         
         
         setParametro(model, "usuario", servicioUsuario.getValor(id));

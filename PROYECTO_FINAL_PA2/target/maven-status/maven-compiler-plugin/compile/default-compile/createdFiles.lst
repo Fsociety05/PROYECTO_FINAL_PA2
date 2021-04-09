@@ -14,6 +14,7 @@ hn\uth\pa2\modelos\Supervisiones.class
 hn\uth\pa2\WebSecurityConfig.class
 hn\uth\pa2\servicios\ProyectoCoordinadoresServicios.class
 hn\uth\pa2\controladores\ControladorGeneral.class
+hn\uth\pa2\servicios\TipoEvaluacionServicio.class
 hn\uth\pa2\servicios\BitacoraSupervisionServicios.class
 hn\uth\pa2\servicios\UserDetailsServiceImpl.class
 hn\uth\pa2\repositorios\BitacoraSupervisionRepositorio.class
@@ -24,10 +25,12 @@ hn\uth\pa2\util\PassGenerator.class
 hn\uth\pa2\controladores\ProyectoUIControlador.class
 hn\uth\pa2\modelos\BitacoraSupervision.class
 hn\uth\pa2\modelos\ProyectoSupervisiones.class
+hn\uth\pa2\repositorios\TipoEvaluacionRepositorio.class
 hn\uth\pa2\servicios\SupervisionesServicios.class
 hn\uth\pa2\controladores\SupervisionesUIControlador.class
 hn\uth\pa2\servicios\RolServicio.class
 hn\uth\pa2\repositorios\BitacoraCoordinadoresRepositorio.class
+hn\uth\pa2\modelos\TipoEvaluacion.class
 hn\uth\pa2\modelos\ProyectoCoordinadores.class
 hn\uth\pa2\modelos\BitacoraCoordinadores.class
 hn\uth\pa2\repositorios\UsuarioRepositorio.class
@@ -35,6 +38,7 @@ hn\uth\pa2\repositorios\ProyectoSupervisionesRepositorio.class
 hn\uth\pa2\controladores\UsuarioUIControlador.class
 hn\uth\pa2\controladores\BtcSupervisionUIControlador.class
 hn\uth\pa2\modelos\Departamento.class
+hn\uth\pa2\modelos\Criterio.class
 hn\uth\pa2\modelos\Rol.class
 hn\uth\pa2\repositorios\ProyectoRepositorio.class
 hn\uth\pa2\servicios\BitacoraCoordinadoresServicio.class
