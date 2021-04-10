@@ -29,7 +29,7 @@ and open the template in the editor.
                     <h4>Evaluacion De Proyecto</h4>
                 </div>
                 <div class="col-4 text-center">
-                    <h5>Fecha:</h5>
+                    <h5 th:text="${'Fecha: '+registro.fechaActual}"></h5>
                     <h5 th:text="${'Código: '+registro.idProyecto.idProyecto}"></h5>
                 </div>
             </div>

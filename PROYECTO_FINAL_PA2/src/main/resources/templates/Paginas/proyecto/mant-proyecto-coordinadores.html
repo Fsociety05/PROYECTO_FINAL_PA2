@@ -22,6 +22,9 @@ and open the template in the editor.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
+        <div class="container mt-3">
+            <h2>Mantenimiento de Coordinadores</h2>
+        </div>
         <div class="container mt-5">
             <h2 th:if="${listaProyecto.isEmpty()}">Aun no se han registrado proyectos</h2>
             <div class="container" th:if="${!listaProyecto.isEmpty()}">

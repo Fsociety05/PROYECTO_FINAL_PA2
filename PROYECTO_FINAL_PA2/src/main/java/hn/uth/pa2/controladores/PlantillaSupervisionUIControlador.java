@@ -8,6 +8,7 @@ package hn.uth.pa2.controladores;
 import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
+import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.SupervisionesServicios;
 import hn.uth.pa2.servicios.UsuarioServicio;
@@ -30,6 +31,9 @@ public class PlantillaSupervisionUIControlador {
 
     @Autowired
     private ProyectoSupervisionesServ servicio;
+    
+    @Autowired
+    private ProyectoServicios servicioProyecto;
 
     @Autowired
     private UsuarioServicio servicioUsuario;
@@ -50,7 +54,7 @@ public class PlantillaSupervisionUIControlador {
         int contador = 0;
         if (servicio.getReporteProyecto(id, "Coordinador Profesional").isEmpty()) {
             attribute.addFlashAttribute("error", "Error - No se ha hecho ninguna supervision");
-            return "redirect:/proyectosPropios";
+            return "redirect:/reporteSupervisiones";
         } else {
             for (ProyectoSupervisiones item : servicio.getReporteProyecto(id, "Coordinador Profesional")) {
                 setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
@@ -61,7 +65,7 @@ public class PlantillaSupervisionUIControlador {
                 setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id, "Coordinador Profesional"));
             } else {
                 attribute.addFlashAttribute("error", "Error - Concluye las tres supervisiones para poder ver el reporte");
-                return "redirect:/proyectosPropios";
+                return "redirect:/reporteSupervisiones";
             }
         }
         return "paginas/plantillas/plantilla-supervision";
@@ -72,7 +76,7 @@ public class PlantillaSupervisionUIControlador {
         int contador = 0;
         if (servicio.getReporteProyecto(id, "Coordinador Tecnico").isEmpty()) {
             attribute.addFlashAttribute("error", "Error - No se ha hecho ninguna supervision");
-            return "redirect:/proyectosPropios";
+            return "redirect:/reporteSupervisiones";
         } else {
             for (ProyectoSupervisiones item : servicio.getReporteProyecto(id, "Coordinador Tecnico")) {
                 setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
@@ -83,17 +87,20 @@ public class PlantillaSupervisionUIControlador {
                 setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id, "Coordinador Tecnico"));
             } else {
                 attribute.addFlashAttribute("error", "Error - Concluye las tres supervisiones para poder ver el reporte");
-                return "redirect:/proyectosPropios";
+                return "redirect:/reporteSupervisiones";
             }
         }
         return "paginas/plantillas/plantilla-supervision";
     }
 
-    @RequestMapping("/proyectosPropios")
-    public String irMisProyectos(Model model) throws Exception {
-        Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-        setParametro(model, "listaProyectos", servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
-        return "paginas/proyecto/proyectos_usuario";
+    @RequestMapping("/reporteSupervisiones")
+    public String irServicios(Model model) {
+        try {
+            setParametro(model, "listaReporte", servicioProyecto.getTodos());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "paginas/reportes/reporte-supervision";
     }
 
     public void setParametro(Model model, String atributo, Object valor) {

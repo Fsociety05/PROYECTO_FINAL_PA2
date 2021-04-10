@@ -16,6 +16,9 @@ and open the template in the editor.
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
+        <div class="container mt-3">
+            <h2>Mantenimiento de Supervisiones</h2>
+        </div>
         <div class="container mt-3" id="container_mensages">
             <div class="alert alert-success alert-dismissable fade show" th:if="${success != null}">
                 <label th:text="${success}" class="label_mensaje"></label>

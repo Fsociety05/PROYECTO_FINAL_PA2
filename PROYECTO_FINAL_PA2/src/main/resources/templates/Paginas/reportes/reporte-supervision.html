@@ -22,42 +22,32 @@ and open the template in the editor.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
-        <div class="container mt-3">
-            <h2>Proyectos Actuales</h2>
-        </div>
         <div class="container mt-5">
-            <h2 th:if="${listaProyectos.isEmpty()}">No tiene proyectos asignados</h2>
-            <div class="container" th:if="${!listaProyectos.isEmpty()}">
+            <div class="container">
                 <div class="table-responsive">
                     <table class="table table-light table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
                                 <th scope="col">Lider</th>
+                                <th scope="col">Identidad Lider</th>
                                 <th scope="col">Titulo Proyecto</th>
                                 <th scope="col">Departamento</th>
-                                <th scope="col">Cargo</th>
                                 <th scope="col">Estado</th>
-                                <th scope="col"></th>
                                 <th scope="col">Acciones</th>
-                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="proyecto : ${listaProyectos}">
-                                <td th:text="${proyecto.idProyecto.idProyecto}"></td>
-                                <td th:text="${proyecto.idProyecto.nombreLider}"></td>
-                                <td th:text="${proyecto.idProyecto.titulo}"></td>
-                                <td th:text="${proyecto.idProyecto.idDepartamento.nombre}"></td>
-                                <td th:text="${proyecto.idTipoCoordinador.nombre}"></td>
-                                <td th:text="${proyecto.idProyecto.estado}"></td>
-
+                            <tr th:each="reporteSupervision : ${listaReporte}">
+                                <td th:text="${reporteSupervision.idProyecto}"></td>
+                                <td th:text="${reporteSupervision.nombreLider}"></td>
+                                <td th:text="${reporteSupervision.identidadLider}"></td>
+                                <td th:text="${reporteSupervision.idDepartamento.nombre}"></td>
+                                <td th:text="${reporteSupervision.titulo}"></td>
+                                <td th:text="${reporteSupervision.estado}"></td>
                                 <td>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar(PRO)</a>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
-                                </td>
-                                <td>  
-                                    <a class="btn btn-info">Calificar</a>
+                                    <a class="btn btn-warning" th:href="@{/reporteCoordinadorProfesional/{id} (id=${reporteSupervision.idProyecto})}">Reporte C. Profesional</a>
+                                    <a class="btn btn-warning" th:href="@{/reporteCoordinadorTecnico/{id} (id=${reporteSupervision.idProyecto})}">Reporte C. Tecnico</a>
                                 </td>
                             </tr>
                         </tbody>

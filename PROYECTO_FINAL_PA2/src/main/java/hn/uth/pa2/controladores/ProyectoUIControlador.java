@@ -54,7 +54,7 @@ public class ProyectoUIControlador {
 
     @Autowired
     private BitacoraCoordinadoresServicio servicioBitacoraCoordinador;
-    
+
     @Autowired
     private PlantillaServicio servicioPlantilla;
 
@@ -85,7 +85,7 @@ public class ProyectoUIControlador {
     @RequestMapping("/misProyectos")
     public String irMisProyectos(Model model) throws Exception {
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
+        setParametro(model, "listaProyectos", servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
         return "paginas/proyecto/proyectos_usuario";
     }
 
@@ -97,7 +97,7 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-        
+
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
         setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
         setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
@@ -136,6 +136,12 @@ public class ProyectoUIControlador {
             if (proyecto.getIdDepartamento() == null) {
                 atributo.addFlashAttribute("error", "Error el departamento esta vacio");
                 return "redirect:/registrarProyecto";
+            }
+            for (Proyectos item : servicio.getTodos()) {
+                if (item.getTitulo().equalsIgnoreCase(proyecto.getTitulo())) {
+                    atributo.addFlashAttribute("error", "Error el nombre del proyecto ya existe");
+                    return "redirect:/registrarProyecto";
+                }
             }
             servicio.guardar(proyecto);
             if (banderin) {
@@ -262,8 +268,6 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarCordinadores/{id}")
     public String actualizarCoordinadores(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-//        List<Usuario> listaUsuario = new ArrayList<>();
-//        Usuario usuario = new Usuario();
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
         if (servicioCoordinador.getTodos().size() == 0) {
@@ -274,11 +278,6 @@ public class ProyectoUIControlador {
             atributo.addFlashAttribute("error", "Error el proyecto no tiene agregado coordinadores, no se puede actualizar");
             return "redirect:/mantenimientoProyectoCoord";
         }
-//        for (Usuario object : servicioUsuario.getUsuariosCoordinadores(idProyecto)) {
-//            usuario.setNombres(object.getNombres());
-//            listaUsuario.add(usuario);
-//        }
-
         modelo.addAttribute("editMode", "true");
         setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
