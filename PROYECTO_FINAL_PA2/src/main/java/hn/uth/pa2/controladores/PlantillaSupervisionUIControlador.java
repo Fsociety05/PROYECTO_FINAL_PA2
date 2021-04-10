@@ -9,6 +9,7 @@ import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
+import hn.uth.pa2.servicios.SupervisionesServicios;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class PlantillaSupervisionUIControlador {
     
     @Autowired
     private ProyectoCoordinadoresServicios servicioProyectoCoord;
+    
+    @Autowired
+    private SupervisionesServicios servicioSupervisiones;
 
     @RequestMapping("/plantillaSupervision")
     public String irPlantillaSupervision() {
@@ -43,6 +47,14 @@ public class PlantillaSupervisionUIControlador {
 
     @GetMapping("/reporteCoordinadorProfesional/{id}")
     public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
+        System.out.println(servicio.getReporteProyecto(id).toString()); 
+        int contador = 1;
+        for (ProyectoSupervisiones item : servicio.getReporteProyecto(id)) {
+            setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
+            System.out.println(servicio.getValor(item.getId()).get().toString());
+            break;
+        }
+        
         setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id));
         return "paginas/plantillas/plantilla-supervision";
     }
@@ -51,9 +63,9 @@ public class PlantillaSupervisionUIControlador {
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
         int contador = 1;
         for (ProyectoSupervisiones item : servicio.getReporteProyecto(id)) {
-            setParametro(modelo, "listaReporteSupervision", item);
             contador++;
         }
+        setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id));
         return "paginas/plantillas/plantilla-supervision";
     }
     
