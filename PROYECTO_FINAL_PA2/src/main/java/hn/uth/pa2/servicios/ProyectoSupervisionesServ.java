@@ -41,4 +41,8 @@ public class ProyectoSupervisionesServ {
     public List<ProyectoSupervisiones> getResultadoBusqueda(String titulo) {
         return repositorio.findByIdProyectoTitulo(titulo);
     }
+    
+    public List<ProyectoSupervisiones> getReporteProyecto(Long idProyecto) {
+        return repositorio.findByIdProyecto(idProyecto);
+    }
 }

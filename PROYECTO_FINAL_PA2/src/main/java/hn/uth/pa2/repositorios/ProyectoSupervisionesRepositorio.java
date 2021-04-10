@@ -17,5 +17,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface ProyectoSupervisionesRepositorio extends CrudRepository<ProyectoSupervisiones, Long> {
     List<ProyectoSupervisiones> findByIdProyectoTitulo(String titulo);
     
-//    @Query(value = "SELECT * FROM ")
+    @Query(value = "SELECT * FROM PROYECTOS_SUPERVISIONES PS, PROYECTOS P WHERE P.ID_PROYECTO = PS.ID_PROYECTO AND PS.ID_PROYECTO = ?1", nativeQuery = true)
+    List<ProyectoSupervisiones> findByIdProyecto(Long idProyecto);
 }

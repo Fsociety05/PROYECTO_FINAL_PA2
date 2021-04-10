@@ -6,6 +6,7 @@
 package hn.uth.pa2.modelos;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +30,8 @@ import lombok.NoArgsConstructor;
 public class ProyectoSupervisiones implements Serializable {
 
     private static final long serialVersionUID = -6833167247955613395L;
+//    java.util.Date d = new java.util.Date();
+//    java.sql.Date date2 = new java.sql.Date(d.getTime());
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

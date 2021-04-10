@@ -15,6 +15,7 @@ and open the template in the editor.
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
+        
         <div class="container mt-5">
             <h2 th:if="${listaProyecto.isEmpty()}">Aun no se han registrado proyectos</h2>
             <div class="container" th:if="${!listaProyecto.isEmpty()}">
@@ -46,7 +47,7 @@ and open the template in the editor.
                                 <td th:text="${proyecto.idPlantillaGeneral.titulo}"></td>
                                 <td th:text="${proyecto.estado}"></td>
                                 <td>
-                                    <a class="btn btn-outline-warning" th:href="@{/actualizarProyecto/{id} (id=${proyecto.idProyecto})}">Actualizar</a>
+                                    <a class="btn btn-warning" th:href="@{/actualizarProyecto/{id} (id=${proyecto.idProyecto})}">Actualizar</a>
                                 </td>
                             </tr>
                         </tbody>
