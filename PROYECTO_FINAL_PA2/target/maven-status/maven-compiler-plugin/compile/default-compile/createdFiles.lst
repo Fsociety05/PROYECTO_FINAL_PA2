@@ -1,6 +1,7 @@
 hn\uth\pa2\repositorios\ProyectoCoordinadoresRepositorio.class
 hn\uth\pa2\servicios\PlantillaServicio.class
 hn\uth\pa2\servicios\TipoCoordinadoresServicio.class
+hn\uth\pa2\servicios\ProyectoEvaluacionServicio.class
 hn\uth\pa2\ProyectoFinalPa2Application.class
 hn\uth\pa2\repositorios\SupervisionRepositorio.class
 hn\uth\pa2\servicios\ProyectoSupervisionesServ.class
@@ -13,6 +14,7 @@ hn\uth\pa2\repositorios\DepartamentoRepositorio.class
 hn\uth\pa2\servicios\UsuarioServicio.class
 hn\uth\pa2\servicios\ProyectoServicios.class
 hn\uth\pa2\controladores\PlantillaUIControlador.class
+hn\uth\pa2\modelos\ProyectoEvaluacion.class
 hn\uth\pa2\modelos\Supervisiones.class
 hn\uth\pa2\WebSecurityConfig.class
 hn\uth\pa2\servicios\ProyectoCoordinadoresServicios.class
@@ -28,6 +30,7 @@ hn\uth\pa2\repositorios\RolRepositorio.class
 hn\uth\pa2\util\PassGenerator.class
 hn\uth\pa2\modelos\TipoPlantilla.class
 hn\uth\pa2\controladores\ProyectoUIControlador.class
+hn\uth\pa2\repositorios\ProyectoEvaluacionRepositorio.class
 hn\uth\pa2\modelos\BitacoraSupervision.class
 hn\uth\pa2\modelos\ProyectoSupervisiones.class
 hn\uth\pa2\repositorios\TipoPlantillaRepositorio.class
@@ -38,6 +41,7 @@ hn\uth\pa2\controladores\SupervisionesUIControlador.class
 hn\uth\pa2\servicios\RolServicio.class
 hn\uth\pa2\repositorios\BitacoraCoordinadoresRepositorio.class
 hn\uth\pa2\modelos\TipoEvaluacion.class
+hn\uth\pa2\controladores\ProyectoEvaluacionUIControlador.class
 hn\uth\pa2\modelos\ProyectoCoordinadores.class
 hn\uth\pa2\modelos\BitacoraCoordinadores.class
 hn\uth\pa2\repositorios\UsuarioRepositorio.class
