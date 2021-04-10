@@ -40,17 +40,19 @@ and open the template in the editor.
                     <label for="observasiones validationDefault02" class="form-label">Observaciones</label>
                     <textarea class="form-control" id="observasiones validationDefault02" th:field="*{observasiones}" name="observasiones" rows="3" required></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="fecha validationDefault03" class="form-label">Fecha</label>
-                    <input type="date" class="form-control" id="fecha validationDefault03" th:field="*{fecha}" name="fecha" required>
-                </div>
-                <div class="mb-3">
-                    <label for="horaInicio validationDefault04" class="form-label">Hora Inicio</label>
-                    <input type="time" class="form-control" id="horaInicio validationDefault04"  th:field="*{horaInicio}" name="horaInicio" required>
-                </div>
-                <div class="mb-3">
-                    <label for="horaFin validationDefault05" class="form-label">Hora Fin</label>
-                    <input type="time" class="form-control" id="horaFin validationDefault05"  th:field="*{horaFin}" name="horaFin" required>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <label for="fecha validationDefault03" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fecha validationDefault03" th:field="*{fecha}" name="fecha" required>
+                    </div>
+                    <div class="col-4">
+                        <label for="horaInicio validationDefault04" class="form-label">Hora Inicio</label>
+                        <input type="time" class="form-control" id="horaInicio validationDefault04"  th:field="*{horaInicio}" name="horaInicio" required>
+                    </div>
+                    <div class="col-4">
+                        <label for="horaFin validationDefault05" class="form-label">Hora Fin</label>
+                        <input type="time" class="form-control" id="horaFin validationDefault05"  th:field="*{horaFin}" name="horaFin" required>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </form>

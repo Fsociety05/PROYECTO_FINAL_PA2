@@ -33,10 +33,10 @@ public class PlantillaSupervisionUIControlador {
 
     @Autowired
     private UsuarioServicio servicioUsuario;
-    
+
     @Autowired
     private ProyectoCoordinadoresServicios servicioProyectoCoord;
-    
+
     @Autowired
     private SupervisionesServicios servicioSupervisiones;
 
@@ -47,32 +47,52 @@ public class PlantillaSupervisionUIControlador {
 
     @GetMapping("/reporteCoordinadorProfesional/{id}")
     public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
-        System.out.println(servicio.getReporteProyecto(id).toString()); 
-        int contador = 1;
-        for (ProyectoSupervisiones item : servicio.getReporteProyecto(id)) {
-            setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
-            System.out.println(servicio.getValor(item.getId()).get().toString());
-            break;
+        int contador = 0;
+        if (servicio.getReporteProyecto(id, "Coordinador Profesional").isEmpty()) {
+            attribute.addFlashAttribute("error", "Error - No se ha hecho ninguna supervision");
+            return "redirect:/proyectosPropios";
+        } else {
+            for (ProyectoSupervisiones item : servicio.getReporteProyecto(id, "Coordinador Profesional")) {
+                setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
+                contador++;
+            }
+            System.out.println(contador);
+            if (contador == 3) {
+                setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id, "Coordinador Profesional"));
+            } else {
+                attribute.addFlashAttribute("error", "Error - Concluye las tres supervisiones para poder ver el reporte");
+                return "redirect:/proyectosPropios";
+            }
         }
-        
-        setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id));
         return "paginas/plantillas/plantilla-supervision";
     }
 
     @GetMapping("/reporteCoordinadorTecnico/{id}")
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
-        int contador = 1;
-        for (ProyectoSupervisiones item : servicio.getReporteProyecto(id)) {
-            contador++;
+        int contador = 0;
+        if (servicio.getReporteProyecto(id, "Coordinador Tecnico").isEmpty()) {
+            attribute.addFlashAttribute("error", "Error - No se ha hecho ninguna supervision");
+            return "redirect:/proyectosPropios";
+        } else {
+            for (ProyectoSupervisiones item : servicio.getReporteProyecto(id, "Coordinador Tecnico")) {
+                setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
+                contador++;
+            }
+            System.out.println(contador);
+            if (contador == 3) {
+                setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id, "Coordinador Tecnico"));
+            } else {
+                attribute.addFlashAttribute("error", "Error - Concluye las tres supervisiones para poder ver el reporte");
+                return "redirect:/proyectosPropios";
+            }
         }
-        setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id));
         return "paginas/plantillas/plantilla-supervision";
     }
-    
+
     @RequestMapping("/proyectosPropios")
     public String irMisProyectos(Model model) throws Exception {
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
+        setParametro(model, "listaProyectos", servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
         return "paginas/proyecto/proyectos_usuario";
     }
 

@@ -14,10 +14,10 @@ and open the template in the editor.
 }
 
 .contenedor > div {
-    padding: 0 11rem;
+    padding: 0 4.5rem;
 }
 .contenedor-info > div {
-    padding-left: 13rem;
+    padding-left: 4.5rem;
 }
 
 .icono > i {
@@ -25,11 +25,17 @@ and open the template in the editor.
 }
 
 .titulo h4 {
-   font-weight: 650; 
+    font-weight: 650; 
 }
 
 label {
     font-weight: 550;
+}
+
+@media print{
+    .contenedor-boton {
+        display: none;
+    }
 }
 
 

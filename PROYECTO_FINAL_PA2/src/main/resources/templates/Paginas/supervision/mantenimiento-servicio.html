@@ -16,9 +16,11 @@ and open the template in the editor.
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
-
-
-        <div class="container" id="container_mensages">
+        <div class="container mt-3" id="container_mensages">
+            <div class="alert alert-success alert-dismissable fade show" th:if="${success != null}">
+                <label th:text="${success}" class="label_mensaje"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
                 <label th:text="${error}" class="label_mensaje"></label>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

@@ -132,7 +132,7 @@ public class SupervisionesUIControlador {
                 this.banderin = true;
             }
         }
-        return "redirect:/registrarSupervision";
+        return "redirect:/tituloProyecto";
     }
 
     @GetMapping("/tituloProyecto")
