@@ -159,7 +159,6 @@ public class SupervisionesUIControlador {
         java.sql.Date date2 = new java.sql.Date(d.getTime());
         bitacora.setUsuario(servicioUsuario.getLoggedUser().getUsername());
         bitacora.setFechaEjecucion(date2);
-        System.out.println("NOMBRE USUARIO: "+servicioUsuario.getLoggedUser().getUsername());
         this.servicioBitacoraSupervision.guardar(bitacora);
     }
 

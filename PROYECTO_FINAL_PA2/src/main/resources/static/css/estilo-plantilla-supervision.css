@@ -20,7 +20,7 @@ and open the template in the editor.
     padding-left: 13rem;
 }
 
-i {
+.icono > i {
     font-size: 40px;
 }
 

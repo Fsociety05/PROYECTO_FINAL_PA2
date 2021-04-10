@@ -147,7 +147,7 @@ public class ProyectoUIControlador {
         } catch (Exception e) {
             System.out.println("ERROR AQUI: " + e.getMessage());
         }
-        return "redirect:/registrarProyecto";
+        return "redirect:/mantenimientoProyecto";
     }
 
     @PostMapping("/guardarCoordinadores")

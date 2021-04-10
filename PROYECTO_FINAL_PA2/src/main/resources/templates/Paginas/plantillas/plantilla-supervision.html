@@ -13,153 +13,158 @@ and open the template in the editor.
         <link th:href="@{/css/estilo-plantilla-supervision.css}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-4 text-center align-items-center">
-                    <i class="fas fa-building pt-3"></i>
-                </div>
-                <div class="col-4 text-center titulo">
-                    <h4>Fsociety</h4>
-                    <h4>Evaluacion De Proyecto</h4>
-                </div>
-                <div class="col-4 text-center">
-                    <h5>Fecha:</h5>
-                    <h5>Código:</h5>
-                </div>
-            </div>
-        </div>
-        <div class="container mt-4 contenedor">
-            <div>
-                <label for="">Coordinador:</label>
-            </div>
-            <div>
-                <label for="">Nombre del lider:</label>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <label for="">Departamento:</label>
-                </div>
-                <div class="col-6">
-                    <label for="">Identidad:</label>
-                </div>
-            </div>
-            <div>
-                <label for="">Titulo Proyecto:</label>
-            </div>
-        </div>
-        <div class="container mt-4 contenedor">
-            <div class="text-center my-4">
-                <h4>Revisiones</h4>
-            </div>
-        </div>
-        <div class="container mt-4 contenedor-info">
-            <div class="row my-2">
-                <div class="col-4">
-                    <label for="">Fecha Revision:</label>
-                </div>
-                <div class="col-4">
-                    <label for="">Hora Inicio:</label>
-                </div>
-                <div class="col-4">
-                    <label for="">Hora Fin:</label>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <label for="">Objetivos:</label>
-            </div>
-            <div class="col-12">
-                <label for="">Observaciones:</label>
-            </div>
-            <div class="mt-4">
-                <div class="row text-center">
-                    <div class="col-5 mx-3">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Forma Coordinador</label>
-                        </div>
+        <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
+        </nav>
+        <div class="container mt-2 card" th:each="reporteSupervision : ${listaReporteSupervision}">
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-4 text-center align-items-center icono">
+                        <i class="fas fa-building pt-3"></i>
                     </div>
-                    <div class="col-5 mx-3">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Firma Lider</label>
-                        </div>
+                    <div class="col-4 text-center titulo">
+                        <h4>Fsociety</h4>
+                        <h4>Evaluacion De Proyecto</h4>
+                    </div>
+                    <div class="col-4 text-center">
+                        <h5>Fecha:</h5>
+                        <h5 th:text="${'Código: '+reporteSupervision.idProyecto.idProyecto}"></h5>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container mt-4 contenedor-info">
-            <div class="row my-2">
-                <div class="col-4">
-                    <label for="">Fecha Revision:</label>
+            <div class="container mt-4 contenedor">
+                <div>
+                    <label for="" th:text="${'Coordinador: '+reporteSupervision.idTipoCoordinador.nombre}"></label>
                 </div>
-                <div class="col-4">
-                    <label for="">Hora Inicio:</label>
+                <div>
+                    <label for="" th:text="${'Nombre del lider: '+reporteSupervision.idProyecto.nombreLider}"></label>
                 </div>
-                <div class="col-4">
-                    <label for="">Hora Fin:</label>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <label for="">Objetivos:</label>
-            </div>
-            <div class="col-12">
-                <label for="">Observaciones:</label>
-            </div>
-            <div class="mt-4">
-                <div class="row text-center">
-                    <div class="col-5 mx-3">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Forma Coordinador</label>
-                        </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="" th:text="${'Departamento: '+reporteSupervision.idProyecto.idDepartamento.nombre}"></label>
                     </div>
-                    <div class="col-5 mx-3">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Firma Lider</label>
+                    <div class="col-6">
+                        <label for="" th:text="${'Identidad: '+reporteSupervision.idProyecto.identidadLider}"></label>
+                    </div>
+                </div>
+                <div>
+                    <label for="" th:text="${'Titulo Proyecto: '+reporteSupervision.idProyecto.titulo}"></label>
+                </div>
+            </div>
+            <div class="container mt-4 contenedor">
+                <div class="text-center my-4">
+                    <h4>Revisiones</h4>
+                </div>
+            </div>
+            <div class="container mt-4 contenedor-info">
+                <div class="row my-2">
+                    <div class="col-4">
+                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.fecha}"></label>
+                    </div>
+                    <div class="col-4">
+                        <label th:text="${'Hora Inicio: '+reporteSupervision.idSupervision.horaInicio}"></label>
+                    </div>
+                    <div class="col-4">
+                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.horaFin}"></label>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <label th:text="${'Objetivos: '+reporteSupervision.idSupervision.objetivo}"></label>
+                </div>
+                <div class="col-12">
+                    <label th:text="${'Observaciones: '+reporteSupervision.idSupervision.observasiones}"></label>
+                </div>
+                <div class="mt-4">
+                    <div class="row text-center">
+                        <div class="col-5 mx-3">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Firma Coordinador</label>
+                            </div>
+                        </div>
+                        <div class="col-5 mx-3">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Firma Lider</label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container mt-4 contenedor-info">
-            <div class="row my-2">
-                <div class="col-4">
-                    <label for="">Fecha Revision:</label>
-                </div>
-                <div class="col-4">
-                    <label for="">Hora Inicio:</label>
-                </div>
-                <div class="col-4">
-                    <label for="">Hora Fin:</label>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <label for="">Objetivos:</label>
-            </div>
-            <div class="col-12">
-                <label for="">Observaciones:</label>
-            </div>
-            <div class="mt-4">
-                <div class="row text-center">
-                    <div class="col-5 mx-3">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Forma Coordinador</label>
-                        </div>
+            <div class="container mt-4 contenedor-info">
+                <div class="row my-2">
+                    <div class="col-4">
+                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.fecha}"></label>
                     </div>
-                    <div class="col-5 mx-3">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Firma Lider</label>
-                        </div>
+                    <div class="col-4">
+                        <label th:text="${'Hora Inicio: '+reporteSupervision.idSupervision.horaInicio}"></label>
+                    </div>
+                    <div class="col-4">
+                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.horaFin}"></label>
                     </div>
                 </div>
-                <div class="row my-5 text-center">
-                    <div class="col-11">
-                        <img th:src="@{/imagenes/firma.png}" alt="firma">
-                        <div>
-                            <label for="">Adminsitrador</label>
+                <div class="col-12 my-2">
+                    <label th:text="${'Objetivos: '+reporteSupervision.idSupervision.objetivo}"></label>
+                </div>
+                <div class="col-12">
+                    <label th:text="${'Observaciones: '+reporteSupervision.idSupervision.observasiones}"></label>
+                </div>
+                <div class="mt-4">
+                    <div class="row text-center">
+                        <div class="col-5 mx-3">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Firma Coordinador</label>
+                            </div>
+                        </div>
+                        <div class="col-5 mx-3">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Firma Lider</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4 contenedor-info">
+                <div class="row my-2">
+                    <div class="col-4">
+                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.fecha}"></label>
+                    </div>
+                    <div class="col-4">
+                        <label th:text="${'Hora Inicio: '+reporteSupervision.idSupervision.horaInicio}"></label>
+                    </div>
+                    <div class="col-4">
+                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.horaFin}"></label>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <label th:text="${'Objetivos: '+reporteSupervision.idSupervision.objetivo}"></label>
+                </div>
+                <div class="col-12">
+                    <label th:text="${'Observaciones: '+reporteSupervision.idSupervision.observasiones}"></label>
+                </div>
+                <div class="mt-4">
+                    <div class="row text-center">
+                        <div class="col-5 mx-3">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Firma Coordinador</label>
+                            </div>
+                        </div>
+                        <div class="col-5 mx-3">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Firma Lider</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-5 text-center">
+                        <div class="col-11">
+                            <img th:src="@{/imagenes/firma.png}" alt="firma">
+                            <div>
+                                <label for="">Adminsitrador</label>
+                            </div>
                         </div>
                     </div>
                 </div>
