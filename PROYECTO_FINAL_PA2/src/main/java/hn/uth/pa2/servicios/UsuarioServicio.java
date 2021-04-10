@@ -59,7 +59,7 @@ public class UsuarioServicio {
         if (principal instanceof UserDetails) {
             loggedUser = (UserDetails) principal;
         }
-
+        
         Usuario myUser = repositorio
                 .findByUsername(loggedUser.getUsername()).orElseThrow(() -> new Exception(""));
         return myUser;

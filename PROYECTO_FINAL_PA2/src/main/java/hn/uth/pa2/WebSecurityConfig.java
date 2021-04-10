@@ -19,10 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *
  * @author Buddys
  */
-//Indica que esta clase es de configuracion y necesita ser cargada durante el inicio del server
 @Configuration
 
-//Indica que esta clase sobreescribira la implmentacion de seguridad web
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -34,21 +32,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http
         .authorizeRequests()
-        .antMatchers(resources).permitAll()//Cualquiera que tenga /css le va a permitir el acceso es decir todo lo de thymeleaf  
-        .antMatchers("/","/index").permitAll() //Cualquier puede ingresar a estas paginas
-            .anyRequest().authenticated() //Otro request diferente de los anteriores debera estar autenticado
+        .antMatchers(resources).permitAll()
+        .antMatchers("/","/index").permitAll() 
+            .anyRequest().authenticated() 
             .and() 
         .formLogin()
-            .loginPage("/login") //al formulario de login pueden acceder todos
+            .loginPage("/login")
             .permitAll()
-            .defaultSuccessUrl("/menuInicio")//Si se logea exitosamente me redirige a esta URL
-            .failureUrl("/login?error=true") //si se falla al logear te devuelve aqui 
-            .usernameParameter("username") //Esto pertenece al formulario de login 'name = "username"'
-            .passwordParameter("contrasenia") // entonces aqui identifica de donde se le envia todo 'name = "password"'
+            .defaultSuccessUrl("/menuInicio")
+            .failureUrl("/login?error=true") 
+            .usernameParameter("username") 
+            .passwordParameter("contrasenia") 
             .and() 
             .csrf().disable()
         .logout()
-            .permitAll() //Que el deslogeo lo puede hacer cualquiera
+            .permitAll() 
             .logoutSuccessUrl("/login?logout");
     }
     

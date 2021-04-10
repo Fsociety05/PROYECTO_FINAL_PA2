@@ -20,6 +20,7 @@ hn\uth\pa2\controladores\ControladorGeneral.class
 hn\uth\pa2\servicios\TipoEvaluacionServicio.class
 hn\uth\pa2\servicios\BitacoraSupervisionServicios.class
 hn\uth\pa2\servicios\UserDetailsServiceImpl.class
+hn\uth\pa2\controladores\PlantillaSupervisionUIControlador.class
 hn\uth\pa2\repositorios\BitacoraSupervisionRepositorio.class
 hn\uth\pa2\servicios\DepartamentoServicio.class
 hn\uth\pa2\modelos\Usuario.class

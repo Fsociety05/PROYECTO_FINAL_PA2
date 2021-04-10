@@ -7,6 +7,7 @@ package hn.uth.pa2.repositorios;
 
 import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -15,4 +16,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ProyectoSupervisionesRepositorio extends CrudRepository<ProyectoSupervisiones, Long> {
     List<ProyectoSupervisiones> findByIdProyectoTitulo(String titulo);
+    
+    @Query(value = "SELECT * FROM PROYECTOS_SUPERVISIONES PS, PROYECTOS P WHERE P.ID_PROYECTO = PS.ID_PROYECTO AND PS.ID_PROYECTO = ?1", nativeQuery = true)
+    List<ProyectoSupervisiones> findByIdProyecto(Long idProyecto);
 }

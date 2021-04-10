@@ -10,45 +10,18 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/estiloMensaje.css}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
-        <!--<div class="container mt-5">
-            <h2 th:if="${listaProyecto.isEmpty()}">Aun no se han registrado proyectos</h2>
-            <div class="container" th:if="${!listaProyecto.isEmpty()}">
-                <div class="table-responsive">
-                    <table class="table table-light table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Lider</th>
-                                <th scope="col">Titulo Proyecto</th>
-                                <th scope="col">Departamento</th>
-                                <th scope="col">Cargo</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Accion</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="proyecto : ${listaProyecto}">
-                                <td th:text="${proyecto.idProyecto}"></td>
-                                <td th:text="${proyecto.nombreLider}"></td>
-                                <td th:text="${proyecto.titulo}"></td>
-                                <td th:text="${proyecto.idDepartamento.nombre}"></td>
-                                <td th:text="${proyecto.estado}"></td>
-
-                                <td><a class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto})}">Supervizar</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> 
+        <div class="container mt-4" id="container_mensages">
+            <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+                <label th:text="${error}" class="label_mensaje"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>-->
-        
-        
+        </div>
         <div class="container mt-5">
             <h2 th:if="${listaProyectos.isEmpty()}">No tiene proyectos asignados</h2>
             <div class="container" th:if="${!listaProyectos.isEmpty()}">
@@ -62,6 +35,7 @@ and open the template in the editor.
                                 <th scope="col">Departamento</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Estado</th>
+                                <th scope="col"></th>
                                 <th scope="col">Acciones</th>
                                 <th scope="col"></th>
                             </tr>
@@ -76,13 +50,15 @@ and open the template in the editor.
                                 <td th:text="${proyecto.idProyecto.estado}"></td>
 
                                 <td>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar(PRO)</a>
-                                    
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-outline-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar(PRO)</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
                                 </td>
-                                
                                 <td>  
-                                    <a class="btn btn-outline-success" >Calificar</a>
+                                    <a class="btn btn-info">Calificar</a>
+                                </td>
+                                <td>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-warning" th:href="@{/reporteCoordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Reporte de Supervision</a>
+                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-warning" th:href="@{/reporteCoordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Reporte de Supervision</a>
                                 </td>
                             </tr>
                         </tbody>

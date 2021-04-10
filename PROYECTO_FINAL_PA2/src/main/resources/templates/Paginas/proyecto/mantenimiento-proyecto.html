@@ -15,6 +15,7 @@ and open the template in the editor.
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
+        
         <div class="container mt-5">
             <h2 th:if="${listaProyecto.isEmpty()}">Aun no se han registrado proyectos</h2>
             <div class="container" th:if="${!listaProyecto.isEmpty()}">
@@ -27,10 +28,11 @@ and open the template in the editor.
                                 <th scope="col">Identidad Lider</th>
                                 <th scope="col">Titulo Proyecto</th>
                                 <th scope="col">Departamento</th>
+                                <th scope="col">Plantilla C. Profesional</th>
+                                <th scope="col">Plantilla C. Tecnico</th>
+                                <th scope="col">Plantilla C. General</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,12 +42,12 @@ and open the template in the editor.
                                 <td th:text="${proyecto.identidadLider}"></td>
                                 <td th:text="${proyecto.titulo}"></td>
                                 <td th:text="${proyecto.idDepartamento.nombre}"></td>
+                                <td th:text="${proyecto.idPlantillaProfesional.titulo}"></td>
+                                <td th:text="${proyecto.idPlantillaTecnico.titulo}"></td>
+                                <td th:text="${proyecto.idPlantillaGeneral.titulo}"></td>
                                 <td th:text="${proyecto.estado}"></td>
-
-                                <td><a class="btn btn-outline-success" th:href="@{/coordinadorProfesional/{id} (id=${proyecto.idProyecto})}">Supervision C. Profesional</a></td>
-                                <td><a class="btn btn-outline-info" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto})}">Supervision C. Tecnico</a></td>
                                 <td>
-                                    <a class="btn btn-outline-warning" th:href="@{/actualizarProyecto/{id} (id=${proyecto.idProyecto})}">Actualizar</a>
+                                    <a class="btn btn-warning" th:href="@{/actualizarProyecto/{id} (id=${proyecto.idProyecto})}">Actualizar</a>
                                 </td>
                             </tr>
                         </tbody>
