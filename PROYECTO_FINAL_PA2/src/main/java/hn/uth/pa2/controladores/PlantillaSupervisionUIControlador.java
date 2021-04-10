@@ -51,7 +51,7 @@ public class PlantillaSupervisionUIControlador {
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
         int contador = 1;
         for (ProyectoSupervisiones item : servicio.getReporteProyecto(id)) {
-            setParametro(modelo, "registro"+contador, item);
+            setParametro(modelo, "listaReporteSupervision", item);
             contador++;
         }
         return "paginas/plantillas/plantilla-supervision";
