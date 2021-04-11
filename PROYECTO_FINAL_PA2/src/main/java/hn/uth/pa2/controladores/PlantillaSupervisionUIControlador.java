@@ -6,6 +6,7 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.ProyectoSupervisiones;
+import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoServicios;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -60,7 +62,6 @@ public class PlantillaSupervisionUIControlador {
                 setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
                 contador++;
             }
-            System.out.println(contador);
             if (contador == 3) {
                 setParametro(modelo, "listaReporteSupervision", servicio.getReporteProyecto(id, "Coordinador Profesional"));
             } else {
@@ -93,12 +94,24 @@ public class PlantillaSupervisionUIControlador {
         return "paginas/plantillas/plantilla-supervision";
     }
 
-    @RequestMapping("/reporteSupervisiones")
+    @GetMapping("/reporteSupervisiones")
     public String irServicios(Model model) {
         try {
-            setParametro(model, "listaReporte", servicioProyecto.getTodos());
+            model.addAttribute("buscarTituloP", new Proyectos());
+            model.addAttribute("listaReporte", servicioProyecto.getTodos());
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return "paginas/reportes/reporte-supervision";
+    }
+
+    @GetMapping("/busquedaProyectoReporte")
+    public String buscarProyecto(Model model, @ModelAttribute("buscarTituloP") Proyectos entidad) {
+        String busqueda = entidad.getTitulo().replaceAll("^\\s*", "");
+        if (busqueda.equals("")) {
+            model.addAttribute("listaReporte", servicioProyecto.getTodos());
+        } else {
+            model.addAttribute("listaReporte", servicioProyecto.getResultadoBusqueda(busqueda.toUpperCase()));
         }
         return "paginas/reportes/reporte-supervision";
     }

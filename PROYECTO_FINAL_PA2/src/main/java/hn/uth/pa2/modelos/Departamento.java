@@ -31,4 +31,5 @@ public class Departamento implements Serializable {
     private Long idDepartamento;
     private String nombre;
     private String descripcion;
+    private String estado;
 }

@@ -5,6 +5,7 @@
  */
 package hn.uth.pa2.controladores;
 
+import hn.uth.pa2.modelos.Departamento;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.RolServicio;
@@ -71,6 +72,14 @@ public class UsuarioUIControlador {
             estado_editando = false;
             return "redirect:/crear_usuario";
         }
+        for (Departamento todo : servicioDepartamento.getTodos()) {
+                if (todo.getEstado().equals(entidad.getDepartamento().getEstado())) {
+                    if (todo.getEstado().equalsIgnoreCase("Inactivo")) {
+                        attribute.addFlashAttribute("error", "Error - El Departamento esta Inactivo");
+                        return "redirect:/crear_usuario";
+                    }
+                }
+            }
 
         for (Usuario todo : servicioUsuario.getTodos()) {
 
