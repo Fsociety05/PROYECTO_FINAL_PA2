@@ -6,12 +6,16 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.Departamento;
+import hn.uth.pa2.modelos.Plantilla;
+import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.Rol;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.TipoEvaluacion;
 import hn.uth.pa2.modelos.TipoPlantilla;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.DepartamentoServicio;
+import hn.uth.pa2.servicios.PlantillaServicio;
+import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.RolServicio;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import hn.uth.pa2.servicios.TipoEvaluacionServicio;
@@ -54,6 +58,12 @@ public class ControladorGeneral {
     
     @Autowired
     private TipoPlantillaServicio servicioTipoPlantilla;
+    
+    @Autowired
+    private PlantillaServicio servicioPlantilla;
+    
+    @Autowired
+    private ProyectoServicios servicioProyecto;
 
     @RequestMapping({"/", "/login"})
     public String index(Model model) {
@@ -176,8 +186,34 @@ public class ControladorGeneral {
           temP3.setDescripcion("...");
           servicioTipoPlantilla.guardar(temP3);
           
+          Plantilla plantillaProfesional = new Plantilla();
+          plantillaProfesional.setTitulo("Plantilla C. Profesional");
+          plantillaProfesional.setDescripcion("AAA");
+          plantillaProfesional.setTipoPlantilla(temP1);
+          servicioPlantilla.guardar(plantillaProfesional);
           
+          Plantilla plantillaTecnico = new Plantilla();
+          plantillaTecnico.setTitulo("Plantilla C. Tecnico");
+          plantillaTecnico.setDescripcion("AAA");
+          plantillaTecnico.setTipoPlantilla(temP2);
+          servicioPlantilla.guardar(plantillaTecnico);
           
+          Plantilla plantillaGeneral = new Plantilla();
+          plantillaGeneral.setTitulo("Plantilla C. General");
+          plantillaGeneral.setDescripcion("AAA");
+          plantillaGeneral.setTipoPlantilla(temP3);
+          servicioPlantilla.guardar(plantillaGeneral);
+          
+          Proyectos proyecto = new Proyectos();
+          proyecto.setNombreLider("Lionel Messi");
+          proyecto.setIdentidadLider("0802200300500");
+          proyecto.setTitulo("Sistema Web Zoologico");
+          proyecto.setIdDepartamento(departamento);
+          proyecto.setIdPlantillaProfesional(plantillaProfesional);
+          proyecto.setIdPlantillaTecnico(plantillaTecnico);
+          proyecto.setIdPlantillaGeneral(plantillaGeneral);
+          proyecto.setEstado("Activo");
+          servicioProyecto.guardar(proyecto);
           
           
     }

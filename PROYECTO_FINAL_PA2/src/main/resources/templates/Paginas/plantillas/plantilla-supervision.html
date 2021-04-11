@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
+        <title>Generando Reporte</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
@@ -16,88 +16,88 @@ and open the template in the editor.
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
-        <div class="container mt-2 card" >
-            <div class="container mt-3">
-                <div class="row">
-                    <div class="col-4 text-center align-items-center icono">
-                        <i class="fas fa-building pt-3"></i>
-                    </div>
-                    <div class="col-4 text-center titulo">
-                        <h4>Fsociety</h4>
-                        <h4>Evaluacion De Proyecto</h4>
-                    </div>
-                    <div class="col-4 text-center">
-                        <h5>Fecha:</h5>
-                        <h5 th:text="${'Código: '+registro.idProyecto.idProyecto}"></h5>
-                    </div>
+        <div class="container mt-2 contenedor-boton">
+            <button class="btn btn-info" onclick="print()">Imprimir Reporte</button>
+        </div>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-4 text-center align-items-center icono">
+                    <i class="fas fa-building pt-3"></i>
+                </div>
+                <div class="col-4 text-center titulo">
+                    <h4>Fsociety</h4>
+                    <h4>Evaluacion De Proyecto</h4>
+                </div>
+                <div class="col-4 text-center">
+                    <h5 th:text="${'Fecha: '+registro.fechaActual}"></h5>
+                    <h5 th:text="${'Código: '+registro.idProyecto.idProyecto}"></h5>
                 </div>
             </div>
-            <div class="container mt-4 contenedor">
-                <div>
-                    <label for="" th:value="${'Coordinador: '+registro.idTipoCoordinador.nombre}"></label>
+        </div>
+        <div class="container mt-4 contenedor">
+            <div>
+                <label for="" th:text="${'Coordinador: '+registro.idTipoCoordinador.nombre}"></label>
+            </div>
+            <div>
+                <label for="" th:text="${'Nombre del lider: '+registro.idProyecto.nombreLider}"></label>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="" th:text="${'Departamento: '+registro.idProyecto.idDepartamento.nombre}"></label>
                 </div>
-                <div>
-                    <label for="" th:text="${'Nombre del lider: '+registro.idProyecto.nombreLider}"></label>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <label for="" th:text="${'Departamento: '+registro.idProyecto.idDepartamento.nombre}"></label>
-                    </div>
-                    <div class="col-6">
-                        <label for="" th:text="${'Identidad: '+registro.idProyecto.identidadLider}"></label>
-                    </div>
-                </div>
-                <div>
-                    <label for="" th:text="${'Titulo Proyecto: '+registro.idProyecto.titulo}"></label>
+                <div class="col-6">
+                    <label for="" th:text="${'Identidad: '+registro.idProyecto.identidadLider}"></label>
                 </div>
             </div>
-            <div class="container mt-4 contenedor">
-                <div class="text-center my-4">
-                    <h4>Revisiones</h4>
+            <div>
+                <label for="" th:text="${'Titulo Proyecto: '+registro.idProyecto.titulo}"></label>
+            </div>
+        </div>
+        <div class="container mt-4 contenedor">
+            <div class="text-center my-4">
+                <h4>Revisiones</h4>
+            </div>
+        </div>
+        <div class="container mt-4 contenedor-info " th:each="reporteSupervision : ${listaReporteSupervision}">
+            <div class="row ">
+                <div class="col-4">
+                    <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.fecha}"></label>
+                </div>
+                <div class="col-4">
+                    <label th:text="${'Hora Inicio: '+reporteSupervision.idSupervision.horaInicio}"></label>
+                </div>
+                <div class="col-4">
+                    <label th:text="${'Hora Fin: '+reporteSupervision.idSupervision.horaFin}"></label>
                 </div>
             </div>
-            <div class="container mt-4 contenedor-info " th:each="reporteSupervision : ${listaReporteSupervision}">
-                <div class="row my-2">
-                    <div class="col-4">
-                        <label th:text="${'Fecha Revision: '+reporteSupervision.idSupervision.fecha}"></label>
-                    </div>
-                    <div class="col-4">
-                        <label th:text="${'Hora Inicio: '+reporteSupervision.idSupervision.horaInicio}"></label>
-                    </div>
-                    <div class="col-4">
-                        <label th:text="${'Hora Fin: '+reporteSupervision.idSupervision.horaFin}"></label>
-                    </div>
-                </div>
-                <div class="col-12 my-2">
-                    <label th:text="${'Objetivos: '+reporteSupervision.idSupervision.objetivo}"></label>
-                </div>
-                <div class="col-12">
-                    <label th:text="${'Observaciones: '+reporteSupervision.idSupervision.observasiones}"></label>
-                </div>
-                <div class="mt-4">
-                    <div class="row text-center">
-                        <div class="col-5 mx-3">
-                            <img th:src="@{/imagenes/firma.png}" alt="firma">
-                            <div>
-                                <label for="">Firma Coordinador</label>
-                            </div>
-                        </div>
-                        <div class="col-5 mx-3">
-                            <img th:src="@{/imagenes/firma.png}" alt="firma">
-                            <div>
-                                <label for="">Firma Lider</label>
-                            </div>
+            <div class="col-12 ">
+                <label th:text="${'Objetivos: '+reporteSupervision.idSupervision.objetivo}"></label>
+            </div>
+            <div class="col-12">
+                <label th:text="${'Observaciones: '+reporteSupervision.idSupervision.observasiones}"></label>
+            </div>
+            <div class="mt-4">
+                <div class="row text-center">
+                    <div class="col-5 mt-3">
+                        <img th:src="@{/imagenes/firma.png}" alt="firma">
+                        <div>
+                            <label for="">Firma Coordinador</label>
                         </div>
                     </div>
+                    <div class="col-5 mt-3">
+                        <img th:src="@{/imagenes/firma.png}" alt="firma">
+                        <div>
+                            <label for="">Firma Lider</label>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="row my-5 text-center">
-                <div class="col-11">
-                    <img th:src="@{/imagenes/firma.png}" alt="firma">
-                    <div>
-                        <label for="">Adminsitrador</label>
-                    </div>
+        </div>
+        <div class="row mt-5 text-center">
+            <div class="col-12">
+                <img th:src="@{/imagenes/firma.png}" alt="firma">
+                <div>
+                    <label for="">Adminsitrador</label>
                 </div>
             </div>
         </div>

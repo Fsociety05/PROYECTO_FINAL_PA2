@@ -22,15 +22,15 @@
                     Proyecto
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" aria-current="page" href="/mantenimientoProyecto" >Mantenimiento Proyecto</a></li>
-                    <li><a class="dropdown-item" aria-current="page" href="/registrarProyecto" >Registrar Proyecto</a></li>
-                    <li><a class="dropdown-item" aria-current="page" href="/mantenimientoProyectoCoord" >Coordinadores del Proyecto</a></li>
-                    <li><a class="dropdown-item" aria-current="page" href="/misProyectos" >Mis proyectos</a></li>
+                    <li><a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item" aria-current="page" href="/mantenimientoProyecto" >Mantenimiento Proyecto</a></li>
+                    <li><a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item" aria-current="page" href="/registrarProyecto" >Registrar Proyecto</a></li>
+                    <li><a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item" aria-current="page" href="/mantenimientoProyectoCoord" >Coordinadores del Proyecto</a></li>
+                    <li><a th:if="${#authorization.expression('hasRole(''ROLE_CONSULTA'')')}" class="dropdown-item" aria-current="page" href="/misProyectos" >Mis proyectos</a></li>
                 </ul>
             </li>
             
              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Plantillas
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -41,7 +41,7 @@
             </li>
             
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Criterios
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -49,11 +49,26 @@
                     <li><a class="dropdown-item" aria-current="page" href="/mantenimiento_criterio" >Mantenimiento Criterios</a></li>
                 </ul>
             </li>
-            
-            
-            
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Reportes
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" aria-current="page" href="/reporteSupervisiones" >Reporte de Supervisiones</a></li>
+                    <li><a class="dropdown-item" aria-current="page" href="#" >Reporte de Calificaciones</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Departamentos
+                </a>
+                <ul th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" aria-current="page" href="/crear_departamento" >Agregar Departamentos</a></li>
+                    <li><a class="dropdown-item" aria-current="page" href="/mantenimientoDepartamento" >Mantenimiento Departamentos</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Bitacoras
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -62,11 +77,11 @@
                 </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-link dropdown-toggle"  style="color: white;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Usuario
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item" href="/crear_usuario" >Agregar Usuario</a></li>
+                    <li><a class="dropdown-item" href="/crear_usuario" >Agregar Usuario</a></li>
                     <li><a class="dropdown-item" href="/mantenimientoUsuario" >Mantenimiento Usuario</a></li>
                 </ul>
             </li>

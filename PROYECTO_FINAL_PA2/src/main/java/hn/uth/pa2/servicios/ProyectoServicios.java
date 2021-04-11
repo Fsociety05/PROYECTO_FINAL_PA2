@@ -36,4 +36,8 @@ public class ProyectoServicios {
     public List<Proyectos> getTodos() {
         return (List<Proyectos>) repositorio.findAll();
     }
+    
+    public List<Proyectos> getResultadoBusqueda(String titulo) {
+        return repositorio.buscarProyecto(titulo);
+    }
 }
