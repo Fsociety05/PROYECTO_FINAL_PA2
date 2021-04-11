@@ -48,19 +48,21 @@ and open the template in the editor.
                             <th>Descripcion</th>
                             <th>Puntaje Maximo</th>
                             <th>Puntaje Minimo</th>
+                            <th>Calificacion</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="criterio : ${plantilla.criterios}">
-                            <td th:text="${criterio.idCriterio}"></td>
-                            <td th:text="${criterio.descripcion}"></td>
-                            <td th:text="${criterio.punt_maximo}"></td>
-                            <td th:text="${criterio.punt_minimo}"></td>
+                        <tr th:each="lista : ${listaProyectoEvaluacion}">
+                            <td th:text="${lista.id}"></td>
+                            <td th:text="${lista.idCriterio.descripcion}"></td>
+                            <td th:text="${lista.idCriterio.punt_maximo}"></td>
+                            <td th:text="${lista.idCriterio.punt_minimo}"></td>
+                            <td th:text="${lista.calificacion}"></td>
 
 
                             <th>
-                                <input type="number" id="" name="titulo"  class="form-control" required>
+                                <a a th:href="@{/calificar_criterio/{id} (id=${lista.id})}" class="btn btn-info">Calificar</a>
                             </th>
 
                             <!-------------------------
@@ -68,10 +70,32 @@ and open the template in the editor.
                             <td><a th:href="@{/actualizar_criterio/{id} (id=${criterio.idCriterio})}" class="btn btn-info">Editar</a></td>
                             <td><a th:href="@{/eliminar_criterio/{id} (id=${criterio.idCriterio})}" class="btn btn-danger">Eliminar</a></td>----------------------->
                         </tr>
+                        
+                        <tr>
+                            <td></td>
+                            <td>Totales</td>
+                            <td th:text="${contadorMax}"></td>
+                            <td th:text="${contadorMin}"></td>
+                            
+                            <!------------------------------------------------------------------------>
+                            <td th:if="${contadorCalificacion>=0}" th:text="${contadorCalificacion +' ('+(contadorCalificacion*100) / contadorMax}+'%)'"></td>
+                            <td th:if="${tipoCoordinador.nombre=='Coordinador Profesional' and contadorCalificacion>=0}" th:text="${(((contadorCalificacion*100) / contadorMax)*60)/100 +'% (60%)'}"></td>
+                            <td th:if="${tipoCoordinador.nombre=='Coordinador Tecnico' and contadorCalificacion>=0}" th:text="${(((contadorCalificacion*100) / contadorMax)*30)/100 +'% (30%)'}"></td>
+                            <td th:if="${tipoCoordinador.nombre=='Coordinador General' and contadorCalificacion>=0}" th:text="${(((contadorCalificacion*100) / contadorMax)*10)/100 +'% (10%)'}"></td>
+                            
+                            <!------------------------------------------------------------------------>
+                            
+                            
+                            
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-info mb-3">Calificar</a>
+            
+            <!--<div class=" mb-3">
+                <button type="submit" class="btn btn-primary">Calificar</button>
+            </div>-->
+            
         </div>
 
 

@@ -6,7 +6,9 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.BitacoraCoordinadores;
+import hn.uth.pa2.modelos.Criterio;
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
+import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.Usuario;
@@ -14,9 +16,11 @@ import hn.uth.pa2.servicios.BitacoraCoordinadoresServicio;
 import hn.uth.pa2.servicios.DepartamentoServicio;
 import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
+import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,9 +58,12 @@ public class ProyectoUIControlador {
 
     @Autowired
     private BitacoraCoordinadoresServicio servicioBitacoraCoordinador;
-    
+
     @Autowired
     private PlantillaServicio servicioPlantilla;
+
+    @Autowired
+    private ProyectoEvaluacionServicio servicioProyectoEvaluacion;
 
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
@@ -85,7 +92,7 @@ public class ProyectoUIControlador {
     @RequestMapping("/misProyectos")
     public String irMisProyectos(Model model) throws Exception {
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
+        setParametro(model, "listaProyectos", servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
         return "paginas/proyecto/proyectos_usuario";
     }
 
@@ -97,7 +104,7 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-        
+
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
         setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
         setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
@@ -138,6 +145,7 @@ public class ProyectoUIControlador {
                 return "redirect:/registrarProyecto";
             }
             servicio.guardar(proyecto);
+
             if (banderin) {
                 atributo.addFlashAttribute("success", "Guardado Correctamente");
             } else {
@@ -147,6 +155,48 @@ public class ProyectoUIControlador {
         } catch (Exception e) {
             System.out.println("ERROR AQUI: " + e.getMessage());
         }
+
+        /**
+         * **************************************************************************
+         */
+        //Guardando las plantillas en el historial
+        if (eliminarEvaluacionesProyectos(proyecto.getIdProyecto()).equalsIgnoreCase("OK")) {
+            for (Criterio criterio : proyecto.getIdPlantillaTecnico().getCriterios()) {
+                ProyectoEvaluacion temp = new ProyectoEvaluacion();
+                temp.setIdCriterio(criterio);
+                temp.setIdPlantilla(proyecto.getIdPlantillaTecnico());
+                temp.setIdProyecto(proyecto);
+                temp.setCalificacion(-1);
+
+                servicioProyectoEvaluacion.guardar(temp);
+            }
+
+            for (Criterio criterio : proyecto.getIdPlantillaProfesional().getCriterios()) {
+                ProyectoEvaluacion temp = new ProyectoEvaluacion();
+                temp.setIdCriterio(criterio);
+                temp.setIdPlantilla(proyecto.getIdPlantillaProfesional());
+                temp.setIdProyecto(proyecto);
+                temp.setCalificacion(-1);
+
+                servicioProyectoEvaluacion.guardar(temp);
+            }
+
+            for (Criterio criterio : proyecto.getIdPlantillaGeneral().getCriterios()) {
+                ProyectoEvaluacion temp = new ProyectoEvaluacion();
+                temp.setIdCriterio(criterio);
+                temp.setIdPlantilla(proyecto.getIdPlantillaGeneral());
+                temp.setIdProyecto(proyecto);
+                temp.setCalificacion(-1);
+
+                servicioProyectoEvaluacion.guardar(temp);
+            }
+        }else{
+            atributo.addFlashAttribute("success", "Guardado Correctamente | Plantillas no se puede editar ya que el proyecto esta siendo evaluado");
+        }
+
+        /**
+         * ***************************************************************************
+         */
         return "redirect:/mantenimientoProyecto";
     }
 
@@ -291,5 +341,25 @@ public class ProyectoUIControlador {
 
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
+    }
+
+    /**
+     * ****************************************************************************************************
+     */
+    private String eliminarEvaluacionesProyectos(Long idProyecto) {
+
+        List<ProyectoEvaluacion> temp = servicioProyectoEvaluacion.getPorIdProyecto(idProyecto);
+
+        for (ProyectoEvaluacion proyectoEvaluacion : temp) {
+            if (proyectoEvaluacion.getFecha() != null) {
+                return "NO OK";
+            }
+        }
+
+        for (ProyectoEvaluacion proyectoEvaluacion : temp) {
+            servicioProyectoEvaluacion.eliminar(proyectoEvaluacion.getId());
+        }
+
+        return "OK";
     }
 }

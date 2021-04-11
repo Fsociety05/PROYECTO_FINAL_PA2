@@ -37,4 +37,12 @@ public class ProyectoEvaluacionServicio {
     public List<ProyectoEvaluacion> getTodos() {
         return (List<ProyectoEvaluacion>) repositorio.findAll();
     }
+    
+    public List<ProyectoEvaluacion> getPorIdProyecto(Long idProyecto) {
+        return (List<ProyectoEvaluacion>) repositorio.getEvaluacioenesPorProyecto(idProyecto);
+    }
+    
+    public List<ProyectoEvaluacion> getPorIdProyectoAndPlantilla(Long idProyecto, Long idPlantilla) {
+        return (List<ProyectoEvaluacion>) repositorio.getEvaluacioenesPorProyectoAndPlantila(idProyecto, idPlantilla);
+    }
 }
