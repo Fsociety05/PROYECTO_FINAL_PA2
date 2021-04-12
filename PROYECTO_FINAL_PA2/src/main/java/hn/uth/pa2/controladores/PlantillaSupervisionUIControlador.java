@@ -45,6 +45,11 @@ public class PlantillaSupervisionUIControlador {
 
     @Autowired
     private SupervisionesServicios servicioSupervisiones;
+    
+    @RequestMapping("/otrosReportes")
+    public String reportesOtros() {
+        return "paginas/reportes/otros-reportes";
+    }
 
     @RequestMapping("/plantillaSupervision")
     public String irPlantillaSupervision() {
