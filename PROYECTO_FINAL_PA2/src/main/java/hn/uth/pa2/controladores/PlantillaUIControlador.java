@@ -7,9 +7,11 @@ package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.Criterio;
 import hn.uth.pa2.modelos.Plantilla;
+import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.TipoEvaluacion;
 import hn.uth.pa2.servicios.CriterioServicio;
 import hn.uth.pa2.servicios.PlantillaServicio;
+import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
 import hn.uth.pa2.servicios.TipoEvaluacionServicio;
 import hn.uth.pa2.servicios.TipoPlantillaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class PlantillaUIControlador {
 
     @Autowired
     private CriterioServicio criterioServicio;
+    
+    @Autowired
+    private ProyectoEvaluacionServicio servicioProyectoEvaluacion;
 
     @RequestMapping("/mantenimientoPlantilla")
     public String mantenimientoUsuario(Model model, RedirectAttributes attribute) {
@@ -63,6 +68,21 @@ public class PlantillaUIControlador {
 
     @PostMapping("/guardar_plantilla")
     public String guardar(Plantilla entidad, Model model, RedirectAttributes attribute) {
+        
+        for (Plantilla object : servicioPlantilla.getTodos()) {
+            if (entidad.getTitulo().equalsIgnoreCase(object.getTitulo())) {
+                attribute.addFlashAttribute("error", "La plantilla no puede ser guardada, el titulo ya existe");
+                return "redirect:/mantenimientoPlantilla";
+            }
+        }
+        
+        for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
+            if (object.getIdPlantilla().getIdPlantilla() == entidad.getIdPlantilla()) {
+                attribute.addFlashAttribute("error", "La plantilla no puede ser editada, la plantilla se esta utilizando");
+                return "redirect:/mantenimientoPlantilla";
+            }
+        }
+        
 
         servicioPlantilla.guardar(entidad);
         attribute.addFlashAttribute("success", "Guardado correctamente");
@@ -76,6 +96,13 @@ public class PlantillaUIControlador {
             //attribute.addFlashAttribute("error", "No se puede editar ya que contiene");
             //return "redirect:/mantenimientoPlantilla";
         }
+        
+        for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
+            if (object.getIdPlantilla().getIdPlantilla() == id) {
+                attribute.addFlashAttribute("error", "La plantilla no puede ser editada, la plantilla se esta utilizando");
+                return "redirect:/mantenimientoPlantilla";
+            }
+        }
 
         setParametro(model, "listaTipoPlantilla", servicioTipoPlantilla.getTodos());
         setParametro(model, "plantilla", servicioPlantilla.getValor(id));
@@ -85,6 +112,14 @@ public class PlantillaUIControlador {
 
     @GetMapping("eliminar_plantilla/{id}")
     public String eliminar(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
+        
+        for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
+            if (object.getIdPlantilla().getIdPlantilla() == id) {
+                attribute.addFlashAttribute("error", "La plantilla no puede ser eliminada, la plantilla se esta utilizando");
+                return "redirect:/mantenimientoPlantilla";
+            }
+        }
+        
         attribute.addFlashAttribute("success", "eliminado correctamente");
         servicioPlantilla.eliminar(id);
         return "redirect:/mantenimientoPlantilla";

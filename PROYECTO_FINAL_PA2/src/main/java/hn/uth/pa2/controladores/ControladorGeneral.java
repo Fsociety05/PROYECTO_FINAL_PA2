@@ -26,7 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -36,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ControladorGeneral {
 
     private boolean logiado_por_primera_vez = true;
+
+    public static Long id_usuario;
 
     private Usuario usuarioLogueado;
     /**
@@ -69,7 +73,7 @@ public class ControladorGeneral {
     public String index(Model model) {
 
         if (logiado_por_primera_vez) {
-//            llenandoTablas();
+            //llenandoTablas();
             logiado_por_primera_vez = false;
         }
         //llenandoTablas();
@@ -79,18 +83,6 @@ public class ControladorGeneral {
     @RequestMapping("/menuInicio")
     public String menuPrincipal() {
         return "paginas/menu_principal";
-    }
-
-    public void crearUsuario() {
-        HashSet<Rol> rolUser = new HashSet<Rol>();
-        rolUser.add(servicioRol.getValor(1L).get());
-
-        /*Usuario Admin*/
-        Usuario usuarioTemp = new Usuario();
-        usuarioTemp.setUsername("admin");
-        usuarioTemp.setContrasenia("admin");
-        usuarioTemp.setRoles(rolUser);
-        servicioUsuario.guardar(usuarioTemp);
     }
 
     /*Llenando las tablas por primera ves*/
@@ -118,7 +110,7 @@ public class ControladorGeneral {
         /*Usuario Admin*/
         Usuario usuarioTemp = new Usuario();
         usuarioTemp.setUsername("admin");
-        usuarioTemp.setContrasenia(bCryptPasswordEncoder.encode("admin"));
+        usuarioTemp.setContrasenia(bCryptPasswordEncoder.encode("123"));
         usuarioTemp.setRoles(rolUser);
         servicioUsuario.guardar(usuarioTemp);
         
