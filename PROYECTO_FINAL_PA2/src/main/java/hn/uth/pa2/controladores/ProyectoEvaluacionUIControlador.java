@@ -20,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -57,8 +56,8 @@ public class ProyectoEvaluacionUIControlador {
         int cont_superviciones_tec = 0;
         int cont_superviciones_gnr = 0;
         
-        if (!servicioProyectoSuperviciones.getReporteProyecto(id).isEmpty()) {
-            for (ProyectoSupervisiones object : servicioProyectoSuperviciones.getReporteProyecto(id)) {
+        if (!servicioProyectoSuperviciones.getReporteProyectoEvaluaciones(id).isEmpty()) {
+            for (ProyectoSupervisiones object : servicioProyectoSuperviciones.getReporteProyectoEvaluaciones(id)) {
                 if (object.getIdTipoCoordinador().getNombre().equals("Coordinador Tecnico")) {
                     cont_superviciones_tec++;
                 }

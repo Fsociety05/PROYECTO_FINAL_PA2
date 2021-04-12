@@ -6,11 +6,8 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.BitacoraCoordinadores;
-<<<<<<< HEAD
 import hn.uth.pa2.modelos.Departamento;
-=======
 import hn.uth.pa2.modelos.Criterio;
->>>>>>> abdiel
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.Proyectos;
@@ -159,7 +156,6 @@ public class ProyectoUIControlador {
                 atributo.addFlashAttribute("error", "Error el departamento esta vacio");
                 return "redirect:/registrarProyecto";
             }
-<<<<<<< HEAD
             for (Departamento todo : servicioDepartamento.getTodos()) {
                 if (todo.getEstado().equals(proyecto.getIdDepartamento().getEstado())) {
                     if (todo.getEstado().equalsIgnoreCase("Inactivo")) {
@@ -168,10 +164,8 @@ public class ProyectoUIControlador {
                     }
                 }
             }
-=======
             servicio.guardar(proyecto);
 
->>>>>>> abdiel
             if (banderin) {
                 for (Proyectos item : servicio.getTodos()) {
                     if (item.getTitulo().equalsIgnoreCase(proyecto.getTitulo())) {

@@ -45,4 +45,8 @@ public class ProyectoSupervisionesServ {
     public List<ProyectoSupervisiones> getReporteProyecto(Long idProyecto, String tipoCoordinador) {
         return repositorio.getReporteSupervision(idProyecto, tipoCoordinador);
     }
+
+    public List<ProyectoSupervisiones> getReporteProyectoEvaluaciones(Long idProyecto) {
+        return repositorio.getReporteSupervisionEvaluacion(idProyecto);
+    }
 }

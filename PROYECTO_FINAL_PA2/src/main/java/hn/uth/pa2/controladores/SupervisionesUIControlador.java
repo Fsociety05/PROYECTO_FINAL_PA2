@@ -132,11 +132,7 @@ public class SupervisionesUIControlador {
                 this.banderin = true;
             }
         }
-<<<<<<< HEAD
         return "redirect:/tituloProyecto";
-=======
-        return "redirect:/misProyectos";
->>>>>>> abdiel
     }
 
     @GetMapping("/tituloProyecto")

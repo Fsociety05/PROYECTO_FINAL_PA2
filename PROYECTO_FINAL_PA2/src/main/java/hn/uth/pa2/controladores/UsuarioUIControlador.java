@@ -139,10 +139,7 @@ public class UsuarioUIControlador {
             attribute.addFlashAttribute("error", "No se puede Editar este usuario");
             return "redirect:/mantenimientoUsuario";
         }
-        
-       
-        
-        
+
         setParametro(model, "usuario", servicioUsuario.getValor(id));
         setParametro(model, "lista_roles", servicioRol.getTodos());
         setParametro(model, "lista_departamentos", servicioDepartamento.getTodos());
