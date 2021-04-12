@@ -7,9 +7,11 @@ package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.ProyectoEvaluacion;
+import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
+import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,42 +42,57 @@ public class ProyectoEvaluacionUIControlador {
     @Autowired
     private ProyectoEvaluacionServicio servicioProyectoEvaluacion;
 
+    @Autowired
+    private ProyectoSupervisionesServ servicioProyectoSuperviciones;
+
     @GetMapping("/calificar/{id}")
     public String irFormulario(@PathVariable("id") Long id, Model model, RedirectAttributes atributo) throws Exception {
-        //setParametro(model, "supervisiones", new Supervisiones());
-        //setParametro(model, "proyectoSupervisiones", new ProyectoSupervisiones());
+        ///misProyectos
+//        if (servicioProyectoSuperviciones.getReporteProyecto(id).size() == 0) {
+//            atributo.addFlashAttribute("error", "El proyecto no tiene ninguna supervicion");
+//            return "redirect:/misProyectos";
+//        }
+
+        int cont_superviciones_pro = 0;
+        int cont_superviciones_tec = 0;
+        int cont_superviciones_gnr = 0;
+        
+        if (!servicioProyectoSuperviciones.getReporteProyecto(id).isEmpty()) {
+            for (ProyectoSupervisiones object : servicioProyectoSuperviciones.getReporteProyecto(id)) {
+                if (object.getIdTipoCoordinador().getNombre().equals("Coordinador Tecnico")) {
+                    cont_superviciones_tec++;
+                }
+
+                if (object.getIdTipoCoordinador().getNombre().equals("Coordinador Profesional")) {
+                    cont_superviciones_pro++;
+                }
+            }
+        } else {
+            atributo.addFlashAttribute("error", "Tiene " + cont_superviciones_tec + " superviciones de 3");
+            return "redirect:/misProyectos";
+        }
+
+        cont_superviciones_gnr = cont_superviciones_pro + cont_superviciones_tec;
 
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-
-        List<ProyectoCoordinadores> tempProCord = null;
-
-        List<ProyectoEvaluacion> tempProyectoEvaluaciones = null;
+        
+        //System.out.println(servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario).toString());
 
         for (ProyectoCoordinadores proyectoCoordinadores : servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario)) {
-            if (proyectoCoordinadores.getIdProyecto().getIdProyecto() == id) {
-
-//                setParametro(model, "proyecto", proyectoCoordinadores.getIdProyecto());
-//                setParametro(model, "tipoCoordinador", proyectoCoordinadores.getIdTipoCoordinador());
-//                
-//                if(proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador Tecnico")){
-//                    setParametro(model, "plantilla", proyectoCoordinadores.getIdProyecto().getIdPlantillaTecnico());
-//                }
-//                
-//                if(proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador General")){
-//                    setParametro(model, "plantilla", proyectoCoordinadores.getIdProyecto().getIdPlantillaGeneral());
-//                    
-//                   
-//                     
-//                }
-//                
-//                if(proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador Profesional")){
-//                    setParametro(model, "plantilla", proyectoCoordinadores.getIdProyecto().getIdPlantillaProfesional());
-//                     
-//                }
+            //System.out.println(id + "==="+ proyectoCoordinadores.getIdProyecto().getIdProyecto());
+            
+            if (proyectoCoordinadores.getIdProyecto().getIdProyecto().equals(id)) {
+                //System.out.println("ENtro al if");
                 setParametro(model, "proyecto", proyectoCoordinadores.getIdProyecto());
                 setParametro(model, "tipoCoordinador", proyectoCoordinadores.getIdTipoCoordinador());
 
                 if (proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador Tecnico")) {
+
+                    if (cont_superviciones_tec < 3) {
+                        atributo.addFlashAttribute("error", "Tiene " + cont_superviciones_tec + " superviciones de 3");
+                        return "redirect:/misProyectos";
+                    }
+
                     setParametro(model, "plantilla", proyectoCoordinadores.getIdProyecto().getIdPlantillaTecnico());
 
                     setParametro(model, "listaProyectoEvaluacion", getProjectoEvaluacionPorPlantilla(proyectoCoordinadores.getIdProyecto().getIdProyecto(),
@@ -92,6 +109,19 @@ public class ProyectoEvaluacionUIControlador {
                 }
 
                 if (proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador General")) {
+
+                    if (cont_superviciones_gnr < 6) {
+                        atributo.addFlashAttribute("error", "El proyecto tiene " + cont_superviciones_gnr + " superviciones de 6");
+                        return "redirect:/misProyectos";
+                    }
+
+                    for (ProyectoEvaluacion proyectoEvaluacion : servicioProyectoEvaluacion.getPorIdProyecto(id)) {
+                        if (proyectoEvaluacion.getFecha() == null) {
+                            atributo.addFlashAttribute("error", "Faltan calificaciones de los coordinadores tecnico y/o general");
+                            return "redirect:/misProyectos";
+                        }
+                    }
+
                     setParametro(model, "plantilla", proyectoCoordinadores.getIdProyecto().getIdPlantillaGeneral());
 
                     setParametro(model, "listaProyectoEvaluacion", getProjectoEvaluacionPorPlantilla(proyectoCoordinadores.getIdProyecto().getIdProyecto(),
@@ -105,11 +135,17 @@ public class ProyectoEvaluacionUIControlador {
 
                     setParametro(model, "contadorCalificacion", contarTotales(proyectoCoordinadores.getIdProyecto().getIdProyecto(),
                             proyectoCoordinadores.getIdProyecto().getIdPlantillaGeneral().getIdPlantilla())[2]);
-                    
+
                     System.out.println("Entro");
                 }
 
                 if (proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador Profesional")) {
+
+                    if (cont_superviciones_pro < 3) {
+                        atributo.addFlashAttribute("error", "Tiene " + cont_superviciones_pro + " superviciones de 3");
+                        return "redirect:/misProyectos";
+                    }
+
                     setParametro(model, "plantilla", proyectoCoordinadores.getIdProyecto().getIdPlantillaProfesional());
 
                     setParametro(model, "listaProyectoEvaluacion", getProjectoEvaluacionPorPlantilla(proyectoCoordinadores.getIdProyecto().getIdProyecto(),
@@ -128,11 +164,16 @@ public class ProyectoEvaluacionUIControlador {
                 break;
             }
         }
-
-        atributo.addFlashAttribute("error", "Hola");
+        
+        
+        if(servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario).isEmpty()){
+             atributo.addFlashAttribute("error", "error");
+                        return "redirect:/misProyectos";
+        }
 
         setParametro(model, "usuario", servicioUsuario.getLoggedUser().getId_usuario());
 
+        //atributo.addFlashAttribute("error", "Hola");
         return "paginas/calificacion/form_calificacion";
     }
 
@@ -172,6 +213,13 @@ public class ProyectoEvaluacionUIControlador {
 
     @PostMapping("/guardar_evaluacionCriterio")
     public String guardar(ProyectoEvaluacion entidad, Model model, RedirectAttributes attribute) throws Exception {
+
+        if (entidad.getCalificacion() < 0 || entidad.getCalificacion() > entidad.getIdCriterio().getPunt_maximo()
+                || entidad.getCalificacion() < entidad.getIdCriterio().getPunt_minimo()) {
+
+            attribute.addFlashAttribute("error", "Calificacion no valida");
+            return "redirect:/calificar_criterio/" + entidad.getId() + "";
+        }
 
         entidad.setIdUsuario(servicioUsuario.getLoggedUser());
 
