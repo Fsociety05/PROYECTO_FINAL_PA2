@@ -8,7 +8,6 @@ package hn.uth.pa2.controladores;
 import hn.uth.pa2.modelos.BitacoraCoordinadores;
 import hn.uth.pa2.modelos.Departamento;
 import hn.uth.pa2.modelos.Criterio;
-import hn.uth.pa2.modelos.Plantilla;
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.Proyectos;
@@ -117,7 +116,12 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-
+        for (Proyectos item : servicio.getTodos()) {
+            if (item.getIdProyecto().equals(id) && item.getEstado().equals("Finalizado")) {
+                atributo.addFlashAttribute("error", "Error - El proyecto esta finalizado no se puede actualizar");
+                return "redirect:/mantenimientoProyecto";
+            }
+        }
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
         setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
         setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
@@ -170,6 +174,7 @@ public class ProyectoUIControlador {
                 atributo.addFlashAttribute("error", capturador);
                 return "redirect:/registrarProyecto";
             }
+            proyecto.setEstado("Activo");
             if (banderin) {
                 for (Proyectos item : servicio.getTodos()) {
                     if (item.getTitulo().equals(proyecto.getTitulo())) {
@@ -227,7 +232,7 @@ public class ProyectoUIControlador {
                 servicioProyectoEvaluacion.guardar(temp);
             }
         }else{
-            atributo.addFlashAttribute("success", "Guardado Correctamente | Plantillas no se puede editar ya que el proyecto esta siendo evaluado");
+            atributo.addFlashAttribute("success", "Actualizado Correctamente | Plantillas no se puede editar ya que el proyecto esta siendo evaluado");
         }
 
         /**

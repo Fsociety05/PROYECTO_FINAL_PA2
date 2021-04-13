@@ -27,7 +27,7 @@ and open the template in the editor.
             <h2>Registro de Supervision</h2>
         </div>
         <div class="container mt-5">
-            <form th:action="@{/guardarSupervision}" action="#" th:object="${supervisiones}" method="POST">
+            <form th:action="@{/guardarSupervision}" action="#" th:object="${supervisiones}" method="POST" class="form-control">
                 <div class="mb-3">
                     <label for="objetivo validationDefault01" class="form-label">Objetivo</label>
                     <textarea class="form-control" id="objetivo validationDefault01" rows="3" cols="25" th:field="*{objetivo}" name="objetivo" required></textarea>
@@ -55,6 +55,7 @@ and open the template in the editor.
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="/tituloProyecto" class="btn btn-warning">Ir a Mantenimiento</a>
             </form>
         </div>
         <script src="/js/alerta.js" type="text/javascript"></script>
