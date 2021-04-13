@@ -40,4 +40,11 @@ public class ProyectoServicios {
     public List<Proyectos> getResultadoBusqueda(String titulo) {
         return repositorio.buscarProyecto(titulo);
     }
+    
+    public List existeCriterioPlantilla(Long idPlantilla) {
+        return repositorio.existeCriterioPlantilla(idPlantilla);
+    }
+    public void finalizarProyecto(String estado, Long idProyecto){
+        repositorio.finalizarProyecto(estado, idProyecto);
+    }
 }

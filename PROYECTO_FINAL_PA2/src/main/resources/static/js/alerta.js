@@ -7,6 +7,6 @@
 function quitarDiv(){
     document.getElementById("container_mensages").style.display="none";
 }
-setTimeout("quitarDiv()",3000);
+setTimeout("quitarDiv()",4000);
 
 

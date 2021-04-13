@@ -52,6 +52,10 @@ public class ProyectoSupervisiones implements Serializable {
     @JoinColumn(name = "id_tipo_coordinador")
     private TipoCoordinadores idTipoCoordinador;
     
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+    
     @Transient
     private Date fechaActual = fecha;
 }

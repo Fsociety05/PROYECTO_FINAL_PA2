@@ -116,7 +116,12 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-
+        for (Proyectos item : servicio.getTodos()) {
+            if (item.getIdProyecto().equals(id) && item.getEstado().equals("Finalizado")) {
+                atributo.addFlashAttribute("error", "Error - El proyecto esta finalizado no se puede actualizar");
+                return "redirect:/mantenimientoProyecto";
+            }
+        }
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
         setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
         setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
@@ -163,12 +168,16 @@ public class ProyectoUIControlador {
                         return "redirect:/registrarProyecto";
                     }
                 }
+            } 
+            String capturador = this.existeCriterioPlantilla(proyecto);
+            if (!capturador.equals("OK")) {
+                atributo.addFlashAttribute("error", capturador);
+                return "redirect:/registrarProyecto";
             }
-            servicio.guardar(proyecto);
-
+            proyecto.setEstado("Activo");
             if (banderin) {
                 for (Proyectos item : servicio.getTodos()) {
-                    if (item.getTitulo().equalsIgnoreCase(proyecto.getTitulo())) {
+                    if (item.getTitulo().equals(proyecto.getTitulo())) {
                         atributo.addFlashAttribute("error", "Error el nombre del proyecto ya existe");
                         return "redirect:/registrarProyecto";
                     }
@@ -223,7 +232,7 @@ public class ProyectoUIControlador {
                 servicioProyectoEvaluacion.guardar(temp);
             }
         }else{
-            atributo.addFlashAttribute("success", "Guardado Correctamente | Plantillas no se puede editar ya que el proyecto esta siendo evaluado");
+            atributo.addFlashAttribute("success", "Actualizado Correctamente | Plantillas no se puede editar ya que el proyecto esta siendo evaluado");
         }
 
         /**
@@ -316,7 +325,7 @@ public class ProyectoUIControlador {
         } catch (Exception e) {
             System.out.println("ERROR AQUI: " + e.getMessage());
         }
-        return "redirect:/formProyectoCoordinadores";
+        return "redirect:/mantenimientoProyectoCoord";
     }
 
     @RequestMapping("/formProyectoCoordinadores")
@@ -385,6 +394,20 @@ public class ProyectoUIControlador {
             servicioProyectoEvaluacion.eliminar(proyectoEvaluacion.getId());
         }
 
+        return "OK";
+    }
+   
+    private String existeCriterioPlantilla(Proyectos proyecto) {
+        boolean existe = false;
+        if (servicio.existeCriterioPlantilla(proyecto.getIdPlantillaProfesional().getIdPlantilla()).isEmpty()) {
+            return "Error - La plantilla del coordinador profesional no tiene criterios";
+        }
+        if (servicio.existeCriterioPlantilla(proyecto.getIdPlantillaTecnico().getIdPlantilla()).isEmpty()) {
+            return "Error - La plantilla del coordinador tecnico no tiene criterios";
+        }
+        if (servicio.existeCriterioPlantilla(proyecto.getIdPlantillaGeneral().getIdPlantilla()).isEmpty()) {
+            return "Error - La plantilla del coordinador general no tiene criterios";
+        }
         return "OK";
     }
 }
