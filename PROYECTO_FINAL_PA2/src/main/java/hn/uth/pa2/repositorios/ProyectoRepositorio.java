@@ -6,6 +6,8 @@
 package hn.uth.pa2.repositorios;
 
 import hn.uth.pa2.modelos.Proyectos;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,4 +16,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ProyectoRepositorio extends CrudRepository<Proyectos, Long> {    
     
+    @Query(value = "SELECT * FROM PROYECTOS P WHERE UPPER(P.TITULO) LIKE %?1%", nativeQuery = true)
+    List<Proyectos> buscarProyecto(String titulo);
 }

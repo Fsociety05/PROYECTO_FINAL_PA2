@@ -6,23 +6,27 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.BitacoraCoordinadores;
+import hn.uth.pa2.modelos.Departamento;
+import hn.uth.pa2.modelos.Criterio;
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
+import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.BitacoraCoordinadoresServicio;
 import hn.uth.pa2.servicios.DepartamentoServicio;
+import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
+import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
 import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,27 +61,28 @@ public class ProyectoUIControlador {
     @Autowired
     private BitacoraCoordinadoresServicio servicioBitacoraCoordinador;
 
+    @Autowired
+    private PlantillaServicio servicioPlantilla;
+
+    @Autowired
+    private ProyectoEvaluacionServicio servicioProyectoEvaluacion;
+
     @RequestMapping("/registrarProyecto")
     public String irFormulario(Model model) {
         setParametro(model, "proyecto", new Proyectos());
         setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
-        setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-        setParametro(model, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
-        setParametro(model, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
-        setParametro(model, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+        setParametro(model, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
+        setParametro(model, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
+        setParametro(model, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
         this.banderin = true;
         return "paginas/proyecto/form-proyecto";
     }
 
-    @RequestMapping("/mantenimientoProyecto")
+    @GetMapping("/mantenimientoProyecto")
     public String irServicios(Model model) {
         try {
-            setParametro(model, "listaProyecto", servicio.getTodos());
-            setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
-            setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
-            setParametro(model, "listaCoordinadorP", servicioCoordinador.getTipoCoordinador("Coordinador Profesional"));
-            setParametro(model, "listaCoordinadorT", servicioCoordinador.getTipoCoordinador("Coordinador Tecnico"));
-            setParametro(model, "listaCoordinadorG", servicioCoordinador.getTipoCoordinador("Coordinador General"));
+            model.addAttribute("buscarTitulo", new Proyectos());
+            model.addAttribute("listaProyecto", servicio.getTodos());
             this.banderin = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -85,11 +90,21 @@ public class ProyectoUIControlador {
         return "paginas/proyecto/mantenimiento-proyecto";
     }
 
+    @GetMapping("/busquedaProyecto")
+    public String buscarProyecto(Model model, @ModelAttribute("buscarTitulo") Proyectos entidad) {
+        String busqueda = entidad.getTitulo().replaceAll("^\\s*", "");
+        if (busqueda.equals("")) {
+            model.addAttribute("listaProyecto", servicio.getTodos());
+        } else {
+            model.addAttribute("listaProyecto", servicio.getResultadoBusqueda(busqueda.toUpperCase()));
+        }
+        return "paginas/proyecto/mantenimiento-proyecto";
+    }
+
     @RequestMapping("/misProyectos")
     public String irMisProyectos(Model model) throws Exception {
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-        setParametro(model, "listaProyectos",servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
-
+        setParametro(model, "listaProyectos", servicioProyectoCoord.seleccionarProyectoCoordinador(idUsuario));
         return "paginas/proyecto/proyectos_usuario";
     }
 
@@ -101,8 +116,13 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarProyecto/{id}")
     public String irActualizar(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-        setParametro(modelo, "proyecto", servicio.getValor(id));
+
         setParametro(modelo, "listaDepartamentos", servicioDepartamento.getTodos());
+        setParametro(modelo, "listaPlantillaProfesional", servicioPlantilla.getTipoPlantilla("PROFESIONAL"));
+        setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
+        setParametro(modelo, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
+        setParametro(modelo, "proyecto", servicio.getValor(id));
+        System.out.println(servicio.getValor(id));
         this.banderin = false;
         return "paginas/proyecto/form-proyecto";
     }
@@ -136,17 +156,80 @@ public class ProyectoUIControlador {
                 atributo.addFlashAttribute("error", "Error el departamento esta vacio");
                 return "redirect:/registrarProyecto";
             }
+            for (Departamento todo : servicioDepartamento.getTodos()) {
+                if (todo.getEstado().equals(proyecto.getIdDepartamento().getEstado())) {
+                    if (todo.getEstado().equalsIgnoreCase("Inactivo")) {
+                        atributo.addFlashAttribute("error", "Error - El Departamento esta Inactivo");
+                        return "redirect:/registrarProyecto";
+                    }
+                }
+            }
             servicio.guardar(proyecto);
+
             if (banderin) {
+                for (Proyectos item : servicio.getTodos()) {
+                    if (item.getTitulo().equalsIgnoreCase(proyecto.getTitulo())) {
+                        atributo.addFlashAttribute("error", "Error el nombre del proyecto ya existe");
+                        return "redirect:/registrarProyecto";
+                    }
+                }
+                if (proyecto.getEstado().equalsIgnoreCase("Finalizado")) {
+                    atributo.addFlashAttribute("error", "Error - El estado del proyecto debe estar activo");
+                    return "redirect:/registrarProyecto";
+                }
+                servicio.guardar(proyecto);
                 atributo.addFlashAttribute("success", "Guardado Correctamente");
             } else {
+                servicio.guardar(proyecto);
                 atributo.addFlashAttribute("success", "Actualizado Correctamente");
             }
             this.banderin = true;
         } catch (Exception e) {
             System.out.println("ERROR AQUI: " + e.getMessage());
         }
-        return "redirect:/registrarProyecto";
+
+        /**
+         * **************************************************************************
+         */
+        //Guardando las plantillas en el historial
+        if (eliminarEvaluacionesProyectos(proyecto.getIdProyecto()).equalsIgnoreCase("OK")) {
+            for (Criterio criterio : proyecto.getIdPlantillaTecnico().getCriterios()) {
+                ProyectoEvaluacion temp = new ProyectoEvaluacion();
+                temp.setIdCriterio(criterio);
+                temp.setIdPlantilla(proyecto.getIdPlantillaTecnico());
+                temp.setIdProyecto(proyecto);
+                temp.setCalificacion(-1);
+
+                servicioProyectoEvaluacion.guardar(temp);
+            }
+
+            for (Criterio criterio : proyecto.getIdPlantillaProfesional().getCriterios()) {
+                ProyectoEvaluacion temp = new ProyectoEvaluacion();
+                temp.setIdCriterio(criterio);
+                temp.setIdPlantilla(proyecto.getIdPlantillaProfesional());
+                temp.setIdProyecto(proyecto);
+                temp.setCalificacion(-1);
+
+                servicioProyectoEvaluacion.guardar(temp);
+            }
+
+            for (Criterio criterio : proyecto.getIdPlantillaGeneral().getCriterios()) {
+                ProyectoEvaluacion temp = new ProyectoEvaluacion();
+                temp.setIdCriterio(criterio);
+                temp.setIdPlantilla(proyecto.getIdPlantillaGeneral());
+                temp.setIdProyecto(proyecto);
+                temp.setCalificacion(-1);
+
+                servicioProyectoEvaluacion.guardar(temp);
+            }
+        }else{
+            atributo.addFlashAttribute("success", "Guardado Correctamente | Plantillas no se puede editar ya que el proyecto esta siendo evaluado");
+        }
+
+        /**
+         * ***************************************************************************
+         */
+        return "redirect:/mantenimientoProyecto";
     }
 
     @PostMapping("/guardarCoordinadores")
@@ -261,8 +344,6 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarCordinadores/{id}")
     public String actualizarCoordinadores(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-//        List<Usuario> listaUsuario = new ArrayList<>();
-//        Usuario usuario = new Usuario();
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
         if (servicioCoordinador.getTodos().size() == 0) {
@@ -273,11 +354,6 @@ public class ProyectoUIControlador {
             atributo.addFlashAttribute("error", "Error el proyecto no tiene agregado coordinadores, no se puede actualizar");
             return "redirect:/mantenimientoProyectoCoord";
         }
-//        for (Usuario object : servicioUsuario.getUsuariosCoordinadores(idProyecto)) {
-//            usuario.setNombres(object.getNombres());
-//            listaUsuario.add(usuario);
-//        }
-
         modelo.addAttribute("editMode", "true");
         setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
@@ -290,5 +366,25 @@ public class ProyectoUIControlador {
 
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
+    }
+
+    /**
+     * ****************************************************************************************************
+     */
+    private String eliminarEvaluacionesProyectos(Long idProyecto) {
+
+        List<ProyectoEvaluacion> temp = servicioProyectoEvaluacion.getPorIdProyecto(idProyecto);
+
+        for (ProyectoEvaluacion proyectoEvaluacion : temp) {
+            if (proyectoEvaluacion.getFecha() != null) {
+                return "NO OK";
+            }
+        }
+
+        for (ProyectoEvaluacion proyectoEvaluacion : temp) {
+            servicioProyectoEvaluacion.eliminar(proyectoEvaluacion.getId());
+        }
+
+        return "OK";
     }
 }

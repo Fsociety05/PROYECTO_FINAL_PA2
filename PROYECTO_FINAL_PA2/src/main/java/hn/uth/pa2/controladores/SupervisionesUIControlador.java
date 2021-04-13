@@ -5,13 +5,16 @@
  */
 package hn.uth.pa2.controladores;
 
+import hn.uth.pa2.modelos.BitacoraSupervision;
 import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.Supervisiones;
 import hn.uth.pa2.modelos.TipoCoordinadores;
+import hn.uth.pa2.servicios.BitacoraSupervisionServicios;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.SupervisionesServicios;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
+import hn.uth.pa2.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +44,12 @@ public class SupervisionesUIControlador {
 
     @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperv;
+    
+    @Autowired
+    private BitacoraSupervisionServicios servicioBitacoraSupervision;
+    
+    @Autowired
+    private UsuarioServicio servicioUsuario;
 
     @RequestMapping("/registrarSupervision")
     public String irFormulario(Model model) {
@@ -57,16 +66,14 @@ public class SupervisionesUIControlador {
     }
 
     @GetMapping("/coordinadorProfesional/{id}")
-    public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {     
-        
-        
+    public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {
+
         for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
-            if(object.getNombre().equalsIgnoreCase("Coordinador Profesional")){
+            if (object.getNombre().equalsIgnoreCase("Coordinador Profesional")) {
                 this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
             }
         }
-        
-        
+
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -75,13 +82,13 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/coordinadorTecnico/{id}")
     public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo) {
-        
+
         for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
-            if(object.getNombre().equalsIgnoreCase("Coordinador Tecnico")){
+            if (object.getNombre().equalsIgnoreCase("Coordinador Tecnico")) {
                 this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
             }
         }
-        
+
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -89,8 +96,8 @@ public class SupervisionesUIControlador {
     }
 
     @PostMapping("/guardarSupervision")
-    public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) {
-        
+    public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) throws Exception {
+
         if (this.idProyecto != null) {
             ProyectoSupervisiones proyectoSup = new ProyectoSupervisiones();
             Proyectos proyecto = new Proyectos(this.idProyecto);
@@ -119,11 +126,13 @@ public class SupervisionesUIControlador {
             this.banderin = false;
             servicio.guardar(supervision);
             if (banderin == false) {
+                //AQUI LA BITACORA
+                this.bitacoraSupervision();
                 atributo.addFlashAttribute("success", "Actualizado Correctamente");
                 this.banderin = true;
             }
         }
-        return "redirect:/registrarSupervision";
+        return "redirect:/tituloProyecto";
     }
 
     @GetMapping("/tituloProyecto")
@@ -135,13 +144,22 @@ public class SupervisionesUIControlador {
 
     @GetMapping("/busqueda")
     public String getBuscarTitulo(Model model, @ModelAttribute("valorTitulo") ProyectoSupervisiones entidad) {
-        String busqueda = entidad.getIdProyecto().getTitulo().replaceAll("^\\s*","");
+        String busqueda = entidad.getIdProyecto().getTitulo().replaceAll("^\\s*", "");
         if (busqueda.equals("")) {
             model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
         } else {
-            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(entidad.getIdProyecto().getTitulo()));
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(busqueda.toUpperCase()));
         }
         return "paginas/supervision/mantenimiento-servicio";
+    }
+
+    private void bitacoraSupervision() throws Exception {
+        BitacoraSupervision bitacora = new BitacoraSupervision();
+        java.util.Date d = new java.util.Date();
+        java.sql.Date date2 = new java.sql.Date(d.getTime());
+        bitacora.setUsuario(servicioUsuario.getLoggedUser().getUsername());
+        bitacora.setFechaEjecucion(date2);
+        this.servicioBitacoraSupervision.guardar(bitacora);
     }
 
     public void setParametro(Model model, String atributo, Object valor) {

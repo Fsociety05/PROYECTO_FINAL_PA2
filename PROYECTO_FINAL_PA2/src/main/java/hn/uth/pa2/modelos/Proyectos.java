@@ -43,6 +43,18 @@ public class Proyectos implements Serializable {
     @JoinColumn(name = "id_departamento")
     private Departamento idDepartamento;
     
+    @ManyToOne
+    @JoinColumn(name = "id_plantilla_profesional")
+    private Plantilla idPlantillaProfesional;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_plantilla_tecnico")
+    private Plantilla idPlantillaTecnico;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_plantilla_general")
+    private Plantilla idPlantillaGeneral;
+    
     private String estado;
     
     @Transient

@@ -49,12 +49,15 @@ and open the template in the editor.
                     <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>
                 </div>
             </form>
+            <div class="mt-2">
             <div th:if="${param.error}" class="alert alert-danger" role="alert">
                 Invalid username and password.
             </div>
             <div th:if="${param.logout}" class="alert alert-success" role="alert">
                 You have been logged out.
+            </div>    
             </div>
+            
         </div>
 
 

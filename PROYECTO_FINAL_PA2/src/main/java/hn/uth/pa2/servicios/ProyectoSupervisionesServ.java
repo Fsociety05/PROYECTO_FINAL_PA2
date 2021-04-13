@@ -37,8 +37,16 @@ public class ProyectoSupervisionesServ {
     public List<ProyectoSupervisiones> getTodos() {
         return (List<ProyectoSupervisiones>) repositorio.findAll();
     }
-    
+
     public List<ProyectoSupervisiones> getResultadoBusqueda(String titulo) {
         return repositorio.findByIdProyectoTitulo(titulo);
+    }
+
+    public List<ProyectoSupervisiones> getReporteProyecto(Long idProyecto, String tipoCoordinador) {
+        return repositorio.getReporteSupervision(idProyecto, tipoCoordinador);
+    }
+
+    public List<ProyectoSupervisiones> getReporteProyectoEvaluaciones(Long idProyecto) {
+        return repositorio.getReporteSupervisionEvaluacion(idProyecto);
     }
 }
