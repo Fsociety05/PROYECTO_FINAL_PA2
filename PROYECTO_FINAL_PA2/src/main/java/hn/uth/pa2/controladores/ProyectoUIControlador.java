@@ -8,6 +8,7 @@ package hn.uth.pa2.controladores;
 import hn.uth.pa2.modelos.BitacoraCoordinadores;
 import hn.uth.pa2.modelos.Departamento;
 import hn.uth.pa2.modelos.Criterio;
+import hn.uth.pa2.modelos.Plantilla;
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.Proyectos;
@@ -163,12 +164,15 @@ public class ProyectoUIControlador {
                         return "redirect:/registrarProyecto";
                     }
                 }
+            } 
+            String capturador = this.existeCriterioPlantilla(proyecto);
+            if (!capturador.equals("OK")) {
+                atributo.addFlashAttribute("error", capturador);
+                return "redirect:/registrarProyecto";
             }
-            servicio.guardar(proyecto);
-
             if (banderin) {
                 for (Proyectos item : servicio.getTodos()) {
-                    if (item.getTitulo().equalsIgnoreCase(proyecto.getTitulo())) {
+                    if (item.getTitulo().equals(proyecto.getTitulo())) {
                         atributo.addFlashAttribute("error", "Error el nombre del proyecto ya existe");
                         return "redirect:/registrarProyecto";
                     }
@@ -316,7 +320,7 @@ public class ProyectoUIControlador {
         } catch (Exception e) {
             System.out.println("ERROR AQUI: " + e.getMessage());
         }
-        return "redirect:/formProyectoCoordinadores";
+        return "redirect:/mantenimientoProyectoCoord";
     }
 
     @RequestMapping("/formProyectoCoordinadores")
@@ -385,6 +389,20 @@ public class ProyectoUIControlador {
             servicioProyectoEvaluacion.eliminar(proyectoEvaluacion.getId());
         }
 
+        return "OK";
+    }
+   
+    private String existeCriterioPlantilla(Proyectos proyecto) {
+        boolean existe = false;
+        if (servicio.existeCriterioPlantilla(proyecto.getIdPlantillaProfesional().getIdPlantilla()).isEmpty()) {
+            return "Error - La plantilla del coordinador profesional no tiene criterios";
+        }
+        if (servicio.existeCriterioPlantilla(proyecto.getIdPlantillaTecnico().getIdPlantilla()).isEmpty()) {
+            return "Error - La plantilla del coordinador tecnico no tiene criterios";
+        }
+        if (servicio.existeCriterioPlantilla(proyecto.getIdPlantillaGeneral().getIdPlantilla()).isEmpty()) {
+            return "Error - La plantilla del coordinador general no tiene criterios";
+        }
         return "OK";
     }
 }

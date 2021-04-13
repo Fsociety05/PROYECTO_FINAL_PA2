@@ -82,4 +82,9 @@ public class Proyectos implements Serializable {
         this.idProyecto = idProyecto;
     }
 
+    public Proyectos(String estado, Long idProyecto) {
+        this.estado = estado;
+        this.idProyecto = idProyecto;
+    }
+
 }

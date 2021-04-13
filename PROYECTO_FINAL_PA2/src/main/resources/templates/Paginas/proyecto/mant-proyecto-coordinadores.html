@@ -10,16 +10,17 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link th:href="@{/css/estiloMensaje.css}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <nav id = "menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div th:include="paginas/reutilizable/navbar.html" th:remove="tag"></div>
         </nav>
         <div class="container mt-4" id="container_mensages">
+            <div class="alert alert-success alert-dismissable fade show" th:if="${success != null}">
+                <label th:text="${success}" class="label_mensaje"></label>
+            </div>
             <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
                 <label th:text="${error}" class="label_mensaje"></label>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
         <div class="container mt-3">
@@ -51,17 +52,15 @@ and open the template in the editor.
                                 <td th:text="${proyecto.titulo}"></td>
                                 <td th:text="${proyecto.idDepartamento.nombre}"></td>
                                 <td th:text="${proyecto.estado}"></td>
-                        <span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-                            <td><a class="btn btn-outline-success" th:href="@{/agregarCordinadores/{id} (id=${proyecto.idProyecto})}">Agregar Coordinadores</a></td>
-                            <td><a class="btn btn-outline-warning" th:href="@{/actualizarCordinadores/{id} (id=${proyecto.idProyecto})}">Actualizar Coordinadores</a></td>
-                        </span>
-
-                        </tr>
+                                <td><a class="btn btn-outline-success" th:href="@{/agregarCordinadores/{id} (id=${proyecto.idProyecto})}">Agregar Coordinadores</a></td>
+                                <td><a class="btn btn-outline-warning" th:href="@{/actualizarCordinadores/{id} (id=${proyecto.idProyecto})}">Actualizar Coordinadores</a></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div> 
             </div>
         </div>
+        <script src="/js/alerta.js" type="text/javascript"></script>
         <script src="/js/bootstrap.min.js" type="text/javascript"></script>
     </body>
 </html>

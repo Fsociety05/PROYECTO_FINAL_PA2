@@ -11,6 +11,7 @@ import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
+import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import java.util.List;
@@ -31,6 +32,9 @@ public class ProyectoEvaluacionUIControlador {
 
     @Autowired
     private UsuarioServicio servicioUsuario;
+    
+    @Autowired
+    private ProyectoServicios servicioProyecto;
 
     @Autowired
     private ProyectoCoordinadoresServicios servicioProyectosCoordinadores;
@@ -46,12 +50,6 @@ public class ProyectoEvaluacionUIControlador {
 
     @GetMapping("/calificar/{id}")
     public String irFormulario(@PathVariable("id") Long id, Model model, RedirectAttributes atributo) throws Exception {
-        ///misProyectos
-//        if (servicioProyectoSuperviciones.getReporteProyecto(id).size() == 0) {
-//            atributo.addFlashAttribute("error", "El proyecto no tiene ninguna supervicion");
-//            return "redirect:/misProyectos";
-//        }
-
         int cont_superviciones_pro = 0;
         int cont_superviciones_tec = 0;
         int cont_superviciones_gnr = 0;
@@ -113,9 +111,8 @@ public class ProyectoEvaluacionUIControlador {
                         atributo.addFlashAttribute("error", "El proyecto tiene " + cont_superviciones_gnr + " superviciones de 6");
                         return "redirect:/misProyectos";
                     }
-
                     for (ProyectoEvaluacion proyectoEvaluacion : servicioProyectoEvaluacion.getPorIdProyecto(id)) {
-                        if (proyectoEvaluacion.getFecha() == null) {
+                        if (proyectoEvaluacion.getFecha() == null && !proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador General")) {
                             atributo.addFlashAttribute("error", "Faltan calificaciones de los coordinadores tecnico y/o general");
                             return "redirect:/misProyectos";
                         }
@@ -172,7 +169,6 @@ public class ProyectoEvaluacionUIControlador {
 
         setParametro(model, "usuario", servicioUsuario.getLoggedUser().getId_usuario());
 
-        //atributo.addFlashAttribute("error", "Hola");
         return "paginas/calificacion/form_calificacion";
     }
 
@@ -229,16 +225,24 @@ public class ProyectoEvaluacionUIControlador {
 //        
 //        
         servicioProyectoEvaluacion.guardar(entidad);
+        if (!cambiarEstado(entidad)) {
+            servicioProyecto.finalizarProyecto("Finalizado", entidad.getIdProyecto().getIdProyecto());
+        }
 //        
-
-        //setParametro(model, "evaluacionCriterio", entidad);
-        //irFormulario(entidad.getIdProyecto().getIdProyecto(), model, attribute);
-        //return "redirect:/misProyectos";
-        //setParametro(model, "evaluacionCriterio", servicioProyectoEvaluacion.getValor(id).get());
         setParametro(model, "evaluacionCriterio", entidad);
 
         attribute.addFlashAttribute("success", "Guardado correctamente");
 
         return "redirect:/calificar_criterio/" + entidad.getId() + "";
+    }
+    
+    private boolean cambiarEstado(ProyectoEvaluacion entidad){
+        boolean existe = false;
+        for (ProyectoEvaluacion item : servicioProyectoEvaluacion.getTodos()) {
+            if (item.getIdProyecto().getIdProyecto().equals(entidad.getIdProyecto().getIdProyecto()) && item.getFecha() == null) {
+                return existe = true;
+            }
+        }
+        return existe;
     }
 }
