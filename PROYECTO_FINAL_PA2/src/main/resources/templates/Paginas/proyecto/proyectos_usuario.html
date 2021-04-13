@@ -57,7 +57,7 @@ and open the template in the editor.
                                     <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-success" th:href="@{/coordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Supervizar (TEC)</a>
                                 </td>
                                 <td>  
-                                    <a class="btn btn-info">Calificar</a>
+                                    <a th:href="@{/calificar/{id} (id=${proyecto.idProyecto.idProyecto})}" class="btn btn-info">Calificar</a>
                                 </td>
                             </tr>
                         </tbody>
