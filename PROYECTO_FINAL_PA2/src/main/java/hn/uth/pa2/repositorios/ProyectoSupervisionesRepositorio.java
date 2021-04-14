@@ -20,4 +20,10 @@ public interface ProyectoSupervisionesRepositorio extends CrudRepository<Proyect
     
     @Query(value = "SELECT * FROM PROYECTOS_SUPERVISIONES PS, TIPO_COORDINADORES TC WHERE PS.ID_TIPO_COORDINADOR = TC.ID_TIPO_COORDINADOR AND PS.ID_PROYECTO = ?1 AND TC.NOMBRE = ?2", nativeQuery = true)
     List<ProyectoSupervisiones> getReporteSupervision(Long idProyecto, String tipoCoordinador);
+    
+    @Query(value = "SELECT * FROM PROYECTOS_SUPERVISIONES PS, TIPO_COORDINADORES TC WHERE PS.ID_TIPO_COORDINADOR = TC.ID_TIPO_COORDINADOR AND PS.ID_PROYECTO = ?1", nativeQuery = true)
+    List<ProyectoSupervisiones> getReporteSupervisionEvaluacion(Long idProyecto);
+    
+    @Query(value = "SELECT * FROM PROYECTOS_SUPERVISIONES PS WHERE PS.ID_USUARIO = ?1", nativeQuery = true)
+    List<ProyectoSupervisiones> getListarSupervisiones(Long idUsuario);
 }
