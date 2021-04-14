@@ -26,6 +26,9 @@ and open the template in the editor.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
+        <div class="container mt-3">
+            <h2>Registro de Proyectos</h2>
+        </div>
         <div class="container mt-5 border">
             <form th:action="@{/guardarProyecto}" action="#" th:object="${proyecto}" method="POST" class="row g-3">
                 <div class="col-md-12 mt-4">
@@ -35,7 +38,7 @@ and open the template in the editor.
                 <input type="hidden" th:field="*{idProyecto}" name="idProyecto" id="idProyecto">
                 <div class="col-md-12">
                     <label for="observasiones validationDefault02" class="form-label">Identidad</label>
-                    <input type="text" class="form-control" id="identidadLider validationDefault02" th:field="*{identidadLider}" name="identidadLider" required>
+                    <input type="number" min="0" class="form-control" id="identidadLider validationDefault02" th:field="*{identidadLider}" name="identidadLider" required>
                 </div>
                 <div class="col-md-12">
                     <label for="titulo validationDefault03" class="form-label">Titulo Proyecto</label>

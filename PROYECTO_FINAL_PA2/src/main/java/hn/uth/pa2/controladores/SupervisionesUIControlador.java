@@ -132,7 +132,11 @@ public class SupervisionesUIControlador {
                 this.banderin = true;
             }
         }
+<<<<<<< HEAD
+        return "redirect:/tituloProyecto";
+=======
         return "redirect:/misProyectos";
+>>>>>>> abdiel
     }
 
     @GetMapping("/tituloProyecto")
@@ -148,7 +152,7 @@ public class SupervisionesUIControlador {
         if (busqueda.equals("")) {
             model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
         } else {
-            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(busqueda));
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(busqueda.toUpperCase()));
         }
         return "paginas/supervision/mantenimiento-servicio";
     }

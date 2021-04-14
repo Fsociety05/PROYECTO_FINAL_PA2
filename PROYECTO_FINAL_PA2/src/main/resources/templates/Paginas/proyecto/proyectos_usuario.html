@@ -22,6 +22,9 @@ and open the template in the editor.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
+        <div class="container mt-3">
+            <h2>Proyectos Actuales</h2>
+        </div>
         <div class="container mt-5">
             <h2 th:if="${listaProyectos.isEmpty()}">No tiene proyectos asignados</h2>
             <div class="container" th:if="${!listaProyectos.isEmpty()}">
@@ -55,10 +58,6 @@ and open the template in the editor.
                                 </td>
                                 <td>  
                                     <a th:href="@{/calificar/{id} (id=${proyecto.idProyecto.idProyecto})}" class="btn btn-info">Calificar</a>
-                                </td>
-                                <td>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Profesional'}" class="btn btn-warning" th:href="@{/reporteCoordinadorProfesional/{id} (id=${proyecto.idProyecto.idProyecto})}">Reporte de Supervision</a>
-                                    <a th:if="${proyecto.idTipoCoordinador.nombre == 'Coordinador Tecnico'}" class="btn btn-warning" th:href="@{/reporteCoordinadorTecnico/{id} (id=${proyecto.idProyecto.idProyecto})}">Reporte de Supervision</a>
                                 </td>
                             </tr>
                         </tbody>

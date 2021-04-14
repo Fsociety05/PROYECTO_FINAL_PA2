@@ -6,7 +6,11 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.BitacoraCoordinadores;
+<<<<<<< HEAD
+import hn.uth.pa2.modelos.Departamento;
+=======
 import hn.uth.pa2.modelos.Criterio;
+>>>>>>> abdiel
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.Proyectos;
@@ -25,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,15 +81,25 @@ public class ProyectoUIControlador {
         return "paginas/proyecto/form-proyecto";
     }
 
-    @RequestMapping("/mantenimientoProyecto")
+    @GetMapping("/mantenimientoProyecto")
     public String irServicios(Model model) {
         try {
-            setParametro(model, "listaProyecto", servicio.getTodos());
-            setParametro(model, "listaDepartamentos", servicioDepartamento.getTodos());
-            setParametro(model, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
+            model.addAttribute("buscarTitulo", new Proyectos());
+            model.addAttribute("listaProyecto", servicio.getTodos());
             this.banderin = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return "paginas/proyecto/mantenimiento-proyecto";
+    }
+
+    @GetMapping("/busquedaProyecto")
+    public String buscarProyecto(Model model, @ModelAttribute("buscarTitulo") Proyectos entidad) {
+        String busqueda = entidad.getTitulo().replaceAll("^\\s*", "");
+        if (busqueda.equals("")) {
+            model.addAttribute("listaProyecto", servicio.getTodos());
+        } else {
+            model.addAttribute("listaProyecto", servicio.getResultadoBusqueda(busqueda.toUpperCase()));
         }
         return "paginas/proyecto/mantenimiento-proyecto";
     }
@@ -144,11 +159,34 @@ public class ProyectoUIControlador {
                 atributo.addFlashAttribute("error", "Error el departamento esta vacio");
                 return "redirect:/registrarProyecto";
             }
+<<<<<<< HEAD
+            for (Departamento todo : servicioDepartamento.getTodos()) {
+                if (todo.getEstado().equals(proyecto.getIdDepartamento().getEstado())) {
+                    if (todo.getEstado().equalsIgnoreCase("Inactivo")) {
+                        atributo.addFlashAttribute("error", "Error - El Departamento esta Inactivo");
+                        return "redirect:/registrarProyecto";
+                    }
+                }
+            }
+=======
             servicio.guardar(proyecto);
 
+>>>>>>> abdiel
             if (banderin) {
+                for (Proyectos item : servicio.getTodos()) {
+                    if (item.getTitulo().equalsIgnoreCase(proyecto.getTitulo())) {
+                        atributo.addFlashAttribute("error", "Error el nombre del proyecto ya existe");
+                        return "redirect:/registrarProyecto";
+                    }
+                }
+                if (proyecto.getEstado().equalsIgnoreCase("Finalizado")) {
+                    atributo.addFlashAttribute("error", "Error - El estado del proyecto debe estar activo");
+                    return "redirect:/registrarProyecto";
+                }
+                servicio.guardar(proyecto);
                 atributo.addFlashAttribute("success", "Guardado Correctamente");
             } else {
+                servicio.guardar(proyecto);
                 atributo.addFlashAttribute("success", "Actualizado Correctamente");
             }
             this.banderin = true;
@@ -312,8 +350,6 @@ public class ProyectoUIControlador {
 
     @GetMapping("/actualizarCordinadores/{id}")
     public String actualizarCoordinadores(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
-//        List<Usuario> listaUsuario = new ArrayList<>();
-//        Usuario usuario = new Usuario();
         this.idProyecto = id;
         this.banderinProyectoCoord = false;
         if (servicioCoordinador.getTodos().size() == 0) {
@@ -324,11 +360,6 @@ public class ProyectoUIControlador {
             atributo.addFlashAttribute("error", "Error el proyecto no tiene agregado coordinadores, no se puede actualizar");
             return "redirect:/mantenimientoProyectoCoord";
         }
-//        for (Usuario object : servicioUsuario.getUsuariosCoordinadores(idProyecto)) {
-//            usuario.setNombres(object.getNombres());
-//            listaUsuario.add(usuario);
-//        }
-
         modelo.addAttribute("editMode", "true");
         setParametro(modelo, "proyecto", servicio.getValor(id));
         setParametro(modelo, "listaUsuario", servicioUsuario.getUsuariosConsulta("consulta"));
