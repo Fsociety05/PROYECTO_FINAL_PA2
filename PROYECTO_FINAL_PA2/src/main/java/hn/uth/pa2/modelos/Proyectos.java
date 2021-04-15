@@ -55,6 +55,15 @@ public class Proyectos implements Serializable {
     @JoinColumn(name = "id_plantilla_general")
     private Plantilla idPlantillaGeneral;
     
+    @JoinColumn(name = "calificacion_profesional")
+    private int calificacionProfesional; 
+    
+    @JoinColumn(name = "calificacion_tecnico")
+    private int calificacionTecnico; 
+    
+    @JoinColumn(name = "calificacion_general")
+    private int calificacionGeneral; 
+    
     private String estado;
     
     @Transient
