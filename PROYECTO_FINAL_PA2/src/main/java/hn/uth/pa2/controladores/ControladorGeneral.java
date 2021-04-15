@@ -71,7 +71,7 @@ public class ControladorGeneral {
     public String index(Model model) {
 
         if (logiado_por_primera_vez) {
-//            llenandoTablas();
+           //llenandoTablas();
             logiado_por_primera_vez = false;
         }
         return "index";

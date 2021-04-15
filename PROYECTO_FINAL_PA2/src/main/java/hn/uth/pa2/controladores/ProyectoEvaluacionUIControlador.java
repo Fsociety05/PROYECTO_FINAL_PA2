@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProyectoEvaluacionUIControlador {
 
     private Long idProyecto;
+    
     @Autowired
     private UsuarioServicio servicioUsuario;
 
@@ -50,11 +51,62 @@ public class ProyectoEvaluacionUIControlador {
     @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperviciones;
 
-    @GetMapping("/finalizarProyecto")
-    public String buscarProyecto(RedirectAttributes atributo) {
-        servicioProyecto.finalizarProyecto("Finalizado", this.idProyecto);
+    @GetMapping("/finalizarProyecto/{id}")
+    public String buscarProyecto(@PathVariable("id") Long id, RedirectAttributes atributo) {
+        
+        for (ProyectoEvaluacion proyectoEvaluacion : servicioProyectoEvaluacion.getPorIdProyecto(id)) {
+            
+            if(proyectoEvaluacion.getCalificacion()<0 && proyectoEvaluacion.getIdCriterio().getTipoEvaluacion().getNombre().equals("GENERAL")){
+                atributo.addFlashAttribute("error", "Error-- Faltan criterios por evaluar");
+                return "redirect:/calificar/" + id + "";
+            }
+            
+            if(proyectoEvaluacion.getCalificacion()<0){
+                atributo.addFlashAttribute("error", "Error-- Coordinadores no han terminado de evaluar");
+                return "redirect:/calificar/" + id + "";
+            }
+        }
+        
+        Proyectos tmpPro = servicioProyecto.getValor(id).get();
+        
+        if(tmpPro==null || tmpPro.getEstado().length()==0){
+            atributo.addFlashAttribute("error", "Error-- Proyecto no encontrado");
+                return "redirect:/calificar/" + id + "";
+        }
+        
+        int arg_general []=contarTotales(id, tmpPro.getIdPlantillaGeneral().getIdPlantilla());
+        
+        int arg_tecnica []=contarTotales(id, tmpPro.getIdPlantillaTecnico().getIdPlantilla());
+        
+        int arg_profecional[]=contarTotales(id, tmpPro.getIdPlantillaProfesional().getIdPlantilla());
+        
+        double calificacion_gnrl=0 , calificacion_tcna = 0, calificacion_prfl = 0;
+        
+        calificacion_gnrl += (arg_general[2]*100)/arg_general[0];
+        calificacion_tcna += (arg_tecnica[2]*100)/arg_tecnica[0];
+        calificacion_prfl += (arg_profecional[2]*100)/arg_profecional[0];
+        
+        
+        //servicioProyecto.finalizarProyecto("Finalizado", this.idProyecto);
         this.idProyecto = null;
         atributo.addFlashAttribute("success", "Proyecto finalizado correctamente");
+        
+//        System.out.println("Proyecto finalizado correctamente ----"+ id +" c.g="+calificacion_gnrl +"% 10%="+10*(calificacion_gnrl/100)
+//                                    +"-------------" + "c.t = "+calificacion_tcna +"% 30%="+30*(calificacion_tcna/100)
+//                                    +"-------------" + "c.p = "+calificacion_prfl +"% 60%="+60*(calificacion_prfl/100)
+//        );
+//        
+//        System.out.println("calificacion fina = "+ (10*(calificacion_gnrl/100)+30*(calificacion_tcna/100)+60*(calificacion_prfl/100)));
+           
+        tmpPro.setCalificacionGeneral(10*(calificacion_gnrl/100));
+        tmpPro.setCalificacionProfesional(60*(calificacion_prfl/100));
+        tmpPro.setCalificacionTecnico(30*(calificacion_tcna/100));
+        
+        tmpPro.setEstado("Finalizado");
+        
+        servicioProyecto.guardar(tmpPro);
+
+    
         return "redirect:/misProyectos";
     }
 
@@ -208,21 +260,6 @@ public class ProyectoEvaluacionUIControlador {
         return servicioProyectoEvaluacion.getPorIdProyectoAndPlantilla(idProyecto, idPlantilla);
     }
 
-    public int[] contarTotales(Long idProyecto, Long idPlantilla) {
-
-        int temp[] = new int[3];
-        temp[0] = 0;
-        temp[1] = 0;
-        temp[2] = 0;
-
-        for (ProyectoEvaluacion item : getProjectoEvaluacionPorPlantilla(idProyecto, idPlantilla)) {
-            temp[0] += item.getIdCriterio().getPunt_maximo();
-            temp[1] += item.getIdCriterio().getPunt_minimo();
-            temp[2] += item.getCalificacion();
-        }
-
-        return temp;
-    }
 
     @PostMapping("/guardar_evaluacionCriterio")
     public String guardar(ProyectoEvaluacion entidad, Model model, RedirectAttributes attribute) throws Exception {
@@ -249,5 +286,21 @@ public class ProyectoEvaluacionUIControlador {
         attribute.addFlashAttribute("success", "Guardado correctamente");
 
         return "redirect:/calificar_criterio/" + entidad.getId() + "";
+    }
+    
+     public int[] contarTotales(Long idProyecto, Long idPlantilla) {
+
+        int temp[] = new int[3];
+        temp[0] = 0;
+        temp[1] = 0;
+        temp[2] = 0;
+
+        for (ProyectoEvaluacion item : getProjectoEvaluacionPorPlantilla(idProyecto, idPlantilla)) {
+            temp[0] += item.getIdCriterio().getPunt_maximo();
+            temp[1] += item.getIdCriterio().getPunt_minimo();
+            temp[2] += item.getCalificacion();
+        }
+
+        return temp;
     }
 }

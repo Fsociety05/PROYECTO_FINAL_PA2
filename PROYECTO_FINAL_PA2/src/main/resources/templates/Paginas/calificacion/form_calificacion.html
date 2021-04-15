@@ -78,9 +78,13 @@ and open the template in the editor.
                             <!------------------------------------------------------------------------>
                         </tr>
                     </tbody>
-                    <div class="mb-3">
-                        <a th:href="@{/finalizarProyecto}" class="btn btn-danger">Finalizar Proyecto</a>
+                    <div  th:if="${tipoCoordinador.nombre=='Coordinador General'}" class="mb-3">
+                        <a th:href="@{/finalizarProyecto/{id} (id=${proyecto.idProyecto})}" class="btn btn-danger">Finalizar Proyecto</a>
                     </div>
+                    
+                    <!--<div class="mb-3">
+                        <a th:href="@{/finalizarProyecto/{id} (id=${proyecto.idProyecto})}" class="btn btn-danger">Finalizar Proyecto</a>
+                    </div>-->
                 </table>
             </div>
         </div>
