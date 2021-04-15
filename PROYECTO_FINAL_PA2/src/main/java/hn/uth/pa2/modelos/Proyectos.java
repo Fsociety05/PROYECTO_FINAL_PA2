@@ -56,13 +56,13 @@ public class Proyectos implements Serializable {
     private Plantilla idPlantillaGeneral;
     
     @JoinColumn(name = "calificacion_profesional")
-    private int calificacionProfesional; 
+    private double calificacionProfesional; 
     
     @JoinColumn(name = "calificacion_tecnico")
-    private int calificacionTecnico; 
+    private double calificacionTecnico; 
     
     @JoinColumn(name = "calificacion_general")
-    private int calificacionGeneral; 
+    private double calificacionGeneral; 
     
     private String estado;
     

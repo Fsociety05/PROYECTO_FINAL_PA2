@@ -128,7 +128,7 @@ public class SupervisionesUIControlador {
                 this.banderin = true;
             }
         }
-        return "redirect:/tituloProyecto";
+        return "redirect:/misProyectos";
     }
 
     @GetMapping("/tituloProyecto")
