@@ -127,7 +127,6 @@ public class ProyectoUIControlador {
         setParametro(modelo, "listaPlantillaTecnico", servicioPlantilla.getTipoPlantilla("TECNICO"));
         setParametro(modelo, "listaPlantillaGeneral", servicioPlantilla.getTipoPlantilla("GENERAL"));
         setParametro(modelo, "proyecto", servicio.getValor(id));
-        System.out.println(servicio.getValor(id));
         this.banderin = false;
         return "paginas/proyecto/form-proyecto";
     }
@@ -186,6 +185,9 @@ public class ProyectoUIControlador {
                     atributo.addFlashAttribute("error", "Error - El estado del proyecto debe estar activo");
                     return "redirect:/registrarProyecto";
                 }
+                proyecto.setCalificacionProfesional(-1);
+                proyecto.setCalificacionTecnico(-1);
+                proyecto.setCalificacionGeneral(-1);
                 servicio.guardar(proyecto);
                 atributo.addFlashAttribute("success", "Guardado Correctamente");
             } else {

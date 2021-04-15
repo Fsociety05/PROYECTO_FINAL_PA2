@@ -8,6 +8,7 @@ package hn.uth.pa2.controladores;
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.ProyectoEvaluacion;
 import hn.uth.pa2.modelos.ProyectoSupervisiones;
+import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.servicios.PlantillaServicio;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
@@ -30,9 +31,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ProyectoEvaluacionUIControlador {
 
+    private Long idProyecto;
     @Autowired
     private UsuarioServicio servicioUsuario;
-    
+
     @Autowired
     private ProyectoServicios servicioProyecto;
 
@@ -48,12 +50,27 @@ public class ProyectoEvaluacionUIControlador {
     @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperviciones;
 
+    @GetMapping("/finalizarProyecto")
+    public String buscarProyecto(RedirectAttributes atributo) {
+        servicioProyecto.finalizarProyecto("Finalizado", this.idProyecto);
+        this.idProyecto = null;
+        atributo.addFlashAttribute("success", "Proyecto finalizado correctamente");
+        return "redirect:/misProyectos";
+    }
+
     @GetMapping("/calificar/{id}")
     public String irFormulario(@PathVariable("id") Long id, Model model, RedirectAttributes atributo) throws Exception {
+        this.idProyecto = id;
+        for (Proyectos item : servicioProyecto.getTodos()) {
+            if (item.getIdProyecto().equals(id) && item.getEstado().equals("Finalizado")) {
+                atributo.addFlashAttribute("error", "Error - El proyecto esta finalizado, no puede calificarlo");
+                return "redirect:/misProyectos";
+            }
+        }
         int cont_superviciones_pro = 0;
         int cont_superviciones_tec = 0;
         int cont_superviciones_gnr = 0;
-        
+
         if (!servicioProyectoSuperviciones.getReporteProyectoEvaluaciones(id).isEmpty()) {
             for (ProyectoSupervisiones object : servicioProyectoSuperviciones.getReporteProyectoEvaluaciones(id)) {
                 if (object.getIdTipoCoordinador().getNombre().equals("Coordinador Tecnico")) {
@@ -72,12 +89,11 @@ public class ProyectoEvaluacionUIControlador {
         cont_superviciones_gnr = cont_superviciones_pro + cont_superviciones_tec;
 
         Long idUsuario = servicioUsuario.getLoggedUser().getId_usuario();
-        
-        //System.out.println(servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario).toString());
 
+        //System.out.println(servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario).toString());
         for (ProyectoCoordinadores proyectoCoordinadores : servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario)) {
             //System.out.println(id + "==="+ proyectoCoordinadores.getIdProyecto().getIdProyecto());
-            
+
             if (proyectoCoordinadores.getIdProyecto().getIdProyecto().equals(id)) {
                 //System.out.println("ENtro al if");
                 setParametro(model, "proyecto", proyectoCoordinadores.getIdProyecto());
@@ -112,9 +128,13 @@ public class ProyectoEvaluacionUIControlador {
                         return "redirect:/misProyectos";
                     }
                     for (ProyectoEvaluacion proyectoEvaluacion : servicioProyectoEvaluacion.getPorIdProyecto(id)) {
-                        if (proyectoEvaluacion.getFecha() == null && !proyectoCoordinadores.getIdTipoCoordinador().getNombre().equalsIgnoreCase("Coordinador General")) {
-                            atributo.addFlashAttribute("error", "Faltan calificaciones de los coordinadores tecnico y/o general");
-                            return "redirect:/misProyectos";
+                        if (proyectoEvaluacion.getFecha() == null) {
+
+                            if (proyectoEvaluacion.getIdCriterio().getTipoEvaluacion().getNombre().equalsIgnoreCase("GENERAL")) {
+                            } else {
+                                atributo.addFlashAttribute("error", "Faltan calificaciones de los coordinadores tecnico y/o general");
+                                return "redirect:/misProyectos";
+                            }
                         }
                     }
 
@@ -160,11 +180,10 @@ public class ProyectoEvaluacionUIControlador {
                 break;
             }
         }
-        
-        
-        if(servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario).isEmpty()){
-             atributo.addFlashAttribute("error", "error");
-                        return "redirect:/misProyectos";
+
+        if (servicioProyectosCoordinadores.seleccionarProyectoCoordinador(idUsuario).isEmpty()) {
+            atributo.addFlashAttribute("error", "error");
+            return "redirect:/misProyectos";
         }
 
         setParametro(model, "usuario", servicioUsuario.getLoggedUser().getId_usuario());
@@ -186,7 +205,6 @@ public class ProyectoEvaluacionUIControlador {
     }
 
     public List<ProyectoEvaluacion> getProjectoEvaluacionPorPlantilla(Long idProyecto, Long idPlantilla) {
-
         return servicioProyectoEvaluacion.getPorIdProyectoAndPlantilla(idProyecto, idPlantilla);
     }
 
@@ -225,24 +243,11 @@ public class ProyectoEvaluacionUIControlador {
 //        
 //        
         servicioProyectoEvaluacion.guardar(entidad);
-        if (!cambiarEstado(entidad)) {
-            servicioProyecto.finalizarProyecto("Finalizado", entidad.getIdProyecto().getIdProyecto());
-        }
-//        
+
         setParametro(model, "evaluacionCriterio", entidad);
 
         attribute.addFlashAttribute("success", "Guardado correctamente");
 
         return "redirect:/calificar_criterio/" + entidad.getId() + "";
-    }
-    
-    private boolean cambiarEstado(ProyectoEvaluacion entidad){
-        boolean existe = false;
-        for (ProyectoEvaluacion item : servicioProyectoEvaluacion.getTodos()) {
-            if (item.getIdProyecto().getIdProyecto().equals(entidad.getIdProyecto().getIdProyecto()) && item.getFecha() == null) {
-                return existe = true;
-            }
-        }
-        return existe;
     }
 }

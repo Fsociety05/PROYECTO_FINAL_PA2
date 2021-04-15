@@ -165,11 +165,13 @@ public class SupervisionesUIControlador {
     private boolean terceraSupervision(Long idProyecto) {
         boolean existe = false;
         int contador = 0;
+        System.out.println(this.coordinador.getIdTipoCoordinador());
         for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
-            if (item.getIdProyecto().getIdProyecto() == idProyecto && item.getIdTipoCoordinador().getIdTipoCoordinador() == this.coordinador.getIdTipoCoordinador()) {
+            if (item.getIdProyecto().getIdProyecto().equals(idProyecto) && item.getIdTipoCoordinador().getIdTipoCoordinador().equals(this.coordinador.getIdTipoCoordinador())) {
                 contador++;
             }
         }
+        System.out.println("CONTADOR: "+contador);
         if (contador == 3) {
             return existe = true;
         }
