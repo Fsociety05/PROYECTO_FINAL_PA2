@@ -45,4 +45,9 @@ public class ProyectoEvaluacionServicio {
     public List<ProyectoEvaluacion> getPorIdProyectoAndPlantilla(Long idProyecto, Long idPlantilla) {
         return (List<ProyectoEvaluacion>) repositorio.getEvaluacioenesPorProyectoAndPlantila(idProyecto, idPlantilla);
     }
+    
+    public List<ProyectoEvaluacion> getCalificacionPorCoordinador(Long idUsuario, Long idProyecto) {
+        return repositorio.getCalificacionCoordinador(idUsuario, idProyecto);
+    }
+    
 }
