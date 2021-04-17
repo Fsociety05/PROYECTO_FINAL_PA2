@@ -41,9 +41,18 @@ public class ProyectoServicios {
         return repositorio.buscarProyecto(titulo);
     }
     
+    public List<Proyectos> getProyectosCalificados(String titulo) {
+        return repositorio.buscarProyectosCalificados(titulo, "Finalizado");
+    }
+    
+    public List<Proyectos> getProyectosFinalizados() {
+        return repositorio.getProyectosFinalizados("Finalizado");
+    }
+    
     public List existeCriterioPlantilla(Long idPlantilla) {
         return repositorio.existeCriterioPlantilla(idPlantilla);
     }
+    
     public void finalizarProyecto(String estado, Long idProyecto){
         repositorio.finalizarProyecto(estado, idProyecto);
     }

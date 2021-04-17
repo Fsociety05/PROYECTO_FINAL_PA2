@@ -6,6 +6,7 @@
 package hn.uth.pa2.modelos;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,12 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Proyectos implements Serializable {
     private static final long serialVersionUID = -6833167247955613395L;
+    
+    @Transient
+    java.util.Date d = new java.util.Date();
+    
+    @Transient
+    java.sql.Date fecha = new java.sql.Date(d.getTime());
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -85,6 +92,9 @@ public class Proyectos implements Serializable {
     
     @Transient
     private String justificacion;
+    
+    @Transient
+    private Date fechaCalificacionReporte = fecha;
     
 
     public Proyectos(Long idProyecto) {

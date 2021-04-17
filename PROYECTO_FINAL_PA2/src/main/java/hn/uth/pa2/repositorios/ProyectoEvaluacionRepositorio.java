@@ -22,6 +22,7 @@ public interface ProyectoEvaluacionRepositorio extends CrudRepository<ProyectoEv
     @Query(value = "SELECT * FROM proyecto_evaluacion WHERE id_proyecto = ?1 AND id_plantilla = ?2", nativeQuery = true)
     List<ProyectoEvaluacion> getEvaluacioenesPorProyectoAndPlantila(Long idProyecto, Long idPlantilla);
     
-    
-    
+    @Query(value = "SELECT * FROM proyecto_evaluacion WHERE id_usuario = ?1 AND id_proyecto = ?2", nativeQuery = true)
+    List<ProyectoEvaluacion> getCalificacionCoordinador(Long idUsuario, Long idProyecto);
+
 }

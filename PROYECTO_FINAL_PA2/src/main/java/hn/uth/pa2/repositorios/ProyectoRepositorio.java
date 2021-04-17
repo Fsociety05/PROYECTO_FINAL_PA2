@@ -20,6 +20,9 @@ public interface ProyectoRepositorio extends CrudRepository<Proyectos, Long> {
 
     @Query(value = "SELECT * FROM PROYECTOS P WHERE UPPER(P.TITULO) LIKE %?1%", nativeQuery = true)
     List<Proyectos> buscarProyecto(String titulo);
+    
+    @Query(value = "SELECT * FROM PROYECTOS P WHERE UPPER(P.TITULO) LIKE %?1% AND P.ESTADO = ?2", nativeQuery = true)
+    List<Proyectos> buscarProyectosCalificados(String titulo, String estado);
 
     @Query(value = "SELECT * FROM PLANTILLA_CRITERIOS PC WHERE PC.ID_PLANTILLA = ?1", nativeQuery = true)
     List existeCriterioPlantilla(Long idPlantilla);
@@ -29,5 +32,6 @@ public interface ProyectoRepositorio extends CrudRepository<Proyectos, Long> {
     @Query(value = "UPDATE PROYECTOS SET ESTADO = ?1 WHERE ID_PROYECTO = ?2", nativeQuery = true)
     public void finalizarProyecto(String estado, Long idProyecto);
     
-
+    @Query(value = "SELECT * FROM PROYECTOS P WHERE P.ESTADO LIKE %?1%", nativeQuery = true)
+    List<Proyectos> getProyectosFinalizados(String estado);
 }
