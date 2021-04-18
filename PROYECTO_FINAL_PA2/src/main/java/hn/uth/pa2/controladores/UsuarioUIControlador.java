@@ -6,8 +6,16 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.Departamento;
+import hn.uth.pa2.modelos.ProyectoCoordinadores;
+import hn.uth.pa2.modelos.ProyectoEvaluacion;
+import hn.uth.pa2.modelos.ProyectoSupervisiones;
+import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.DepartamentoServicio;
+import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
+import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
+import hn.uth.pa2.servicios.ProyectoServicios;
+import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.RolServicio;
 import hn.uth.pa2.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +36,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsuarioUIControlador {
 
     private boolean estado_editando = false;
+    
+    @Autowired
+    private ProyectoEvaluacionServicio servicioEvaluacion;
+    
+    @Autowired
+    private ProyectoSupervisionesServ servicioProyectosSuperviciones;
+    
+    @Autowired
+    private ProyectoCoordinadoresServicios servicioProyectosCoordinadores;
 
     //----------------------------------------------------------------------------------------------------------------
     @Autowired
@@ -152,9 +169,31 @@ public class UsuarioUIControlador {
     @GetMapping("eliminar_usuario/{id}")
     public String eliminar(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
 
-        if (servicioUsuario.getValor(id).get().getUsername().equals("ADMIN")) {
+        if (servicioUsuario.getValor(id).get().getUsername().equalsIgnoreCase("ADMIN")) {
             attribute.addFlashAttribute("error", "No se puede Eliminar este usuario");
             return "redirect:/mantenimientoUsuario";
+        }
+        
+        for (ProyectoEvaluacion pe : servicioEvaluacion.getTodos()) {
+             
+            if(pe.getIdUsuario() != null && pe.getIdUsuario().getId_usuario().equals(id)){
+                attribute.addFlashAttribute("error", "No se puede eliminar el usuario ya que esta registrado en un proyecto");
+                return "redirect:/mantenimientoUsuario";
+            }
+        }
+        
+        for (ProyectoCoordinadores todo : servicioProyectosCoordinadores.getTodos()) {
+           if(todo.getIdUsuario().getId_usuario().equals(id)){
+               attribute.addFlashAttribute("error", "No se puede eliminar el usuario ya que esta registrado en un proyecto");
+                return "redirect:/mantenimientoUsuario";
+           }
+        }
+        
+        for (ProyectoSupervisiones todo : servicioProyectosSuperviciones.getTodos()) {
+             if(todo.getUsuario().getId_usuario().equals(id)){
+               attribute.addFlashAttribute("error", "No se puede Eliminar el usuario ya que esta registrado en un proyecto");
+                return "redirect:/mantenimientoUsuario";
+           }
         }
 
         servicioUsuario.eliminar(id);
