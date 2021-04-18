@@ -7,9 +7,11 @@ package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.ProyectoCoordinadores;
 import hn.uth.pa2.modelos.Proyectos;
+import hn.uth.pa2.modelos.TipoEvaluacion;
 import hn.uth.pa2.servicios.ProyectoCoordinadoresServicios;
 import hn.uth.pa2.servicios.ProyectoEvaluacionServicio;
 import hn.uth.pa2.servicios.ProyectoServicios;
+import hn.uth.pa2.servicios.TipoEvaluacionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,9 @@ public class PlantillaCalificacionUIControlador {
     @Autowired
     private ProyectoCoordinadoresServicios servicioCoordinadores;
     
+    @Autowired
+    private TipoEvaluacionServicio servicioTipoEvaluacion;
+    
 
     @GetMapping("/calificacionCoordinadorProfesional/{id}")
     public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
@@ -41,9 +46,18 @@ public class PlantillaCalificacionUIControlador {
         for (ProyectoCoordinadores item : servicioCoordinadores.getUsuarioCoordindor(id, "Coordinador Profesional")) {
             idUsuarioProfesional = item.getIdUsuario().getId_usuario();            
             setParametro(modelo, "coordinador", item.getIdTipoCoordinador());
+             setParametro(modelo, "coordinadorP", item.getIdUsuario());
         }
         setParametro(modelo, "valoresProyecto", servicioProyecto.getValor(id).get());
-        setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorCoordinador(idUsuarioProfesional, id));
+        //setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorCoordinador(idUsuarioProfesional, id));
+        
+        for (TipoEvaluacion item : servicioTipoEvaluacion.getTodos()) {
+            if(item.getNombre().equalsIgnoreCase("PROFESIONAL")){
+                setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorTipoEvaluacion(item.getIdEvaluacion(), id));
+                break;
+            }
+        }
+        
         return "paginas/plantillas/plantilla-calificacion";
     }
     
@@ -53,9 +67,18 @@ public class PlantillaCalificacionUIControlador {
         for (ProyectoCoordinadores item : servicioCoordinadores.getUsuarioCoordindor(id, "Coordinador Tecnico")) {
             idUsuarioProfesional = item.getIdUsuario().getId_usuario();            
             setParametro(modelo, "coordinador", item.getIdTipoCoordinador());
+             setParametro(modelo, "coordinadorP", item.getIdUsuario());
         }
         setParametro(modelo, "valoresProyecto", servicioProyecto.getValor(id).get());
-        setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorCoordinador(idUsuarioProfesional, id));
+        //setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorCoordinador(idUsuarioProfesional, id));
+        
+        for (TipoEvaluacion item : servicioTipoEvaluacion.getTodos()) {
+            if(item.getNombre().equalsIgnoreCase("TECNICO")){
+                setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorTipoEvaluacion(item.getIdEvaluacion(), id));
+                break;
+            }
+        }
+        
         return "paginas/plantillas/plantilla-calificacion";
     }
     
@@ -65,9 +88,17 @@ public class PlantillaCalificacionUIControlador {
         for (ProyectoCoordinadores item : servicioCoordinadores.getUsuarioCoordindor(id, "Coordinador General")) {
             idUsuarioProfesional = item.getIdUsuario().getId_usuario();      
             setParametro(modelo, "coordinador", item.getIdTipoCoordinador());
+            setParametro(modelo, "coordinadorP", item.getIdUsuario());
         }
         setParametro(modelo, "valoresProyecto", servicioProyecto.getValor(id).get());
-        setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorCoordinador(idUsuarioProfesional, id));
+        //setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorCoordinador(idUsuarioProfesional, id));
+        
+        for (TipoEvaluacion item : servicioTipoEvaluacion.getTodos()) {
+            if(item.getNombre().equalsIgnoreCase("GENERAL")){
+                setParametro(modelo, "listadoCalificacion", servicioEvaluacion.getCalificacionPorTipoEvaluacion(item.getIdEvaluacion(), id));
+                break;
+            }
+        }
         return "paginas/plantillas/plantilla-calificacion";
     }
 

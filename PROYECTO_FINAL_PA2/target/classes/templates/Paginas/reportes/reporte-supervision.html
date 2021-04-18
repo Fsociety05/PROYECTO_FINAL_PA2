@@ -42,6 +42,7 @@ and open the template in the editor.
                             <th scope="col">Departamento</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Acciones</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +55,8 @@ and open the template in the editor.
                             <td th:text="${reporteSupervision.estado}"></td>
                             <td>
                                 <a class="btn btn-warning" th:href="@{/reporteCoordinadorProfesional/{id} (id=${reporteSupervision.idProyecto})}">Reporte C. Profesional</a>
+                            </td>
+                            <td>
                                 <a class="btn btn-warning" th:href="@{/reporteCoordinadorTecnico/{id} (id=${reporteSupervision.idProyecto})}">Reporte C. Tecnico</a>
                             </td>
                         </tr>

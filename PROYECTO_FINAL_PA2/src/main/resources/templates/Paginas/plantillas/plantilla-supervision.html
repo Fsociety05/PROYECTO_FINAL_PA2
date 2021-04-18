@@ -36,7 +36,7 @@ and open the template in the editor.
         </div>
         <div class="container mt-4 contenedor">
             <div>
-                <label for="" th:text="${'Coordinador: '+registro.idTipoCoordinador.nombre}"></label>
+                <label for="" th:text="${'Coordinador: '+ (registro.usuario.nombres+' '+registro.usuario.apellidos+' --- ') +registro.idTipoCoordinador.nombre}"></label>
             </div>
             <div>
                 <label for="" th:text="${'Nombre del lider: '+registro.idProyecto.nombreLider}"></label>

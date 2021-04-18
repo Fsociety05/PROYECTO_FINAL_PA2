@@ -24,9 +24,9 @@
             <div class="col-4 text-center titulo">
                 <h4>Fsociety</h4>
                 <h5>Evaluacion De Proyecto</h5>
-                <h6 th:if="${coordinador.nombre=='Coordinador Profesional'}" th:text="${'Coordinador: Profesional'}"></h6>
-                <h6 th:if="${coordinador.nombre=='Coordinador Tecnico'}" th:text="${'Coordinador: Tecnico'}"></h6>
-                <h6 th:if="${coordinador.nombre=='Coordinador General'}" th:text="${'Coordinador: General'}"></h6>
+                <h6 th:if="${coordinador.nombre=='Coordinador Profesional'}" th:text="${'Coordinador: '+coordinadorP.nombres+' '+coordinadorP.apellidos+' (Profesional) '}"></h6>
+                <h6 th:if="${coordinador.nombre=='Coordinador Tecnico'}" th:text="${'Coordinador: '+coordinadorP.nombres+' '+coordinadorP.apellidos+' (Tecnico) '}"></h6>
+                <h6 th:if="${coordinador.nombre=='Coordinador General'}" th:text="${'Coordinador: '+coordinadorP.nombres+' '+coordinadorP.apellidos+' (General) '}"></h6>
             </div>
             <div class="col-4 text-center">
                 <h5 th:text="${'Fecha: '+valoresProyecto.fechaCalificacionReporte}"></h5>

@@ -24,5 +24,9 @@ public interface ProyectoEvaluacionRepositorio extends CrudRepository<ProyectoEv
     
     @Query(value = "SELECT * FROM proyecto_evaluacion WHERE id_usuario = ?1 AND id_proyecto = ?2", nativeQuery = true)
     List<ProyectoEvaluacion> getCalificacionCoordinador(Long idUsuario, Long idProyecto);
+    
+    @Query(value = "SELECT pr.id, pr.calificacion, pr.fecha, pr.id_criterio, pr.id_plantilla, pr.id_proyecto, pr.id_usuario "
+            + "FROM proyecto_evaluacion pr INNER JOIN criterio c ON pr.id_criterio = c.id_criterio WHERE c.id_evaluacion = ?1 AND pr.id_proyecto =?2", nativeQuery = true)
+    List<ProyectoEvaluacion> getCalificacionCoordinador2(Long idTipoEvaluacion, Long idProyecto);
 
 }

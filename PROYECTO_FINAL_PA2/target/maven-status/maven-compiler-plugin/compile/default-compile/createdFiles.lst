@@ -26,6 +26,7 @@ hn\uth\pa2\modelos\ProyectoCoordinadores.class
 hn\uth\pa2\modelos\BitacoraCoordinadores.class
 hn\uth\pa2\repositorios\UsuarioRepositorio.class
 hn\uth\pa2\controladores\BtcSupervisionUIControlador.class
+hn\uth\pa2\controladores\BtcCalificacionUIControlador.class
 hn\uth\pa2\servicios\BitacoraCoordinadoresServicio.class
 hn\uth\pa2\repositorios\CriterioRepositorio.class
 hn\uth\pa2\modelos\TipoCoordinadores.class
