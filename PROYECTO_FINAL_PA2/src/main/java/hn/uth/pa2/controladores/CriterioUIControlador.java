@@ -79,7 +79,7 @@ public class CriterioUIControlador {
 
         for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
             if (object.getIdCriterio().getIdCriterio() == id) {
-                attribute.addFlashAttribute("error", "El criterio no se puede editar ya que esta ciento utilizado");
+                attribute.addFlashAttribute("error", "El criterio no se puede editar ya que esta siendo utilizado");
                 return "redirect:/mantenimiento_criterio";
             }
         }
@@ -95,7 +95,7 @@ public class CriterioUIControlador {
 
         for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
             if (object.getIdCriterio().getIdCriterio().equals(id)) {
-                attribute.addFlashAttribute("error", "El criterio no se puede eliminar ya que esta ciento utilizado");
+                attribute.addFlashAttribute("error", "El criterio no se puede eliminar ya que esta siendo utilizado");
                 return "redirect:/mantenimiento_criterio";
             }
         }
@@ -103,7 +103,7 @@ public class CriterioUIControlador {
         for (Plantilla plantilla : servicioPlantilla.getTodos()) {
             for (Criterio cri : plantilla.getCriterios()) {
                 if (cri.getIdCriterio().equals(id)) {
-                    attribute.addFlashAttribute("error", "El criterio no se puede eliminar ya que esta ciento utilizado");
+                    attribute.addFlashAttribute("error", "El criterio no se puede eliminar ya que esta siendo utilizado");
                     return "redirect:/mantenimiento_criterio";
                 }
             }
