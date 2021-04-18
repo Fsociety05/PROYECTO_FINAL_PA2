@@ -104,8 +104,13 @@ public class SupervisionesUIControlador {
 
     @PostMapping("/guardarSupervision")
     public String guardar(Supervisiones supervision, Model model, RedirectAttributes atributo) throws Exception {
-
+        String mensaje = "";
         if (this.idProyecto != null) {
+            mensaje = this.validarFechaAnterior(this.idProyecto, supervision, "Guardar");
+            if (!mensaje.equals("OK")) {
+                atributo.addFlashAttribute("error", mensaje);
+                return "redirect:/misProyectos";
+            }
             ProyectoSupervisiones proyectoSup = new ProyectoSupervisiones();
             Proyectos proyecto = new Proyectos(this.idProyecto);
             proyectoSup.setIdProyecto(proyecto);
@@ -120,9 +125,13 @@ public class SupervisionesUIControlador {
             this.idProyecto = null;
         } else {
             this.banderin = false;
+            mensaje = this.validarFechaAnterior(supervision.getIdSupervision(), supervision, "Actualizar");
+            if (!mensaje.equals("OK")) {
+                atributo.addFlashAttribute("error", mensaje);
+                return "redirect:/tituloProyecto";
+            }
             servicio.guardar(supervision);
             if (banderin == false) {
-                //AQUI LA BITACORA
                 this.bitacoraSupervision();
                 atributo.addFlashAttribute("success", "Actualizado Correctamente");
                 this.banderin = true;
@@ -174,5 +183,24 @@ public class SupervisionesUIControlador {
             return existe = true;
         }
         return existe;
+    }
+
+    private String validarFechaAnterior(Long id, Supervisiones supervision, String accion) throws Exception {
+        if (accion.equals("Guardar")) {
+            for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
+                if (item.getIdProyecto().getIdProyecto().equals(id) && item.getUsuario().getId_usuario().equals(servicioUsuario.getLoggedUser().getId_usuario())) {
+                    if (supervision.getFecha().before(item.getIdSupervision().getFecha())) {
+                        return "Error - La fecha debe ser posterior a la fecha de la ultima supervision";
+                    }
+                }
+            }
+        } else {
+            for (Supervisiones objeto : servicio.getTodos()) {
+                if (objeto.getIdSupervision().equals(id) && supervision.getFecha().before(objeto.getFecha())) {
+                    return "Error - La fecha debe ser posterior a la fecha de la ultima supervision";
+                }
+            }
+        }
+        return "OK";
     }
 }
