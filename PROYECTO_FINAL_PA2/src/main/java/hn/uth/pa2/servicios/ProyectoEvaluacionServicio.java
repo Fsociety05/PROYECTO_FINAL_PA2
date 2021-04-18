@@ -50,4 +50,8 @@ public class ProyectoEvaluacionServicio {
         return repositorio.getCalificacionCoordinador(idUsuario, idProyecto);
     }
     
+    public List<ProyectoEvaluacion> getCalificacionPorTipoEvaluacion(Long idTipoCalificacion, Long idProyecto) {
+        return repositorio.getCalificacionCoordinador2(idTipoCalificacion, idProyecto);
+    }
+    
 }

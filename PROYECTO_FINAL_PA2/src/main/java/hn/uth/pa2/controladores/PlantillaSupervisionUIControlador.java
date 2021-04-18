@@ -85,6 +85,7 @@ public class PlantillaSupervisionUIControlador {
             return "redirect:/reporteSupervisiones";
         } else {
             for (ProyectoSupervisiones item : servicio.getReporteProyecto(id, "Coordinador Tecnico")) {
+                
                 setParametro(modelo, "registro", servicio.getValor(item.getId()).get());
                 contador++;
             }

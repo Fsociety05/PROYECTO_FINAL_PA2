@@ -35,11 +35,10 @@ public class ProyectoEvaluacionUIControlador {
 
     private Long idProyecto;
     private Long idTabla;
-    
 
     @Autowired
     private UsuarioServicio servicioUsuario;
-    
+
     @Autowired
     private BitacoraCalificacionServicios servicioBitacoraCalificacion;
 
@@ -93,11 +92,12 @@ public class ProyectoEvaluacionUIControlador {
         calificacion_tcna += (arg_tecnica[2] * 100) / arg_tecnica[0];
         calificacion_prfl += (arg_profecional[2] * 100) / arg_profecional[0];
 
+        //(double)Math.round(number * 100d) / 100d)
         this.idProyecto = null;
         atributo.addFlashAttribute("success", "Proyecto finalizado correctamente");
-        tmpPro.setCalificacionGeneral(10 * (calificacion_gnrl / 100));
-        tmpPro.setCalificacionProfesional(60 * (calificacion_prfl / 100));
-        tmpPro.setCalificacionTecnico(30 * (calificacion_tcna / 100));
+        tmpPro.setCalificacionGeneral(formatearDecimales((10 * (calificacion_gnrl / 100)), 2));
+        tmpPro.setCalificacionProfesional(formatearDecimales((60 * (calificacion_prfl / 100)), 2));
+        tmpPro.setCalificacionTecnico(formatearDecimales(30 * ((calificacion_tcna / 100)), 2));
 
         tmpPro.setEstado("Finalizado");
 
@@ -130,7 +130,7 @@ public class ProyectoEvaluacionUIControlador {
                 }
             }
         } else {
-            atributo.addFlashAttribute("error", "Tiene " + cont_superviciones_tec + " superviciones de 3");
+            atributo.addFlashAttribute("error", "Error - El proyecto no tiene superviones");
             return "redirect:/misProyectos";
         }
 
@@ -243,7 +243,7 @@ public class ProyectoEvaluacionUIControlador {
 
         return "paginas/calificacion/form_nota";
     }
-    
+
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
     }
@@ -266,7 +266,7 @@ public class ProyectoEvaluacionUIControlador {
 
         java.util.Date d = new java.util.Date();
         java.sql.Date date2 = new java.sql.Date(d.getTime());
-        
+
         entidad.setFecha(date2);
         for (ProyectoEvaluacion item : servicioProyectoEvaluacion.getPorIdProyecto(this.idProyecto)) {
             if (item.getId().equals(this.idTabla) && item.getCalificacion() >= 0) {
@@ -297,6 +297,10 @@ public class ProyectoEvaluacionUIControlador {
         }
 
         return temp;
+    }
+
+    public static Double formatearDecimales(Double numero, Integer numeroDecimales) {
+        return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
     }
 
     private void bitacoraCalificacion() throws Exception {
