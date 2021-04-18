@@ -70,9 +70,9 @@ public class ControladorGeneral {
     @RequestMapping({"/", "/login"})
     public String index(Model model) {
 
-        if (logiado_por_primera_vez) {
-           //llenandoTablas();
-            logiado_por_primera_vez = false;
+        if (servicioUsuario.getTodos().isEmpty()) {
+            llenandoTablas();
+            //logiado_por_primera_vez = false;
         }
         return "index";
     }
