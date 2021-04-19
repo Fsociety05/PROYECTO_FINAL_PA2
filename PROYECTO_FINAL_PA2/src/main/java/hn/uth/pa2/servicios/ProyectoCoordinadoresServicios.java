@@ -50,6 +50,10 @@ public class ProyectoCoordinadoresServicios {
         return repositorio.selectProyectoCoordinador(idUsuario);
     }
     
+    public List<ProyectoCoordinadores> getUsuarioCoordindor(Long idUsuario, String coordinador){
+        return repositorio.getUsuarioCoordinador(idUsuario, coordinador);
+    }
+    
     public void actualizarProyectoCoordinadores(Long idCoordinador, Long idUsuario ,Long idProyecto){
         repositorio.actualizarProyectoCoordinador(idCoordinador, idUsuario, idProyecto);
     }

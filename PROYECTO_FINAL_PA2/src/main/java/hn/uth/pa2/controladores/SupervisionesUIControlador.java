@@ -10,6 +10,7 @@ import hn.uth.pa2.modelos.ProyectoSupervisiones;
 import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.Supervisiones;
 import hn.uth.pa2.modelos.TipoCoordinadores;
+import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.BitacoraSupervisionServicios;
 import hn.uth.pa2.servicios.ProyectoSupervisionesServ;
 import hn.uth.pa2.servicios.SupervisionesServicios;
@@ -38,16 +39,16 @@ public class SupervisionesUIControlador {
 
     @Autowired
     private SupervisionesServicios servicio;
-    
+
     @Autowired
     private TipoCoordinadoresServicio servicioTipoCoordinadores;
 
     @Autowired
     private ProyectoSupervisionesServ servicioProyectoSuperv;
-    
+
     @Autowired
     private BitacoraSupervisionServicios servicioBitacoraSupervision;
-    
+
     @Autowired
     private UsuarioServicio servicioUsuario;
 
@@ -66,14 +67,17 @@ public class SupervisionesUIControlador {
     }
 
     @GetMapping("/coordinadorProfesional/{id}")
-    public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo) {
+    public String irCoordinadorProfesional(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
 
         for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
             if (object.getNombre().equalsIgnoreCase("Coordinador Profesional")) {
                 this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
             }
         }
-
+        if (terceraSupervision(id)) {
+            atributo.addFlashAttribute("error", "Error - Ya se hicieron las tres supervisiones");
+            return "redirect:/misProyectos";
+        }
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -81,14 +85,17 @@ public class SupervisionesUIControlador {
     }
 
     @GetMapping("/coordinadorTecnico/{id}")
-    public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo) {
+    public String idCoordinadorTecnico(@PathVariable("id") Long id, Model modelo, RedirectAttributes atributo) {
 
         for (TipoCoordinadores object : servicioTipoCoordinadores.getTodos()) {
             if (object.getNombre().equalsIgnoreCase("Coordinador Tecnico")) {
                 this.coordinador.setIdTipoCoordinador(object.getIdTipoCoordinador());
             }
         }
-
+        if (terceraSupervision(id)) {
+            atributo.addFlashAttribute("error", "Error - Ya se hicieron las tres supervisiones");
+            return "redirect:/misProyectos";
+        }
         this.idProyecto = id;
         setParametro(modelo, "supervisiones", new Supervisiones());
         setParametro(modelo, "proyectoSupervisiones", new ProyectoSupervisiones());
@@ -103,23 +110,12 @@ public class SupervisionesUIControlador {
             Proyectos proyecto = new Proyectos(this.idProyecto);
             proyectoSup.setIdProyecto(proyecto);
             proyectoSup.setIdTipoCoordinador(this.coordinador);
-
-            int contador = 1;
-            for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
-                if (item.getIdProyecto().getIdProyecto() == this.idProyecto && item.getIdTipoCoordinador().getIdTipoCoordinador() == this.coordinador.getIdTipoCoordinador()) {
-                    contador++;
-                }
-            }
-            if (contador <= 3) {
-                servicio.guardar(supervision);
-                proyectoSup.setIdSupervision(supervision);
-                servicioProyectoSuperv.guardar(proyectoSup);
-                if (banderin) {
-                    atributo.addFlashAttribute("success", "Guardado Correctamente");
-                }
-            } else {
-                atributo.addFlashAttribute("error", "El coordinador alcanzo las tres supervisiones, no se puede insertar otra supervision");
-                //llnar aqui
+            proyectoSup.setUsuario(new Usuario(servicioUsuario.getLoggedUser().getId_usuario()));
+            servicio.guardar(supervision);
+            proyectoSup.setIdSupervision(supervision);
+            servicioProyectoSuperv.guardar(proyectoSup);
+            if (banderin) {
+                atributo.addFlashAttribute("success", "Guardado Correctamente");
             }
             this.idProyecto = null;
         } else {
@@ -136,19 +132,19 @@ public class SupervisionesUIControlador {
     }
 
     @GetMapping("/tituloProyecto")
-    public String getValorBusqueda(Model model) {
+    public String getValorBusqueda(Model model) throws Exception {
         model.addAttribute("valorTitulo", new ProyectoSupervisiones());
-        model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
+        model.addAttribute("listaServicio", servicioProyectoSuperv.getListarSupervisiones(servicioUsuario.getLoggedUser().getId_usuario()));
         return "paginas/supervision/mantenimiento-servicio";
     }
 
     @GetMapping("/busqueda")
-    public String getBuscarTitulo(Model model, @ModelAttribute("valorTitulo") ProyectoSupervisiones entidad) {
+    public String getBuscarTitulo(Model model, @ModelAttribute("valorTitulo") ProyectoSupervisiones entidad) throws Exception {
         String busqueda = entidad.getIdProyecto().getTitulo().replaceAll("^\\s*", "");
         if (busqueda.equals("")) {
-            model.addAttribute("listaServicio", servicioProyectoSuperv.getTodos());
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getListarSupervisiones(servicioUsuario.getLoggedUser().getId_usuario()));
         } else {
-            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(busqueda));
+            model.addAttribute("listaServicio", servicioProyectoSuperv.getResultadoBusqueda(busqueda.toUpperCase()));
         }
         return "paginas/supervision/mantenimiento-servicio";
     }
@@ -164,5 +160,19 @@ public class SupervisionesUIControlador {
 
     public void setParametro(Model model, String atributo, Object valor) {
         model.addAttribute(atributo, valor);
+    }
+
+    private boolean terceraSupervision(Long idProyecto) {
+        boolean existe = false;
+        int contador = 0;
+        for (ProyectoSupervisiones item : servicioProyectoSuperv.getTodos()) {
+            if (item.getIdProyecto().getIdProyecto().equals(idProyecto) && item.getIdTipoCoordinador().getIdTipoCoordinador().equals(this.coordinador.getIdTipoCoordinador())) {
+                contador++;
+            }
+        }
+        if (contador == 3) {
+            return existe = true;
+        }
+        return existe;
     }
 }

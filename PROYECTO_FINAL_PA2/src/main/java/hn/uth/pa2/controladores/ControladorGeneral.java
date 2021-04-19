@@ -6,12 +6,16 @@
 package hn.uth.pa2.controladores;
 
 import hn.uth.pa2.modelos.Departamento;
+import hn.uth.pa2.modelos.Plantilla;
+import hn.uth.pa2.modelos.Proyectos;
 import hn.uth.pa2.modelos.Rol;
 import hn.uth.pa2.modelos.TipoCoordinadores;
 import hn.uth.pa2.modelos.TipoEvaluacion;
 import hn.uth.pa2.modelos.TipoPlantilla;
 import hn.uth.pa2.modelos.Usuario;
 import hn.uth.pa2.servicios.DepartamentoServicio;
+import hn.uth.pa2.servicios.PlantillaServicio;
+import hn.uth.pa2.servicios.ProyectoServicios;
 import hn.uth.pa2.servicios.RolServicio;
 import hn.uth.pa2.servicios.TipoCoordinadoresServicio;
 import hn.uth.pa2.servicios.TipoEvaluacionServicio;
@@ -22,9 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -58,15 +60,20 @@ public class ControladorGeneral {
     
     @Autowired
     private TipoPlantillaServicio servicioTipoPlantilla;
+    
+    @Autowired
+    private PlantillaServicio servicioPlantilla;
+    
+    @Autowired
+    private ProyectoServicios servicioProyecto;
 
     @RequestMapping({"/", "/login"})
     public String index(Model model) {
 
         if (logiado_por_primera_vez) {
-            //llenandoTablas();
+           //llenandoTablas();
             logiado_por_primera_vez = false;
         }
-        //llenandoTablas();
         return "index";
     }
 
@@ -123,16 +130,19 @@ public class ControladorGeneral {
         Departamento departamento = new Departamento();
         departamento.setNombre("Marketing");
         departamento.setDescripcion("AAA");
+        departamento.setEstado("Activo");
         servicioDepartamento.guardar(departamento);
 
         Departamento departamento2 = new Departamento();
         departamento2.setNombre("Contabilidad");
         departamento2.setDescripcion("AAA");
+        departamento2.setEstado("Activo");
         servicioDepartamento.guardar(departamento2);
 
         Departamento departamento3 = new Departamento();
         departamento3.setNombre("Recursos Humanos");
         departamento3.setDescripcion("AAA");
+        departamento3.setEstado("Activo");
         servicioDepartamento.guardar(departamento3);
 
 
@@ -168,8 +178,34 @@ public class ControladorGeneral {
           temP3.setDescripcion("...");
           servicioTipoPlantilla.guardar(temP3);
           
+          Plantilla plantillaProfesional = new Plantilla();
+          plantillaProfesional.setTitulo("Plantilla C. Profesional");
+          plantillaProfesional.setDescripcion("AAA");
+          plantillaProfesional.setTipoPlantilla(temP1);
+          servicioPlantilla.guardar(plantillaProfesional);
           
+          Plantilla plantillaTecnico = new Plantilla();
+          plantillaTecnico.setTitulo("Plantilla C. Tecnico");
+          plantillaTecnico.setDescripcion("AAA");
+          plantillaTecnico.setTipoPlantilla(temP2);
+          servicioPlantilla.guardar(plantillaTecnico);
           
+          Plantilla plantillaGeneral = new Plantilla();
+          plantillaGeneral.setTitulo("Plantilla C. General");
+          plantillaGeneral.setDescripcion("AAA");
+          plantillaGeneral.setTipoPlantilla(temP3);
+          servicioPlantilla.guardar(plantillaGeneral);
+          
+          Proyectos proyecto = new Proyectos();
+          proyecto.setNombreLider("Lionel Messi");
+          proyecto.setIdentidadLider("0802200300500");
+          proyecto.setTitulo("Sistema Web Zoologico");
+          proyecto.setIdDepartamento(departamento);
+          proyecto.setIdPlantillaProfesional(plantillaProfesional);
+          proyecto.setIdPlantillaTecnico(plantillaTecnico);
+          proyecto.setIdPlantillaGeneral(plantillaGeneral);
+          proyecto.setEstado("Activo");
+          servicioProyecto.guardar(proyecto);
           
           
     }

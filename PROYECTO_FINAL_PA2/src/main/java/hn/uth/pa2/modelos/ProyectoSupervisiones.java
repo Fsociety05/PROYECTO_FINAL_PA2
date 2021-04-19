@@ -30,8 +30,11 @@ import lombok.NoArgsConstructor;
 public class ProyectoSupervisiones implements Serializable {
 
     private static final long serialVersionUID = -6833167247955613395L;
-//    java.util.Date d = new java.util.Date();
-//    java.sql.Date date2 = new java.sql.Date(d.getTime());
+    @Transient
+    java.util.Date d = new java.util.Date();
+    
+    @Transient
+    java.sql.Date fecha = new java.sql.Date(d.getTime());
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,4 +51,11 @@ public class ProyectoSupervisiones implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_coordinador")
     private TipoCoordinadores idTipoCoordinador;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+    
+    @Transient
+    private Date fechaActual = fecha;
 }
