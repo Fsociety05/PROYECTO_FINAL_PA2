@@ -22,6 +22,12 @@ and open the template in the editor.
 #contenedor_principal{
     max-width: 620px;
     margin-top: 10%;
+    
+    border: solid black 2px;
+    
+    background-color: rgba(0,0,0,0.2);
+    
+    border-radius: 5px;
 }
 
 label{
