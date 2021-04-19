@@ -14,14 +14,14 @@ and open the template in the editor.
         <link th:href="@{/css/estilo_login.css}" rel="stylesheet" type="text/css"/>
 
     </head>
-    <body>
+    <body style="background-image: url('/imagenes/background_gray.png');">
 
 
 
 
         <div class="container" id="contenedor_principal">
             <div class="container">
-                <h1>LOGIN</h1>
+              <h2 style="color: white;">LOGIN</h2>
             </div>
 
             <div class="container" id="container_mensages">
@@ -38,11 +38,11 @@ and open the template in the editor.
 
             <form class="col-12" th:action="@{/login}" method="post">
                 <div class="form-group" id="user-group">
-                    <label>Nombre Usuario</label>
+                    <label style="color: whitesmoke;">Nombre Usuario</label>
                     <input type="text" class="form-control" placeholder="Nombre de usuario" name="username"/>
                 </div>
                 <div class="form-group mt-2" id="contrasena-group">
-                    <label>Password</label>
+                    <label style="color: whitesmoke;">Password</label>
                     <input type="password" class="form-control" placeholder="Contrasena" name="contrasenia"/>
                 </div>
                 <div class="mt-2">

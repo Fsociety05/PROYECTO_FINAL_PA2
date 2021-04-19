@@ -1,0 +1,16 @@
+body {
+    background-image: url('/imagenes/background_gray.png');
+    
+}
+
+
+footer {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-color: black;
+    text-align: center;
+    padding: 3px;
+    position: fixed;
+    bottom: 0;
+    
+    }
