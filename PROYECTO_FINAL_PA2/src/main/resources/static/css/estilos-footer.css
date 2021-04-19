@@ -3,10 +3,9 @@ body {
     
 }
 
-
 footer {
     width: 100%;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-color: black;
     text-align: center;
     padding: 3px;
