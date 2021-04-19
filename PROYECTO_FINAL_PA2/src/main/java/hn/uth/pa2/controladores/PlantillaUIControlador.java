@@ -44,7 +44,7 @@ public class PlantillaUIControlador {
 
     @Autowired
     private CriterioServicio criterioServicio;
-    
+
     @Autowired
     private ProyectoEvaluacionServicio servicioProyectoEvaluacion;
 
@@ -69,20 +69,20 @@ public class PlantillaUIControlador {
     @PostMapping("/guardar_plantilla")
     public String guardar(Plantilla entidad, Model model, RedirectAttributes attribute) {
         
+
         for (Plantilla object : servicioPlantilla.getTodos()) {
-            if (entidad.getTitulo().equalsIgnoreCase(object.getTitulo())) {
+            if (entidad.getTitulo().equalsIgnoreCase(object.getTitulo()) && !object.getIdPlantilla().equals(entidad.getIdPlantilla())) {
                 attribute.addFlashAttribute("error", "La plantilla no puede ser guardada, el titulo ya existe");
                 return "redirect:/mantenimientoPlantilla";
             }
         }
-        
+
         for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
             if (object.getIdPlantilla().getIdPlantilla() == entidad.getIdPlantilla()) {
                 attribute.addFlashAttribute("error", "La plantilla no puede ser editada, la plantilla se esta utilizando");
                 return "redirect:/mantenimientoPlantilla";
             }
         }
-        
 
         servicioPlantilla.guardar(entidad);
         attribute.addFlashAttribute("success", "Guardado correctamente");
@@ -96,7 +96,7 @@ public class PlantillaUIControlador {
             //attribute.addFlashAttribute("error", "No se puede editar ya que contiene");
             //return "redirect:/mantenimientoPlantilla";
         }
-        
+
         for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
             if (object.getIdPlantilla().getIdPlantilla() == id) {
                 attribute.addFlashAttribute("error", "La plantilla no puede ser editada, la plantilla se esta utilizando");
@@ -112,14 +112,21 @@ public class PlantillaUIControlador {
 
     @GetMapping("eliminar_plantilla/{id}")
     public String eliminar(@PathVariable("id") Long id, Model modelo, RedirectAttributes attribute) {
-        
+
+        if (!servicioPlantilla.getValor(id).get().getCriterios().isEmpty()) {
+
+            attribute.addFlashAttribute("error", "La plantilla no puede ser eliminada, la plantilla tiene criterios añadidos");
+            return "redirect:/mantenimientoPlantilla";
+        }
+
         for (ProyectoEvaluacion object : servicioProyectoEvaluacion.getTodos()) {
             if (object.getIdPlantilla().getIdPlantilla() == id) {
                 attribute.addFlashAttribute("error", "La plantilla no puede ser eliminada, la plantilla se esta utilizando");
                 return "redirect:/mantenimientoPlantilla";
             }
+
         }
-        
+
         attribute.addFlashAttribute("success", "eliminado correctamente");
         servicioPlantilla.eliminar(id);
         return "redirect:/mantenimientoPlantilla";
