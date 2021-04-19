@@ -34,7 +34,7 @@ and open the template in the editor.
         </div>
 
 
-        <div class="container mt-5 border">
+        <div class="container mt-5 " style="background-color: white;">
             <form class="row g-3" th:action="@{/guardar_plantilla}" th:object="${plantilla}" method="post">
 
                 <input type="hidden" name="id" id="id" th:field="*{idPlantilla}">

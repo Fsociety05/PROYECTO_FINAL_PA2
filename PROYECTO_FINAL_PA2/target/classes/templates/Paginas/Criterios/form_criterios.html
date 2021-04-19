@@ -32,7 +32,7 @@ and open the template in the editor.
         </div>
 
 
-        <div class="container mt-5 border">
+        <div class="container mt-5 border" style="background-color: white;">
             <form class="row g-3" th:action="@{/guardar_criterio}" th:object="${criterio}" method="post">
 
                 <input type="hidden" th:field="*{idCriterio}" name="id" id="id">
