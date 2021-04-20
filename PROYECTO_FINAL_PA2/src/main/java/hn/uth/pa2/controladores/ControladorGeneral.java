@@ -178,34 +178,34 @@ public class ControladorGeneral {
           temP3.setDescripcion("...");
           servicioTipoPlantilla.guardar(temP3);
           
-          Plantilla plantillaProfesional = new Plantilla();
-          plantillaProfesional.setTitulo("Plantilla C. Profesional");
-          plantillaProfesional.setDescripcion("AAA");
-          plantillaProfesional.setTipoPlantilla(temP1);
-          servicioPlantilla.guardar(plantillaProfesional);
-          
-          Plantilla plantillaTecnico = new Plantilla();
-          plantillaTecnico.setTitulo("Plantilla C. Tecnico");
-          plantillaTecnico.setDescripcion("AAA");
-          plantillaTecnico.setTipoPlantilla(temP2);
-          servicioPlantilla.guardar(plantillaTecnico);
-          
-          Plantilla plantillaGeneral = new Plantilla();
-          plantillaGeneral.setTitulo("Plantilla C. General");
-          plantillaGeneral.setDescripcion("AAA");
-          plantillaGeneral.setTipoPlantilla(temP3);
-          servicioPlantilla.guardar(plantillaGeneral);
-          
-          Proyectos proyecto = new Proyectos();
-          proyecto.setNombreLider("Lionel Messi");
-          proyecto.setIdentidadLider("0802200300500");
-          proyecto.setTitulo("Sistema Web Zoologico");
-          proyecto.setIdDepartamento(departamento);
-          proyecto.setIdPlantillaProfesional(plantillaProfesional);
-          proyecto.setIdPlantillaTecnico(plantillaTecnico);
-          proyecto.setIdPlantillaGeneral(plantillaGeneral);
-          proyecto.setEstado("Activo");
-          servicioProyecto.guardar(proyecto);
+//          Plantilla plantillaProfesional = new Plantilla();
+//          plantillaProfesional.setTitulo("Plantilla C. Profesional");
+//          plantillaProfesional.setDescripcion("AAA");
+//          plantillaProfesional.setTipoPlantilla(temP1);
+//          servicioPlantilla.guardar(plantillaProfesional);
+//          
+//          Plantilla plantillaTecnico = new Plantilla();
+//          plantillaTecnico.setTitulo("Plantilla C. Tecnico");
+//          plantillaTecnico.setDescripcion("AAA");
+//          plantillaTecnico.setTipoPlantilla(temP2);
+//          servicioPlantilla.guardar(plantillaTecnico);
+//          
+//          Plantilla plantillaGeneral = new Plantilla();
+//          plantillaGeneral.setTitulo("Plantilla C. General");
+//          plantillaGeneral.setDescripcion("AAA");
+//          plantillaGeneral.setTipoPlantilla(temP3);
+//          servicioPlantilla.guardar(plantillaGeneral);
+//          
+//          Proyectos proyecto = new Proyectos();
+//          proyecto.setNombreLider("Lionel Messi");
+//          proyecto.setIdentidadLider("0802200300500");
+//          proyecto.setTitulo("Sistema Web Zoologico");
+//          proyecto.setIdDepartamento(departamento);
+//          proyecto.setIdPlantillaProfesional(plantillaProfesional);
+//          proyecto.setIdPlantillaTecnico(plantillaTecnico);
+//          proyecto.setIdPlantillaGeneral(plantillaGeneral);
+//          proyecto.setEstado("Activo");
+//          servicioProyecto.guardar(proyecto);
           
           
     }

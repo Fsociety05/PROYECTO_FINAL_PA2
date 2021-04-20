@@ -33,7 +33,7 @@ and open the template in the editor.
         </div>
 
         <form th:action="@{/guardar_plantillaCriterio}" th:object="${plantilla}" method="post">
-            <div class="container p-3 my-3 border">
+            <div class="container p-3 my-3 border" style="background-color: white;">
 
                 <input type="hidden" name="id" id="id" th:field="*{idPlantilla}">
                 <input type="hidden" name="id" id="id" th:field="*{titulo}">
