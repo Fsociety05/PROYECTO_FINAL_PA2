@@ -36,6 +36,12 @@ label {
     .contenedor-boton {
         display: none;
     }
+    footer {
+        display: none;
+    }
+    #menu {
+        display: none;
+    }
 }
 
 
